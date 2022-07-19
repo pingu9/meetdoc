@@ -4,11 +4,14 @@
   <button @click="changeName()">한/영변환</button>
   <hr>
   <span>getName : {{getName}}</span>
+  <hr>
+  <button @click="getData()">데이터가져오기</button>
+  <p>{{value}}</p>
 </template>
 
 <script>
 
-import { mapState, mapMutations, mapGetters } from 'vuex';
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -20,14 +23,15 @@ export default {
     
   },
   computed: {
-    ...mapState(['name']),
+    ...mapState(['name', 'value']),
     // ...mapGetters({
     //   getter : 'getName'
     // }),
     ...mapGetters(['getName',]),
   },
   methods: {
-    ...mapMutations(['changeName'])
+    ...mapMutations(['changeName']),
+    ...mapActions(['getData']),
   }
 }
 </script>
