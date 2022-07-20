@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>HomePage 입니다.</h4>
-    <router-link to="/jinryo/doctors">진료과</router-link>
+    <router-link to="/doctors/1">진료과</router-link>
     <!-- <p>{{$store.state.name}}</p>
   <button @click="changeName()">한/영변환</button>
   <hr>
