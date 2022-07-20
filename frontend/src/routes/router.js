@@ -15,7 +15,7 @@ const routes = [
         component: MyPage,
     },
     {
-        path: "/jinryo/doctors",
+        path: "/doctors/1",
         component: DoctorList,
     }
 ];
