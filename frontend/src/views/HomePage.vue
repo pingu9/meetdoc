@@ -1,13 +1,14 @@
 <template>
   <div>
     <h4>HomePage 입니다.</h4>
-    <p>{{$store.state.name}}</p>
+    <router-link to="/jinryo/doctors">진료과</router-link>
+    <!-- <p>{{$store.state.name}}</p>
   <button @click="changeName()">한/영변환</button>
   <hr>
   <span>getName : {{getName}}</span>
   <hr>
   <button @click="getData()">데이터가져오기</button>
-  <p>{{value}}</p>
+  <p>{{value}}</p> -->
   </div>
 </template>
 

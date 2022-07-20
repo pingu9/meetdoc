@@ -20,6 +20,12 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">진료 내역</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">예약 내역</a>
+        </li>
       </ul>
     </div>
   </div>
