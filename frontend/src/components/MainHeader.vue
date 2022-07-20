@@ -15,7 +15,7 @@
           <a class="nav-link" href="/mypage">MyPage</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">로그인</a>
+          <button data-bs-toggle="modal" data-bs-target="#loginModal">login</button>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a>
@@ -34,8 +34,10 @@
 </template>
 
 <script>
-export default {
 
+export default {
+  methods:{
+  }
 }
 </script>
 
