@@ -1,5 +1,5 @@
 <template>
-<div class="modal" tabindex="-1">
+<div class="modal" tabindex="-1" id="loginModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -20,12 +20,10 @@
 
 <script>
 export default {
-    props: {
-        open: {
-        type: Boolean,
-        default: false
-        }
-    },
+  data() {
+    return {
+    }
+  },
 }
 </script>
 

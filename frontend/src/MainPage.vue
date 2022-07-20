@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-    <Header @openLoginDialog="onOpenLoginDialog"/>
+    <Header/>
     </div>
     <div>
     <router-view></router-view>
@@ -9,8 +9,7 @@
     <div>
     <Footer/>
     </div>
-    <LoginDialog
-    :open="loginDialogOpen"/>
+    <LoginDialog/>
   </div>
 </template>
 
@@ -27,24 +26,8 @@ export default {
   },
   data () {
     return {
-      loginDialogOpen: false,
-      signupDialogOpen: false,
     }
   },
-  methods: {
-    onOpenLoginDialog () {
-      this.loginDialogOpen = true
-    },
-    onCloseLoginDialog () {
-      this.loginDialogOpen = false
-    },
-    onOpenSignupDialog () {
-      this.signupDialogOpen = true
-    },
-    onCloseSignupDialog () {
-      this.signupDialogOpen = false
-    }
-  }
 }
 </script>
 

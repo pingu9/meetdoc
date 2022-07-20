@@ -15,7 +15,7 @@
           <a class="nav-link" href="/mypage">MyPage</a>
         </li>
         <li class="nav-item">
-          <button @click="clickLogin">login</button>
+          <button data-bs-toggle="modal" data-bs-target="#loginModal">login</button>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a>
@@ -37,12 +37,6 @@
 
 export default {
   methods:{
-    clickLogin() {
-      console.log('sd')
-      this.$emit('openLoginDialog')
-            console.log('sds')
-
-    }
   }
 }
 </script>
