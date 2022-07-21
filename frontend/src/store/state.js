@@ -8,5 +8,12 @@ export const state = {
     ],
     specialties: [
         '진료과1', '진료과2', '진료과3', '진료과4', '진료과5', '진료과6', '진료과7', '진료과8', '진료과9'
-    ]
+    ],
+    doctorDetail: {
+        id: 'doctor1',
+        name: 'Dr.스트레인지',
+        hospitalName: '마블병원',
+        description: '마블병원 가정의학과 전문의 닥터 스트레인지입니다.',
+        department: '가정의학과',
+    }
 };
