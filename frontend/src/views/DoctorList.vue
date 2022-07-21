@@ -6,8 +6,8 @@
         <h5 class="card-title">{{list.name}}</h5>
         <p class="card-text">{{list.department}}</p>
         <a href="#" class="btn btn-primary">예약하기</a>
-  </div>
-</div>
+        </div>
+    </div>
   </div>
 </template>
 
