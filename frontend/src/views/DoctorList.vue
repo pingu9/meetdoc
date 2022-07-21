@@ -1,12 +1,8 @@
 <template>
   <div>
     <h1>doctor list - 진료과</h1>
-<<<<<<< Updated upstream
-    <div class="card w-75" v-for="(list, idx) in $store.state.doctors" :key="idx">
-=======
     <!-- Button trigger modal -->
     <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card" data-bs-toggle="modal" data-bs-target="#doctorDtail">
->>>>>>> Stashed changes
         <div class="card-body">
         <h5 class="card-title">{{list.name}}</h5>
         <p class="card-text">{{list.department}}</p>
