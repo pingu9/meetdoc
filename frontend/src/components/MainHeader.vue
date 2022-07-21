@@ -12,6 +12,12 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/chart/list">진료 내역</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/book/list">예약 내역</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/mypage">MyPage</a>
         </li>
         <li class="nav-item">
@@ -22,10 +28,10 @@
           <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModalToggle">회원가입</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">진료 내역</a>
+          <button data-bs-toggle="modal" data-bs-target="#loginModal">login</button>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">예약 내역</a>
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a>
         </li>
       </ul>
     </div>
