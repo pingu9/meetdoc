@@ -12,4 +12,4 @@
 ## 기타
 
 
-resolved: #
+Resolves 
