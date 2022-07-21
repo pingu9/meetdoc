@@ -1,6 +1,6 @@
 <template>
-<div class="modal" tabindex="-1" id="loginModal">
-  <div class="modal-dialog">
+<div class="modal fade" tabindex="-1" id="loginModal">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Login</h5>

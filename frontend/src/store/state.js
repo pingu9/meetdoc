@@ -15,5 +15,9 @@ export const state = {
         hospitalName: '마블병원',
         description: '마블병원 가정의학과 전문의 닥터 스트레인지입니다.',
         department: '가정의학과',
-    }
+    },
+    user1: {
+       user_id: 'dsadas', user_type: '환자', name: '안현모', gender: 'male', birthdate: '1994/09/09', 
+    },
+
 };
