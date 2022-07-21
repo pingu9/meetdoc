@@ -15,10 +15,11 @@
           <a class="nav-link" href="/mypage">MyPage</a>
         </li>
         <li class="nav-item">
-          <button data-bs-toggle="modal" data-bs-target="#loginModal">login</button>
+          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a>
+          <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a> -->
+          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModalToggle">회원가입</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">진료 내역</a>
