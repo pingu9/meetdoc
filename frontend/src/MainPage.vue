@@ -10,6 +10,7 @@
     <Footer/>
     </div>
     <LoginDialog/>
+    <SignUpDialog/>
   </div>
 </template>
 
@@ -17,12 +18,14 @@
 import Footer from './components/MainFooter.vue';
 import Header from './components/MainHeader.vue';
 import LoginDialog from './components/LoginDialog.vue';
+import SignUpDialog from './components/SignUpDialog.vue';
 
 export default {
   components:{
     Footer,
     Header,
     LoginDialog,
+    SignUpDialog,
   },
   data () {
     return {
