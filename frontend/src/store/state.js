@@ -17,7 +17,12 @@ export const state = {
         department: '가정의학과',
     },
     user1: {
-       user_id: 'dsadas', user_type: '환자', name: '안현모', gender: 'male', birthdate: '1994/09/09', 
+        user_id: 'dsadas', user_type: '환자', name: '안현모', gender: 'male', birthdate: '1994/09/09',
     },
+    charts: [
+        { name: '김환자', date: '2022-05-14 4:00PM' },
+        { name: '이환자', date: '2022-02-05 2:00PM' },
+        { name: '심환자', date: '2022-06-22 11:00AM' },
+    ]
 
 };
