@@ -25,7 +25,7 @@
         </li>
         <li class="nav-item">
           <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">회원가입</a> -->
-          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModalToggle">회원가입</a>
+          <a class="nav-link" href="/signup">회원가입</a>
         </li>
       </ul>
     </div>
