@@ -1,3 +1,5 @@
+use meetdoc;
+
 insert into medic_department (department_name) values ('내과');
 insert into medic_department (department_name) values ('외과');
 insert into medic_department (department_name) values ('정신과');
@@ -8,35 +10,31 @@ insert into medic_department (department_name) values ('이비인후과');
 insert into medic_department (department_name) values ('소아청소년과');
 insert into medic_department (department_name) values ('비뇨기과');
 
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user1', 'D', 'doctor1', 'male', '2000-01-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user2', 'D', 'doctor2', 'male', '2000-01-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user3', 'D', 'deleted_doctor', 'male', '2000-01-01', 'deleted');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user4', 'D', 'pending_doctor', 'male', '2000-01-01', 'pending');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user5', 'U', 'user1', 'male', '2000-01-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user6', 'U', 'user2', 'male', '2000-01-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user7', 'U', 'user3', 'male', '2000-01-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user8', 'U', 'user4', 'male', '2000-01-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user9', 'U', 'pending_user', 'male', '2000-01-01', 'pending');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user10', 'U', 'inactive_user', 'male', '2000-01-01', 'deleted');
 
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user1', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user2', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user3', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user4', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user5', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user6', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user7', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user8', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user9', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
+insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values ('user10', '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
 
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('D', 'doctor1', 'male', '2000-01-01', 'active');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('D', 'doctor2', 'male', '2000-01-01', 'active');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('D', 'deleted_doctor', 'male', '2000-01-01', 'deleted');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('D', 'pending_doctor', 'male', '2000-01-01', 'pending');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('U', 'user1', 'male', '2000-01-01', 'active');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('U', 'user2', 'male', '2000-01-01', 'active');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('U', 'user3', 'male', '2000-01-01', 'active');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('U', 'user4', 'male', '2000-01-01', 'active');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('U', 'pending_user', 'male', '2000-01-01', 'pending');
-insert into `user` (`user_type`, `name`, `gender`, `birthdate`, `status`) values ('U', 'inactive_user', 'male', '2000-01-01', 'deleted');
-
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (1, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (2, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (3, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (4, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (5, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (6, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (7, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (8, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (9, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-insert into user_info (`user_id`, `password`, `RRN`, `zipcode`, `address`, `phone`, `email`) values (10, '1111', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
-
-insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values (1, '1111', 'hospital1', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
-insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values (2, '2222', 'hospital2', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
-insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values (3, '3333', 'hospital3', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
-
-
+insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user1', '1111', 'hospital1', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
+insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user2', '2222', 'hospital2', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
+insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user3', '3333', 'hospital3', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
 
 
 
