@@ -42,10 +42,6 @@ export default {
 
 <style>
 
-h1{
-  text-align: center;
-  margin: 20px;
-}
 .card{
   margin:auto;
   display: block;
