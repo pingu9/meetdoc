@@ -18,6 +18,7 @@ export const state = {
     },
     user1: {
         user_id: 'dsadas', user_type: '환자', name: '안현모', gender: 'male', birthdate: '1994/09/09',
+        address: '서울시 강남구 역삼동 12-345', phone: '012-3456-7890', email: 'dsaddas@naver.com'
     },
     charts: [
         { name: '김환자', date: '2022-05-14 4:00PM' },
