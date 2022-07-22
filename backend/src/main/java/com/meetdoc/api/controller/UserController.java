@@ -2,16 +2,23 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.DoctorPostReq;
 import com.meetdoc.api.request.UserPostReq;
+import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
+import com.meetdoc.db.entity.User;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @Api(value = "유저 API", tags = {"User"})
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    UserService userService;
 
     @PostMapping
     @ApiOperation(value = "회원 가입", notes = "비밀번호, 항목 유효성 검사 후 회원 가입을 처리한다.")
@@ -23,18 +30,22 @@ public class UserController {
 
     public ResponseEntity<? extends BaseResponseBody> register(
             @RequestBody @ApiParam(value = "회원가입", required = true) UserPostReq registerInfo) {
-        int code = 0; //dummy
+        User user = userService.createUser(registerInfo);
 
-        if (code == 0) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-        }
-        else if (code == 1) {
-            String errMsg = "항목에 공백이 있으면 안됩니다. 또한 비밀번호는 8자~15자 이며 영문 대소문자, 특수문자, 숫자를 사용해야 합니다.";
-            return ResponseEntity.status(406).body(BaseResponseBody.of(406, errMsg));
-        }
-        else {
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "서버 에러 발생"));
-        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PostMapping("/login")
+    @ApiOperation(value = "로그인", notes = "회원 로그인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 406, message = "필수항목 공백 또는 다수 시도"),
+            @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
+    })
+
+    public ResponseEntity<? extends BaseResponseBody> login(
+            @RequestBody @ApiParam(value = "회원가입", required = true) UserPostReq registerInfo) {
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/{userId}")
@@ -47,19 +58,12 @@ public class UserController {
 
     public ResponseEntity<? extends BaseResponseBody> duplicateIdCheck(
             @PathVariable String userId) {
-        int code = 0; //dummy
-
-        if (code == 0) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        try {
+            userService.getUserByUserId(userId);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 ID입니다."));
         }
-        else if (code == 1) {
-            String errMsg = "이미 존재하는 아이디입니다.";
-            return ResponseEntity.status(406).body(BaseResponseBody.of(406, errMsg));
-        }
-        else {
-            String errMsg = "서버 에러 발생.";
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, errMsg));
-        }
+        return ResponseEntity.status(406).body(BaseResponseBody.of(406, "이미 존재하는 사용자 ID입니다."));
     }
 
     @PostMapping("/doctor")
@@ -147,7 +151,7 @@ public class UserController {
 
 
     @GetMapping("/info/{userId}")
-    @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴")
+    @ApiOperation(value = "회원 상세 정보", notes = "회원 상세 정보")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한 에러"),

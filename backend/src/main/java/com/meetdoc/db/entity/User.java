@@ -1,5 +1,6 @@
 package com.meetdoc.db.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ public class User {
     String userId;
     String userType;
     String name;
+    String password;
     String gender;
     LocalDateTime birthdate;
     String status;
