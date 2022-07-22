@@ -29,7 +29,7 @@ export const state = {
         "id": '1',
         "title": '제목',
         "date": '2022-05-14 4:00PM',
-        "userId": '김환자',
+        "userName": '김환자',
         "doctorId": 'doctor1',
         "description": '에어컨을 너무 쐬서 그런지 머리가 아프네요',
         "picture": '',
