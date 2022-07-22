@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 public class Appointment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int appointmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
