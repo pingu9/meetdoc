@@ -1,5 +1,6 @@
 package com.meetdoc.config;
 
+import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.JwtAuthenticationFilter;
 import com.meetdoc.common.auth.SsafyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
