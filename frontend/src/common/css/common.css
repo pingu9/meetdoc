@@ -1,0 +1,13 @@
+/* 전체 페이지에 공통으로 들어가야할 css */
+.container-body {
+    margin: 10px 30%;
+}
+
+.container-header {
+    margin: 10px;
+}
+
+h1 {
+    text-align: center;
+    width: 100%;
+}
