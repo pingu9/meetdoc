@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meetdoc.api.service.UserService;
+import com.meetdoc.db.entity.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -73,7 +75,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             		User user = userService.getUserByUserId(userId);
                 if(user != null) {
                         // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
-                		SsafyUserDetails userDetails = new SsafyUserDetails(user);
+                		UserDetails userDetails = new UserDetails(user);
                 		UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(userId,
                 				null, userDetails.getAuthorities());
                 		jwtAuthentication.setDetails(userDetails);

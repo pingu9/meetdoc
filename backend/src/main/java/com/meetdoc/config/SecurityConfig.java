@@ -1,7 +1,8 @@
 package com.meetdoc.config;
 
+import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.JwtAuthenticationFilter;
-import com.meetdoc.common.auth.SsafyUserDetailService;
+import com.meetdoc.common.auth.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private SsafyUserDetailService ssafyUserDetailService;
+    private UserDetailService ssafyUserDetailService;
     
     @Autowired
     private UserService userService;
