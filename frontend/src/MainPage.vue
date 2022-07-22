@@ -35,5 +35,6 @@ export default {
 </script>
 
 <style>
+@import './common/css/common.css';
 
 </style>
