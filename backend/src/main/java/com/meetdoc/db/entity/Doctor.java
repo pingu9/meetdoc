@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,7 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 @Getter
 @Setter
-public class Doctor {
+public class Doctor implements Serializable {
     @JoinColumn(name = "userId")
     @Id
     @OneToOne(fetch = FetchType.LAZY)
