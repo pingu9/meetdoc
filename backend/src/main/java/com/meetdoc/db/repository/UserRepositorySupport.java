@@ -32,7 +32,7 @@ public class UserRepositorySupport {
 
     public Optional<UserInfo> findUserInfoByUserId(String userId) {
         UserInfo userInfo = jpaQueryFactory.select(qUserInfo).from(qUserInfo)
-                .where(qUserInfo.userId.eq(userId)).fetchOne();
+                .where(qUserInfo.user.userId.eq(userId)).fetchOne();
         if (userInfo == null) return Optional.empty();
         return Optional.ofNullable(userInfo);
     }
