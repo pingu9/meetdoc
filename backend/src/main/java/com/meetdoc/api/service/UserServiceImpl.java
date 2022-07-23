@@ -1,5 +1,7 @@
 package com.meetdoc.api.service;
 
+import com.meetdoc.api.request.UserPatchReq;
+import com.meetdoc.db.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,4 +28,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public UserInfo getUserInfoByUserId(String userId) {
+        return null;
+    }
+
+    @Override
+    public Long updateUserByUserId(String userId, UserPatchReq patchUserReq) {
+        Long affectedRow = userRepositorySupport.updateUserByUserId(userId, patchUserReq);
+        return affectedRow;
+    }
 }
