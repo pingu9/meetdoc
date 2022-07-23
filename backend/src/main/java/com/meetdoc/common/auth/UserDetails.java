@@ -21,7 +21,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     List<GrantedAuthority> roles = new ArrayList<>();
     
     public UserDetails(User user) {
-    		super();v
+    		super();
     		this.user = user;
     }
     
