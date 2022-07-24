@@ -39,12 +39,23 @@ public class UserRepositorySupport {
 
     public Long updateUserByUserId(String userId, UserPatchReq patchUserReq) {
         Long affectedRow = jpaQueryFactory.update(qUserInfo)
+                .where(qUserInfo.user.userId.eq(userId))
+                .set(qUserInfo.password, patchUserReq.getPassword())
+                .set(qUserInfo.phone, patchUserReq.getPhone())
+                .set(qUserInfo.zipcode, patchUserReq.getZipcode())
+                .set(qUserInfo.address, patchUserReq.getAddress())
+                .set(qUserInfo.email, patchUserReq.getEmail())
+                .execute();
+        return affectedRow;
+    }
+
+    public Long deleteUserByUserId(String userId) {
+        Long affectedRow = jpaQueryFactory.update(qUser)
                 .where(qUser.userId.eq(userId))
-                .set(QUserInfo.userInfo.password, patchUserReq.getPassword())
-                .set(QUserInfo.userInfo.password, patchUserReq.getZipcode())
-                .set(QUserInfo.userInfo.password, patchUserReq.getZipcode())
-                .set(QUserInfo.userInfo.password, patchUserReq.getAddress())
-                .set(QUserInfo.userInfo.password, patchUserReq.getEmail())
+                .set(qUser.status, "D")
+                .execute();
+        affectedRow += jpaQueryFactory.delete(qUserInfo)
+                .where(qUserInfo.user.userId.eq(userId))
                 .execute();
         return affectedRow;
     }
