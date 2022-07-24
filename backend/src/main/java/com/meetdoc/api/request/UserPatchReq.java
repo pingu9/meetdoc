@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /**
  * 유저 회원가입 요청에 필요한 request 정의.
  */
@@ -12,7 +14,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserPatchReq")
 public class UserPatchReq {
-    @ApiModelProperty(name="유저 타입", example="의사일경우 doctor, 일반 회원일 경우 normal")
+    @ApiModelProperty(name="유저 타입", example="의사일경우 D, 일반 회원일 경우 U")
     String userType;
     @ApiModelProperty(name="유저 ID", example="your_id")
     String id;
@@ -21,7 +23,7 @@ public class UserPatchReq {
     @ApiModelProperty(name="유저 name", example="XXX")
     String name;
     @ApiModelProperty(name="주민등록번호", example="200101-1111111")
-    String RRN;
+    String rrn;
     @ApiModelProperty(name="phone number", example="010-0000-0000")
     String phoneNumber;
     @ApiModelProperty(name="우편번호", example="123-456")
@@ -31,6 +33,11 @@ public class UserPatchReq {
     @ApiModelProperty(name="이메일(선택)", example="XXXXX@gmail.com")
     String email;
 
+    @ApiModelProperty(name="생년월일", example="2000-01-01")
+    LocalDate birthDate;
+
+    @ApiModelProperty(name="성별", example="male/female")
+    String gender;
 
     @ApiModelProperty(name="병원명", example="your_hospital_name")
     String hospitalName;
