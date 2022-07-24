@@ -5,6 +5,7 @@ import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.DoctorMedicDepartment;
 import com.meetdoc.db.repository.DoctorMedicDepartmentRepositorySupport;
 import com.meetdoc.db.repository.DoctorRepository;
+import com.meetdoc.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     DoctorMedicDepartmentRepositorySupport doctorMedicDepartmentRepository;
 
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     DoctorRepository doctorRepository;
 
@@ -50,7 +53,6 @@ public class UserServiceImpl implements UserService {
         doctor.setHospitalAddress(doctorInfo.getHospitalAddress());
         doctor.setHospitalDescription(doctorInfo.getHospitalDescription());
         doctor.setCharge(doctorInfo.getCharge());
-//        doctor.setDoctorMedicDepartments(doctorMedicDepartmentRepository.findDepartmentByUserId(doctorInfo.getUserId()));
         List<DoctorMedicDepartment> list = new ArrayList<>();
         for(int i=0; i<doctorInfo.getDepartments().size(); ++i){
             System.out.println(doctorInfo.getDepartments().get(i));
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
             doctorMedicDepartment.setMedicDepartment(doctorInfo.getDepartments().get(i));
             list.add(doctorMedicDepartment);
         }
+        doctor.setUser(userRepository.findByUserId(doctorInfo.getUserId()).get());
         return doctorRepository.save(doctor);
     }
 
