@@ -8,5 +8,6 @@ public interface UserService {
     User getUserByUserId(String userId);
     UserInfo getUserInfoByUserId(String userId);
     Long updateUserByUserId(String userId, UserPatchReq patchUserReq);
+    Long deleteUserByUserId(String userId);
 }
 

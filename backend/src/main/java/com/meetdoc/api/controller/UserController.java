@@ -129,23 +129,21 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
 
-    public ResponseEntity<? extends BaseResponseBody> deleteUser(
+    public ResponseEntity<? extends BaseResponseBody> deleteUser(@ApiIgnore Authentication authentication,
             @PathVariable String userId) {
-        int code = 0; //dummy
-
-        if (code == 0) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+        //회원 존재여부 확인
+        if (user == null) {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "존재하지 않는 회원입니다."));
+        }
+        Long affectedRow = userService.deleteUserByUserId(getUserId);
+        //변경 없을 경우
+        if (affectedRow == 0) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "서버 문제로 인한 에러"));
+        } else {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-        }
-        else if (code == 1) {
-            String errMsg = "올바르지 않은 입력입니다.";
-            return ResponseEntity.status(406).body(BaseResponseBody.of(406, errMsg));
-        }
-        else if (code == 2) {
-            String errMsg = "권한이 없습니다.";
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401, errMsg));
-        }
-        else {
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "서버 에러 발생"));
         }
     }
 

@@ -38,4 +38,10 @@ public class UserServiceImpl implements UserService {
         Long affectedRow = userRepositorySupport.updateUserByUserId(userId, patchUserReq);
         return affectedRow;
     }
+
+    @Override
+    public Long deleteUserByUserId(String userId) {
+        Long affectedRow = userRepositorySupport.deleteUserByUserId(userId);
+        return affectedRow;
+    }
 }
