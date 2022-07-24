@@ -30,7 +30,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     }
 	@Override
 	public String getPassword() {
-		return this.user.getPassword();
+		return this.user.getUserInfo().getPassword();
 	}
 	@Override
 	public String getUsername() {
