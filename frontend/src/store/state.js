@@ -35,5 +35,4 @@ export const state = {
         "picture": '',
         "Prescription": '',
     }
-
 };
