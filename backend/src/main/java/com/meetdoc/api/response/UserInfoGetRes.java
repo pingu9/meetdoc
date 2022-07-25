@@ -29,7 +29,7 @@ public class UserInfoGetRes extends BaseResponseBody{
     @ApiModelProperty(name="유저 비밀번호", example="Ie923Cue323")
     String password;
     @ApiModelProperty(name="주민등록번호", example="200101-1111111")
-    String RRN;
+    String rrn;
     @ApiModelProperty(name="우편번호", example="123-456")
     String zipcode;
     @ApiModelProperty(name="상세 주소", example="XX아파트 X동 X호")
@@ -62,7 +62,7 @@ public class UserInfoGetRes extends BaseResponseBody{
         res.setBirthdate(user.getBirthdate().toString());
 
         res.setPassword(userInfo.getPassword());
-        res.setRRN(userInfo.getRRN());
+        res.setRrn(userInfo.getRrn());
         res.setZipcode(userInfo.getZipcode());
         res.setAddress(userInfo.getAddress());
         res.setPhone(userInfo.getPhone());
