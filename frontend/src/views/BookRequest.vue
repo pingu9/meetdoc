@@ -12,7 +12,10 @@
     <div>
       <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
     </div>
-    <div><a href="/book/payment" class="btn btn-primary">다음</a></div>
+    <div>
+      <a href="/doctors/1" class="btn btn-secondary">이전</a>
+      <a href="/book/payment" class="btn btn-primary" style="margin:10px">다음</a>
+    </div>
   </div>
 </template>
 
@@ -48,6 +51,7 @@ export default {
     if (minuates > 0 && minuates <= 30) {//1분 ~ 30분(포함) 사이에는 30분으로 표시
       min = '30';
     } else {//30분 초과 ~ 0분까지는 0으로
+      hou++;
       min = '00';
     }
     //data 값 입력
