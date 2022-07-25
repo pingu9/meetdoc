@@ -120,4 +120,8 @@ export default {
     width:60%;
     height:60%;
   }
+
+  #cancel:hover{
+    cursor: pointer;
+  }
 </style>
