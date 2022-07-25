@@ -41,7 +41,7 @@ export default {
     let month = todayDate.getMonth() + 1;
     let mm = month < 10 ? '0' + month : month;
     let dd = String(todayDate.getDate() < 10 ? '0' + todayDate.getDate() : todayDate.getDate());
-    let hou = String(todayDate.getHours() > 10 ? todayDate.getHours() - 12 : todayDate.getHours());
+    let hou = String(todayDate.getHours() > 12 ? todayDate.getHours() - 12 : todayDate.getHours());
     let min = '';
     let minuates = todayDate.getMinutes();
      //min 30분 단위 설정

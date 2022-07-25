@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>HomePage 입니다.</h4>
     <div class="alert alert-primary" role="alert">
     예약하신 진료시간이 다 되었습니다. <a href="#" class="alert-link">진료실 링크여기</a> 진료실에 입장해주세요!
     </div>
