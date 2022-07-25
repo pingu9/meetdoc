@@ -1,22 +1,40 @@
 <template>
   <div class="container-body">
     <h1>진료 신청서</h1>
-    <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
-    <!-- <img src="../assets/images/doctor.jpg" alt="doctorImg" class="doctorImg"> -->
-    <form name="해당 폼의 이름" action="값을 보낼 주소" method="post">
-        <input type='date' name='userBirthday'  @change="datePicked" v-model="date"/>
-    </form>
-    <div v-for="i in timeList" :key="i" id="times" >
-      <span class="badge rounded-pill bg-info text-white" id="badge" @click="time = i">{{i}}</span>
+  <div class="container-card">
+      <div class="card">
+        <div class="card-body">
+          <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
+          <p class="card-title">닥터스트레인지 의사</p>
+          <div>
+              <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
+          </div>
+          <div class="info-box">
+            <div class="half-box">
+              <form name="해당 폼의 이름" action="값을 보낼 주소" method="post">
+                <input type='date' name='userBirthday'  @change="datePicked" v-model="date"/>
+            </form>
+            </div>
+            <div class="half-box">
+              <div v-for="i in timeList" :key="i" id="times" >
+                <span class="badge rounded-pill bg-info text-white" id="badge" @click="time = i">{{i}}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="card-title">증상 입력</p>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+              <label for="floatingTextarea2">증상에 대해 자세히 입력해주세요.</label>
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="button" a href="/book/confirm">다음</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
-    </div>
-    <div>
-      <a href="/doctors/1" class="btn btn-secondary">이전</a>
-      <a href="/book/payment" class="btn btn-primary" style="margin:10px">다음</a>
-    </div>
-  </div>
+  </div>  
 </template>
 
 <script>
@@ -94,10 +112,14 @@ export default {
 #badge{
   font-size: 15px;
   padding:10px 20px;
-  margin: 20px 0px;
+  margin: 10px 0px;
 }
 
 #badge:hover{
   cursor:pointer;
+}
+
+.form-floating{
+  margin: 20px;
 }
 </style>
