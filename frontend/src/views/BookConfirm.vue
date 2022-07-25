@@ -21,7 +21,7 @@
           <hr>
           <p class="card-title" style="margin:20px 0">2022년 5월 28일 15:00</p>
           <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="button" a href="/">닫기</button>
+            <a href="/" class="btn btn-primary" style="margin:10px">닫기</a>
           </div>
         </div>
       </div>
