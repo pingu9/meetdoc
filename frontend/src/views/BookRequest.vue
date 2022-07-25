@@ -7,7 +7,10 @@
         <input type='date' name='userBirthday'  @change="datePicked" v-model="date"/>
     </form>
     <div v-for="i in timeList" :key="i" id="times" >
-      <span class="badge rounded-pill bg-info text-white" id="badge" @click="checked">{{i}}</span>
+      <span class="badge rounded-pill bg-info text-white" id="badge" @click="time = i">{{i}}</span>
+    </div>
+    <div>
+      <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
     </div>
     <div><a href="/book/payment" class="btn btn-primary">다음</a></div>
   </div>
@@ -31,9 +34,6 @@ export default {
     datePicked() {
       //날짜 선택하면 기능
     },
-    checked() {
-      //날짜 선택하면 색 변환
-    }
   },
   mounted() {
     let todayDate = new Date();
