@@ -1,5 +1,7 @@
 package com.meetdoc.api.service;
 
+import com.meetdoc.api.request.UserPatchReq;
+import com.meetdoc.db.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserId(String userId) {
-        // 디비에 유저 정보 조회 (userId 를 통한 조회).
         User user = userRepositorySupport.findUserByUserId(userId).get();
         return user;
     }
 
+    @Override
+    public UserInfo getUserInfoByUserId(String userId) {
+        UserInfo userInfo = userRepositorySupport.findUserInfoByUserId(userId).get();
+        return userInfo;
+    }
+
+    @Override
+    public Long updateUserByUserId(String userId, UserPatchReq patchUserReq) {
+        Long affectedRow = userRepositorySupport.updateUserByUserId(userId, patchUserReq);
+        return affectedRow;
+    }
+
+    @Override
+    public Long deleteUserByUserId(String userId) {
+        Long affectedRow = userRepositorySupport.deleteUserByUserId(userId);
+        return affectedRow;
+    }
 }
