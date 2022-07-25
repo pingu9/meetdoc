@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h1>doctor list - 진료과</h1>
-    <!-- Button trigger modal -->
+  <div class="container-body">
+    <h1>소아청소년과 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
     <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card" data-bs-toggle="modal" data-bs-target="#doctorDtail">
         <div class="card-body">
         <h5 class="card-title">{{list.name}}</h5>
