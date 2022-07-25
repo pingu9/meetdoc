@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ public class User {
     String userType;
     String name;
     String gender;
-    LocalDateTime birthdate;
+    LocalDate birthdate;
     String status;
 
     @OneToOne(mappedBy = "user", cascade = ALL, orphanRemoval = true)
@@ -34,3 +34,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     Collection<Appointment> appointments = new ArrayList<>();
 }
+
