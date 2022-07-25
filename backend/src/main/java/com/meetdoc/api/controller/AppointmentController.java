@@ -7,6 +7,7 @@ import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
+import com.meetdoc.db.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -54,9 +55,12 @@ public class AppointmentController {
     })
     public ResponseEntity<?> getDoctorDetail(@PathVariable  String userId) {
         System.out.println("----------------------------"+userId);
-        Doctor doctor = userService.getUserByUserId(userId).getDoctor();
-        if (doctor == null) {
+        User user = userService.getUserByUserId(userId);
+        if(user == null)
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "존재하지 않는 회원입니다."));
+        Doctor doctor = user.getDoctor();
+        if (doctor == null) {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(401, "의사가 아닌 회원입니다."));
         } else return ResponseEntity.status(200).body(DoctorDetailGetRes.of(200,"Success",doctor));
     }
 }
