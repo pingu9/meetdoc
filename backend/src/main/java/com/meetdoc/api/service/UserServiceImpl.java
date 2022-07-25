@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         doctor.setHospitalAddress(doctorInfo.getHospitalAddress());
         doctor.setHospitalDescription(doctorInfo.getHospitalDescription());
         doctor.setCharge(doctorInfo.getCharge());
-        List<DoctorMedicDepartment> list = new ArrayList<>();
+        List<DoctorMedicDepartment> list = (List<DoctorMedicDepartment>) doctor.getDoctorMedicDepartments();
         for(int i=0; i<doctorInfo.getDepartments().size(); ++i){
             System.out.println(doctorInfo.getDepartments().get(i));
             DoctorMedicDepartment doctorMedicDepartment = new DoctorMedicDepartment();
