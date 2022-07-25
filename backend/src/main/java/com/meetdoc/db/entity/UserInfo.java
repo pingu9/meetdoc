@@ -33,7 +33,13 @@ public class UserInfo implements Serializable {
     String email;
 
     @OneToOne(fetch = FetchType.LAZY)
+<<<<<<< HEAD
     @JoinColumn(name = "user_id")
     @MapsId
+=======
+    @Id
+    @MapsId
+    @JoinColumn(name = "userId")
+>>>>>>> 93514c0ee8d222a87b6d46a12c8a527e6d9d1117
     User user;
 }

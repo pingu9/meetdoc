@@ -16,9 +16,12 @@ import static javax.persistence.CascadeType.ALL;
 @Getter
 @Setter
 public class Doctor implements Serializable {
-    @JoinColumn(name = "userId")
     @Id
-    @OneToOne(fetch = FetchType.LAZY)
+    String userId;
+
+    @JoinColumn(name = "userId")
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, cascade = ALL)
     User user;
 
     @NotNull

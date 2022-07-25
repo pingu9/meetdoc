@@ -15,14 +15,14 @@ import org.springframework.stereotype.Component;
 public class UserDetailService implements UserDetailsService{
 	@Autowired
 	UserService userService;
-	
+
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-    		User user = userService.getUserByUserId(userName);
-    		if(user != null) {
-    			UserDetails userDetails = new UserDetails(user);
-    			return userDetails;
-    		}
-    		return null;
+    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    	User user = userService.getUserByUserId(username);
+    	if(user != null) {
+    		UserDetails userDetails = new UserDetails(user);
+    		return userDetails;
+    	}
+    	return null;
     }
 }
