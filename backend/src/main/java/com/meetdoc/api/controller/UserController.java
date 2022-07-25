@@ -7,6 +7,7 @@ import com.meetdoc.api.response.UserInfoGetRes;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
+import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.User;
 import com.meetdoc.db.entity.UserInfo;
 import io.swagger.annotations.*;
@@ -77,18 +78,10 @@ public class UserController {
 
     public ResponseEntity<? extends BaseResponseBody> doctorRegister(
             @RequestBody @ApiParam(value = "회원가입", required = true) DoctorPostReq registerInfo) {
-        int code = 0; //dummy
+        System.out.println(registerInfo);
+        Doctor doctor = userService.createDoctor(registerInfo);
 
-        if (code == 0) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-        }
-        else if (code == 1) {
-            String errMsg = "올바르지 않은 입력입니다.";
-            return ResponseEntity.status(406).body(BaseResponseBody.of(406, errMsg));
-        }
-        else {
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "서버 에러 발생"));
-        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @PatchMapping

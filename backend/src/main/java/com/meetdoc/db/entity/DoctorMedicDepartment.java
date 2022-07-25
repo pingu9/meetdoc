@@ -9,16 +9,16 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-public class DoctorMedicDepartment extends BaseEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int doctorMedicDepartmentId;
+@IdClass(DoctorMedicDepartmentId.class)
+public class DoctorMedicDepartment {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Id
     @JoinColumn(name = "userId")
     Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Id
     @JoinColumn(name = "departmentCode")
     MedicDepartment medicDepartment;
 }
