@@ -13,8 +13,8 @@ export const actions = {
             context.commit('setDepartments', a.data);
         })
     },
-    getDoctorList(context) {
-        axios.get('http://localhost:8080/appointment/doctor/list/').then((a) => {
+    getDoctorList(context, param) {
+        axios.get('http://localhost:8080/appointment/doctor/list/' + param).then((a) => {
             console.log(a.data);
             context.commit('setDoctorList', a.data);
         })
