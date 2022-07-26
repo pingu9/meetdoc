@@ -15,7 +15,6 @@ public interface UserService {
     User createUser(UserPostReq userRegisterInfo);
     User getUserByUserId(String userId);
     UserInfo getUserInfoByUserId(String userId);
-    Doctor createDoctor(DoctorPostReq doctorInfo);
     Long updateUserByUserId(String userId, UserPatchReq patchUserReq);
     Long deleteUserByUserId(String userId);
 }
