@@ -36,7 +36,32 @@ insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phon
 insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user2', '2222', 'hospital2', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
 insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user3', '3333', 'hospital3', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
 
+INSERT INTO `meetdoc`.`doctor_medic_department` (`user_id`, `department_code`) VALUES ('user1', '1');
+INSERT INTO `meetdoc`.`doctor_medic_department` (`user_id`, `department_code`) VALUES ('user2', '2');
+INSERT INTO `meetdoc`.`doctor_medic_department` (`user_id`, `department_code`) VALUES ('user3', '3');
+INSERT INTO `meetdoc`.`doctor_medic_department` (`user_id`, `department_code`) VALUES ('user3', '4');
 
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`) VALUES ('1', '2022-07-26 11:00', '5000', '45', '2022-07-26', '처방 설명', 'B', '증상', 'user3', 'user8');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`) VALUES ('2', '2022-07-26 15:30', '6000', '50', '2022-07-26', '처방 설명', 'A', '증상', 'user2', 'user9');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`) VALUES ('3', '2022-07-26 09:30', '103.25', '10', '2022-07-26', '처방 설명', 'A', '증상', 'user1', 'user7');
+
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Wed', '12:00', '09:00', '2022-07-26', 'user1');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Mon', '12:00', '09:00', '2022-07-26', 'user1');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Tue', '12:00', '09:00', '2022-07-26', 'user1');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Thu', '12:00', '09:00', '2022-07-26', 'user1');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Fri', '12:00', '09:00', '2022-07-26', 'user1');
+
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Mon', '12:00', '09:00', '2022-07-26', 'user2');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Tue', '12:00', '09:00', '2022-07-26', 'user2');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Wed', '12:00', '09:00', '2022-07-26', 'user2');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Thu', '12:00', '09:00', '2022-07-26', 'user2');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Fri', '12:00', '09:00', '2022-07-26', 'user2');
+
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Mon', '12:00', '09:00', '2022-07-26', 'user3');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Tue', '12:00', '09:00', '2022-07-26', 'user3');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Wed', '12:00', '09:00', '2022-07-26', 'user3');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Thu', '12:00', '09:00', '2022-07-26', 'user3');
+INSERT INTO opening_hours (`close`, `day_of_the_week`, `lunch_hour`, `open`, `start_date`, `user_id`) VALUES ('18:00', 'Fri', '12:00', '09:00', '2022-07-26', 'user3');
 
 
 -- insert into medic_department (department_name) values ('신경과');
