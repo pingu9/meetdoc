@@ -4,5 +4,11 @@ export const mutations = {
     },
     setData(state, data) {
         state.value = data;
+    },
+    setDepartments(state, data) {
+        state.departments = data;
+    },
+    setDoctorList(state, data) {
+        state.doctors = data;
     }
 };
