@@ -14,7 +14,7 @@ export const actions = {
         })
     },
     getDoctorList(context, param) {
-        axios.get('http://localhost:8080/appointment/doctor/list/' + param).then((a) => {
+        axios.get('http://localhost:8080/doctor/list/' + param).then((a) => {
             console.log(a.data);
             context.commit('setDoctorList', a.data);
         })
