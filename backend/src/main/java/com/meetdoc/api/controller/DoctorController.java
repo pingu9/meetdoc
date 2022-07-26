@@ -2,16 +2,16 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.DoctorPostReq;
 import com.meetdoc.api.request.OpeningHourPostReq;
+import com.meetdoc.api.response.DoctorDetailGetRes;
 import com.meetdoc.api.service.DoctorService;
+import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.db.entity.Doctor;
+import com.meetdoc.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "의사 API", tags = {"Doctor"})
 @RestController
@@ -20,6 +20,8 @@ public class DoctorController {
 
     @Autowired
     DoctorService doctorService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/regist")
     @ApiOperation(value = "의사 회원가입", notes = "의사 회원의 경우 필요한 항목들을 추가 입력한다.")
@@ -45,5 +47,22 @@ public class DoctorController {
     public  ResponseEntity<? extends  BaseResponseBody> setOpeningHours(@RequestBody OpeningHourPostReq req) {
         doctorService.setOpeningHours(req.getUserId(),req.getOpeningHours());
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/detail/{userId}")
+    @ApiOperation(value = "의사 상세 정보")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getDoctorDetail(@PathVariable  String userId) {
+        User user = userService.getUserByUserId(userId);
+        if(user == null)
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "존재하지 않는 회원입니다."));
+        Doctor doctor = user.getDoctor();
+        if (doctor == null) {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(401, "의사가 아닌 회원입니다."));
+        } else return ResponseEntity.status(200).body(DoctorDetailGetRes.of(200,"Success",doctor));
     }
 }
