@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
     data() {
     return {
@@ -43,10 +43,9 @@ export default {
   },
   methods: {
     ...mapMutations(['changeName']),
-    ...mapActions(['getData', 'getDepartments']),
   },
   mounted() {
-     this.getDepartments();
+    this.$store.dispatch('getDepartments');
   },
 }
 </script>
