@@ -44,7 +44,7 @@ export default {
   methods: {
     ...mapMutations(['changeName']),
   },
-  mounted() {
+  created() {
     this.$store.dispatch('getDepartments');
   },
 }
