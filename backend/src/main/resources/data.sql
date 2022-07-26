@@ -36,6 +36,9 @@ insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phon
 insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user2', '2222', 'hospital2', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
 insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`) values ('user3', '3333', 'hospital3', '010-0001-0001', '123-456', 'address', 'description', 10000.0);
 
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`) VALUES ('1', '2022-07-26', '5000', '45', '2022-07-26', '처방 설명', 'B', '증상', 'user3', 'user8');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`) VALUES ('2', '2022-07-26', '6000', '50', '2022-07-26', '처방 설명', 'A', '증상', 'user2', 'user9');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`) VALUES ('3', '2022-07-26', '103.25', '10', '2022-07-26', '처방 설명', 'A', '증상', 'user1', 'user7');
 
 
 
