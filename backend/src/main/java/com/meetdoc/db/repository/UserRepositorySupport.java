@@ -12,6 +12,7 @@ import java.util.Optional;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 유저 모델 관련 디비 쿼리 생성을 위한 구현 정의.
@@ -37,6 +38,7 @@ public class UserRepositorySupport {
         return Optional.ofNullable(userInfo);
     }
 
+    @Transactional
     public Long updateUserByUserId(String userId, UserPatchReq patchUserReq) {
         Long affectedRow = jpaQueryFactory.update(qUserInfo)
                 .where(qUserInfo.user.userId.eq(userId))
@@ -49,10 +51,11 @@ public class UserRepositorySupport {
         return affectedRow;
     }
 
+    @Transactional
     public Long deleteUserByUserId(String userId) {
         Long affectedRow = jpaQueryFactory.update(qUser)
                 .where(qUser.userId.eq(userId))
-                .set(qUser.status, "D")
+                .set(qUser.status, "deleted")
                 .execute();
         affectedRow += jpaQueryFactory.delete(qUserInfo)
                 .where(qUserInfo.user.userId.eq(userId))
