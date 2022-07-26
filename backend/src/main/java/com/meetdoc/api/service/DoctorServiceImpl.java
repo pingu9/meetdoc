@@ -10,6 +10,8 @@ import com.meetdoc.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service("doctorService")
@@ -49,8 +51,18 @@ public class DoctorServiceImpl implements DoctorService{
         List<OpeningHours> list = (List<OpeningHours>) doctor.getOpeningHours();
         for(OpeningHours op : hours) {
             op.setDoctor(doctor);
+            op.setOpen(calTime(op.getOpen()));
+            op.setLunchHour(calTime(op.getLunchHour()));
+            op.setClose(calTime(op.getClose()));
             list.add(op);
         }
         return doctorRepository.save(doctor);
+    }
+
+    public Date calTime(Date time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(time);
+        cal.add(Calendar.HOUR,-9);
+        return cal.getTime();
     }
 }
