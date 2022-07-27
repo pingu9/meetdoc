@@ -33,6 +33,19 @@ export const actions = {
             localStorage.setItem('token',a.data.accessToken)
         })
     },
+    checkId(context, param) {
+        axios.get('http://localhost:8081/user/'+ param)
+        .then((a) => {
+            console.log(param)
+            console.log(a.data)
+            context.commit('setIdErrorMessage', a.data.message)
+        })
+        .catch(error => {
+            console.log('------------')
+            console.log(error.response.data.message)
+            context.commit('setIdErrorMessage', error.response.data.message)
+        })
+    },
     getChartList(context, param){
         axios.get('http://localhost:8081/appointment/info/list/doctor/'+ param).then((a)=>{
             console.log(a.data);
@@ -44,6 +57,7 @@ export const actions = {
         axios.get('http://localhost:8081/appointment/info/detail/' + param).then((a)=>{
             console.log(a.data);
             context.commit('setChartDetail', a.data)
+
         })
     }
 };
