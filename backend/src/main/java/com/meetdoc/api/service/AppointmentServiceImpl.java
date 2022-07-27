@@ -1,19 +1,17 @@
 package com.meetdoc.api.service;
 
+import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
 import com.meetdoc.db.entity.User;
-import com.meetdoc.db.repository.AppointmentRepository;
-import com.meetdoc.db.repository.DepartmentRepository;
-import com.meetdoc.db.repository.DoctorRepositorySupport;
-import com.meetdoc.db.repository.UserRepository;
-import com.meetdoc.db.repository.UserRepositorySupport;
+import com.meetdoc.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +23,36 @@ public class AppointmentServiceImpl implements AppointmentService{
     DepartmentRepository departmentRepository;
     @Autowired
     AppointmentRepository appointmentRepository;
-
     @Autowired
     DoctorRepositorySupport doctorRepositorySupport;
-
     @Autowired
     UserRepositorySupport userRepositorySupport;
+
+    @Autowired
+    AppointmentRepositorySupport appointmentRepositorySupport;
 
     @Override
     public List<MedicDepartment> getAllDepartment() {
         return departmentRepository.findAll();
+    }
+
+    @Override
+    public Appointment createAppointment(AppointmentPostReq appointmentInfo) {
+        Appointment appointment = new Appointment();
+        User user = userRepositorySupport.findUserByUserId(appointmentInfo.getUserId()).get();
+        Doctor doctor = userRepositorySupport.findUserByUserId(appointmentInfo.getDoctorId()).get().getDoctor();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        appointment.setAppointmentDate(LocalDateTime.parse(appointmentInfo.getAppointmentDate(),formatter));
+
+        appointment.setCharge(appointmentInfo.getCharge());
+        appointment.setSymptom(appointmentInfo.getSymptom());
+        appointment.setStatus("Before");
+        appointment.setUser(user);
+        appointment.setDoctor(doctor);
+        appointment.setDepartmentName(appointmentInfo.getDepartmentName());
+
+        return appointmentRepository.save(appointment);
     }
 
     @Override
@@ -95,5 +113,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             list.add(res);
         }
         return list;
+    }
+
+    @Override
+    public List<Appointment> findAvailableTime(String doctorId, LocalDateTime time) {
+        return appointmentRepositorySupport.findAppointmentByDoctorIdAndDate(doctorId, time);
     }
 }

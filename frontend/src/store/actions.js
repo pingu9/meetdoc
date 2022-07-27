@@ -52,7 +52,6 @@ export const actions = {
             context.commit('setChartList', a.data)
         })
     },
-
     getChartDetail(context, param){
         console.log('http://localhost:8081/appointment/info/detail/' + param);
         axios.get('http://localhost:8081/appointment/info/detail/' + param).then((a)=>{
