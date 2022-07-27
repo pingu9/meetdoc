@@ -1,5 +1,6 @@
 package com.meetdoc.api.service;
 
+import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
@@ -14,4 +15,5 @@ public interface AppointmentService {
     List<Doctor> searchDoctors(int departmentCode, String name, Pageable pageable);
 
     String getDepartmentNameById(int departmentId);
+    List<AppointmentGetRes> getAppointments(String userId);
 }
