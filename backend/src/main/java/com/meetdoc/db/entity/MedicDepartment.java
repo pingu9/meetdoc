@@ -16,4 +16,5 @@ public class MedicDepartment {
     int departmentCode;
     @NotNull
     String departmentName;
+    String photoUrl;
 }
