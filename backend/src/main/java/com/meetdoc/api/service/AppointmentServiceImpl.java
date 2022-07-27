@@ -37,6 +37,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public List<AppointmentGetRes> getAppointments(String userId) {
         User user = userRepositorySupport.findUserByUserId(userId).get();
+        if(user.getUserType().equals("D")) return null;
         List<AppointmentGetRes> list = new ArrayList<>();
         List<Appointment> appointments = (List<Appointment>) user.getAppointments();
         for(Appointment ap : appointments){
@@ -46,6 +47,26 @@ public class AppointmentServiceImpl implements AppointmentService{
             res.setAppointmentTime(ap.getAppointmentDate());
             res.setStatus(ap.getStatus());
             res.setUserName(user.getName());
+            res.setRoomLink(ap.getRoomLink());
+            list.add(res);
+        }
+        return list;
+    }
+
+    @Override
+    public List<AppointmentGetRes> getDoctorAppointments(String userId) {
+        User user = userRepositorySupport.findUserByUserId(userId).get();
+        if(!user.getUserType().equals("D")) return null;
+        Doctor doctor = user.getDoctor();
+        List<AppointmentGetRes> list = new ArrayList<>();
+        List<Appointment> appointments = (List<Appointment>) doctor.getAppointments();
+        for(Appointment ap : appointments){
+            AppointmentGetRes res = new AppointmentGetRes();
+            res.setAppointmentId(ap.getAppointmentId());
+            res.setDoctorName(user.getName());
+            res.setAppointmentTime(ap.getAppointmentDate());
+            res.setStatus(ap.getStatus());
+            res.setUserName(ap.getUser().getName());
             res.setRoomLink(ap.getRoomLink());
             list.add(res);
         }
