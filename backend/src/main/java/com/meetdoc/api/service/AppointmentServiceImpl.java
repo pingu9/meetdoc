@@ -54,7 +54,6 @@ public class AppointmentServiceImpl implements AppointmentService{
                 .get()
                 .getDepartmentName();
     }
-}
 
     public List<AppointmentGetRes> getAppointments(String userId) {
         User user = userRepositorySupport.findUserByUserId(userId).get();
