@@ -22,7 +22,9 @@ export const actions = {
     getBookList(context){
         axios.get('http://localhost:8081/appointment/info/list/user8').then((a)=>{
             console.log(a.data);
-            context.commit('setBookList', a.data);
+            context.commit('setBookList', a.data)
+        })
+    },    
     login(context, payload) {
         console.log(payload)
         axios.post('http://localhost:8081/user/login', payload).then((a) => {
