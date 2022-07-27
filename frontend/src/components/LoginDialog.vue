@@ -13,10 +13,13 @@
       <div class="form-floating">
         <input type="password" v-model="password" class="form-control" id="floatingPassword" placeholder="Password">
         <label for="floatingPassword">Password</label>
-        <a style="font-size: small; text-align: right;" href="">비밀번호 찾기</a>
       </div>
       <div class="modal-footer">
         <button type="submit" @click="clickLogin()" class="btn btn-primary">Login</button>
+      <br>
+      <span>
+        <a style="font-size: small;" href="">비밀번호 찾기</a>
+      </span>
       </div>
     </div>
   </div>
