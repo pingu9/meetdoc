@@ -22,7 +22,7 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "의사 ID")
     String doctorUserId;
     @ApiModelProperty(name = "진료 날짜")
-    LocalDateTime appointmentDate;
+    String appointmentDate;
     @ApiModelProperty(name = "증상")
     String symptom;
     @ApiModelProperty(name = "진료비")
@@ -58,7 +58,7 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "질병 코드")
     String icd;
     @ApiModelProperty(name = "처방 날짜")
-    LocalDateTime prescriptionDate;
+    String prescriptionDate;
     @ApiModelProperty(name = "처방 설명")
     String prescriptionDescription;
     @ApiModelProperty(name = "사진 URL")
@@ -80,7 +80,7 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
         res.setPatientUserId(appointment.getUser().getUserId());
         res.setAppointmentId(appointment.getAppointmentId());
         res.setSymptom(appointment.getSymptom());
-        res.setAppointmentDate(appointment.getAppointmentDate());
+        res.setAppointmentDate(appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         res.setCharge(appointment.getCharge());
         res.setStatus(appointment.getStatus());
 
@@ -94,7 +94,7 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
         res.setPhotoUrl(doctor.getPhotoUrl());
 
         res.setIcd(appointment.getIcd() == null ? "데이터 없음" : appointment.getIcd());
-        res.setPrescriptionDate(appointment.getPrescriptionDate());
+        res.setPrescriptionDate(appointment.getPrescriptionDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         res.setPrescriptionDescription(appointment.getPrescriptionDescription() == null ? "데이터 없음" : appointment.getPrescriptionDescription());
 
         return res;
