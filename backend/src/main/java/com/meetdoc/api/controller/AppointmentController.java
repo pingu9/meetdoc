@@ -54,7 +54,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/reserve")
-    @ApiOperation(value = "진료과 리스트")
+    @ApiOperation(value = "진료 예약 요청")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 407, message = "중복 진료 내역"),
@@ -62,11 +62,11 @@ public class AppointmentController {
     })
     public ResponseEntity<?> reserveAppointment(@RequestBody AppointmentPostReq req) {
         try {
-            appointmentService.createAppointment(req);
+            Appointment ap = appointmentService.createAppointment(req);
+            return ResponseEntity.status(200).body(AppointmentGetRes.of(200, "Success", ap));
         } catch (EntityExistsException e) {
             return ResponseEntity.status(407).body(BaseResponseBody.of(407, "이미 존재하는 진료 아이디입니다."));
         }
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/info/list/{userId}")
