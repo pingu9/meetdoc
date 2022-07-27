@@ -1,32 +1,40 @@
 package com.meetdoc.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-public class OpeningHours implements Serializable {
+public class OpeningHours extends BaseEntity implements Serializable {
     @JoinColumn(name = "userId")
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     Doctor doctor;
 
     @NotNull
     String dayOfTheWeek;
     @NotNull
-    Timestamp open;
+    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    Date open;
     @NotNull
-    Timestamp close;
+    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    Date close;
     @NotNull
-    Timestamp lunchHour;
+    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    Date lunchHour;
     @NotNull
-    LocalDateTime startDate;
-    LocalDateTime endDate;
+    LocalDate startDate;
+    LocalDate endDate;
 }
+
+
