@@ -1,5 +1,6 @@
 package com.meetdoc.api.service;
 
+import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
@@ -22,10 +23,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     DepartmentRepository departmentRepository;
     @Autowired
     AppointmentRepository appointmentRepository;
-
     @Autowired
     DoctorRepositorySupport doctorRepositorySupport;
-
     @Autowired
     UserRepositorySupport userRepositorySupport;
 
@@ -35,6 +34,25 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public List<MedicDepartment> getAllDepartment() {
         return departmentRepository.findAll();
+    }
+
+    @Override
+    public Appointment createAppointment(AppointmentPostReq appointmentInfo) {
+        Appointment appointment = new Appointment();
+        User user = userRepositorySupport.findUserByUserId(appointmentInfo.getUserId()).get();
+        Doctor doctor = userRepositorySupport.findUserByUserId(appointmentInfo.getDoctorId()).get().getDoctor();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        appointment.setAppointmentDate(LocalDateTime.parse(appointmentInfo.getAppointmentDate(),formatter));
+
+        appointment.setCharge(appointmentInfo.getCharge());
+        appointment.setSymptom(appointmentInfo.getSymptom());
+        appointment.setStatus("Before");
+        appointment.setUser(user);
+        appointment.setDoctor(doctor);
+        appointment.setDepartmentName(appointmentInfo.getDepartmentName());
+
+        return appointmentRepository.save(appointment);
     }
 
     @Override

@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="button" a href="/book/confirm">다음</button>
+            <a href="/book/confirm" class="btn btn-primary">다음</a>
           </div>
         </div>
       </div>

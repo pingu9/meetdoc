@@ -1,5 +1,6 @@
 package com.meetdoc.api.controller;
 
+import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.request.DoctorListGetReq;
 import com.meetdoc.api.response.*;
 import com.meetdoc.api.service.AppointmentService;
@@ -25,6 +26,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 @Api(value = "예약 API", tags = {"Appointment"})
@@ -48,6 +51,22 @@ public class AppointmentController {
         List<MedicDepartment> list = appointmentService.getAllDepartment();
         if(!list.isEmpty()) return ResponseEntity.status(200).body(list);
         else return ResponseEntity.status(200).body(BaseResponseBody.of(500, "데이터를 가져오는 중 문제가 발생했습니다."));
+    }
+
+    @PostMapping("/reserve")
+    @ApiOperation(value = "진료과 리스트")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 407, message = "중복 진료 내역"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> reserveAppointment(@RequestBody AppointmentPostReq req) {
+        try {
+            appointmentService.createAppointment(req);
+        } catch (EntityExistsException e) {
+            return ResponseEntity.status(407).body(BaseResponseBody.of(407, "이미 존재하는 진료 아이디입니다."));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/info/list/{userId}")
