@@ -71,7 +71,7 @@ public class AppointmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getDoctorAppointmentList(@PathVariable String userId) {
-        List<AppointmentGetRes> list = appointmentService.getAppointments(userId);
+        List<AppointmentGetRes> list = appointmentService.getDoctorAppointments(userId);
         if(list == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401,"의사가 아닌 회원입니다."));
         if(list.size() > 0) return ResponseEntity.status(200).body(list);
         return ResponseEntity.status(404).body(BaseResponseBody.of(404, "진료 내역이 없습니다."));
