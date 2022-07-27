@@ -7,9 +7,11 @@ import com.meetdoc.db.entity.MedicDepartment;
 import com.meetdoc.db.entity.User;
 import com.meetdoc.db.repository.AppointmentRepository;
 import com.meetdoc.db.repository.DepartmentRepository;
+import com.meetdoc.db.repository.DoctorRepositorySupport;
 import com.meetdoc.db.repository.UserRepository;
 import com.meetdoc.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -23,8 +25,13 @@ public class AppointmentServiceImpl implements AppointmentService{
     DepartmentRepository departmentRepository;
     @Autowired
     AppointmentRepository appointmentRepository;
+
+    @Autowired
+    DoctorRepositorySupport doctorRepositorySupport;
+
     @Autowired
     UserRepositorySupport userRepositorySupport;
+
     @Override
     public List<MedicDepartment> getAllDepartment() {
         return departmentRepository.findAll();
@@ -36,6 +43,19 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
+    public List<Doctor> searchDoctors(int departmentCode, String name, Pageable pageable) {
+        return doctorRepositorySupport.findDoctorsByDepartmentIdAndPageInfo(departmentCode, name, pageable);
+    }
+
+    @Override
+    public String getDepartmentNameById(int departmentId) {
+        return departmentRepository
+                .findById(departmentId)
+                .get()
+                .getDepartmentName();
+    }
+}
+
     public List<AppointmentGetRes> getAppointments(String userId) {
         User user = userRepositorySupport.findUserByUserId(userId).get();
         if(user.getUserType().equals("D")) return null;
