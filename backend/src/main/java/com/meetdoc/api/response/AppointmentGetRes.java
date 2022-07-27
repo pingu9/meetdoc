@@ -1,0 +1,24 @@
+package com.meetdoc.api.response;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+public class AppointmentGetRes {
+    @ApiModelProperty(name = "환자 이름")
+    String userName;
+    @ApiModelProperty(name = "의사 이름")
+    String doctorName;
+    @ApiModelProperty(name = "진료 아이디")
+    int appointmentId;
+    @ApiModelProperty(name = "진료 예약 시간")
+    LocalDateTime appointmentTime;
+    @ApiModelProperty(name = "진료 상태")
+    String status;
+    @ApiModelProperty(name = "화상 진료 링크")
+    String roomLink;
+}

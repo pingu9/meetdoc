@@ -2,6 +2,7 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.DoctorListGetReq;
 import com.meetdoc.api.response.AppointmentDetailGetRes;
+import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.api.response.DoctorDetailGetRes;
 import com.meetdoc.api.response.DoctorListGetRes;
 import com.meetdoc.api.service.AppointmentService;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,22 +48,17 @@ public class AppointmentController {
         else return ResponseEntity.status(200).body(BaseResponseBody.of(500, "데이터를 가져오는 중 문제가 발생했습니다."));
     }
 
-    @GetMapping("/doctor/detail/{userId}")
-    @ApiOperation(value = "의사 상세 정보")
+    @GetMapping("/info/list/{userId}")
+    @ApiOperation(value = "예약한 진료 리스트")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "의사가 아닌 회원"),
             @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getDoctorDetail(@PathVariable  String userId) {
-        User user = userService.getUserByUserId(userId);
-        if(user == null)
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "존재하지 않는 회원입니다."));
-        Doctor doctor = user.getDoctor();
-        if (doctor == null) {
-            return ResponseEntity.status(404).body(BaseResponseBody.of(401, "의사가 아닌 회원입니다."));
-        } else return ResponseEntity.status(200).body(DoctorDetailGetRes.of(200,"Success",doctor));
+    public ResponseEntity<?> getAppointmentList(@PathVariable String userId) {
+        List<AppointmentGetRes> list = appointmentService.getAppointments(userId);
+        if(list.size() > 0) return ResponseEntity.status(200).body(list);
+        return ResponseEntity.status(404).body(BaseResponseBody.of(404, "진료 내역이 없습니다."));
     }
 
     @GetMapping("/info/detail/{appointmentId}")
