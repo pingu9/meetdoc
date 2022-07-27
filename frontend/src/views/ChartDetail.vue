@@ -10,7 +10,7 @@
                 <div class="info-body">
                     <div class="row">
                         <div class="col"><p class="chartDetailData">환자명 : 김환자</p></div>
-                        <div class="col"><p class="chartDetailData">생년원일 : 1999-09-09</p></div>
+                        <div class="col"><p class="chartDetailData">생년월일 : 1999-09-09</p></div>
                     </div>
                     <div class="row">
                         <div class="col"><p class="chartDetailData">병원명 : 다나아 병원명</p></div>

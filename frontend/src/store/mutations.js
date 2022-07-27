@@ -10,5 +10,8 @@ export const mutations = {
     },
     setDoctorList(state, data) {
         state.doctors = data;
+    },
+    setBookList(state, data){
+        state.bookList = data;
     }
 };
