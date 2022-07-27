@@ -13,6 +13,7 @@ import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,10 +81,11 @@ public class DoctorController {
             @ApiResponse(code = 406, message = "검색 조건, 페이징 등 에러"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getDoctorList(@PathVariable int departmentId, @RequestBody DoctorListGetReq req) {
-        List<Doctor> doctorList = appointmentService.searchDoctors(departmentId, req.getName(), req.buildPageable());
+    public ResponseEntity<?> getDoctorList(@PathVariable int departmentId, Pageable pageable, String name) {
+        List<Doctor> doctorList = appointmentService.searchDoctors(departmentId, name, pageable);
 
         String departmentName = appointmentService.getDepartmentNameById(departmentId);
+
         if(doctorList.size() == 0)
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"해당 의사가 존재하지 않습니다."));
         return ResponseEntity.status(200).body(DoctorListGetRes.of(200,"Success", departmentName, doctorList));
