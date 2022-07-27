@@ -8,13 +8,13 @@ export const actions = {
         })
     },
     getDepartments(context) {
-        axios.get('http://localhost:8080/appointment/departments').then((a) => {
+        axios.get('http://localhost:8081/appointment/departments').then((a) => {
             console.log(a.data);
             context.commit('setDepartments', a.data);
         })
     },
     getDoctorList(context, param) {
-        axios.get('http://localhost:8080/doctor/list/' + param).then((a) => {
+        axios.get('http://localhost:8081/appointment/doctor/list/' + param).then((a) => {
             console.log(a.data);
             context.commit('setDoctorList', a.data);
         })
