@@ -19,6 +19,10 @@ public class AppointmentGetRes {
     String appointmentTime;
     @ApiModelProperty(name = "진료 상태")
     String status;
+    @ApiModelProperty(name = "진료과 이름")
+    String departmentName;
     @ApiModelProperty(name = "화상 진료 링크")
     String roomLink;
+    @ApiModelProperty(name = "사진 URL")
+    String photoUrl;
 }
