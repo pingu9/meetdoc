@@ -34,7 +34,15 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
-    public List<Doctor> searchDoctors(int departmentCode, Pageable pageable) {
-        return doctorRepositorySupport.findDoctorsByDepartmentIdAndPageInfo(departmentCode, pageable);
+    public List<Doctor> searchDoctors(int departmentCode, String name, Pageable pageable) {
+        return doctorRepositorySupport.findDoctorsByDepartmentIdAndPageInfo(departmentCode, name, pageable);
+    }
+
+    @Override
+    public String getDepartmentNameById(int departmentId) {
+        return departmentRepository
+                .findById(departmentId)
+                .get()
+                .getDepartmentName();
     }
 }

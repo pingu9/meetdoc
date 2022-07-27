@@ -14,9 +14,12 @@ import org.springframework.data.domain.Sort;
 @ApiModel("DoctorListGetRequest")
 public class DoctorListGetReq {
     @ApiModelProperty(name="페이지 번호", example="1")
-    int page;
+    int page = 0;
     @ApiModelProperty(name="페이지 당 size", example="20")
-    int size;
+    int size = 20;
+
+    @ApiModelProperty(name="의사 이름을 통한 검색(Optional)", example="doctor_name")
+    String name;
 
     public Pageable buildPageable() {
         return PageRequest.of(page, size, Sort.Direction.ASC, "name");
