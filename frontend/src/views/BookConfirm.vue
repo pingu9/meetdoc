@@ -1,6 +1,6 @@
 <template>
   <div class="container-body">
-    <h1>결제완료</h1>
+    <h1>예약완료</h1>
     <div class="container-card">
      <div class="card">
         <div class="card-body">
