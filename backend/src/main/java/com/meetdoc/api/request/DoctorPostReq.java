@@ -8,8 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
 
 /**
  * 의사 회원가입 요청에 필요한 request body 정의.
@@ -18,7 +17,7 @@ import java.util.List;
 @Setter
 @ApiModel("DoctorPostRequest")
 public class DoctorPostReq {
-    @ApiModelProperty(name="병원 우편번호", example="user4")
+    @ApiModelProperty(name="의사 회원 ID", example="user4")
     String userId;
     @ApiModelProperty(name="의사면허번호", example="901210-1111111")
     String licenseNumber;
@@ -32,7 +31,7 @@ public class DoctorPostReq {
     String hospitalAddress;
     @ApiModelProperty(name="병원 설명", example="병원에 대한 설명")
     String hospitalDescription;
-    @ApiModelProperty(name="진료과", example="소아과")
+    @ApiModelProperty(name="진료과", example="[{departmentCode: 1, departmentName: 내과}]")
     ArrayList<MedicDepartment> departments;
     @ApiModelProperty(name="진료비", example="5000")
     BigDecimal charge;
