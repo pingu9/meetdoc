@@ -36,4 +36,7 @@ export const state = {
     departments: {
 
     },
+    bookList :{
+
+    },
 };

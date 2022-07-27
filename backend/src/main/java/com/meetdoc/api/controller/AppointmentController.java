@@ -92,19 +92,5 @@ public class AppointmentController {
         return ResponseEntity.status(200).body(AppointmentDetailGetRes.of(200,"Success",appointment));
     }
 
-    @GetMapping("/doctor/list/{departmentId}")
-    @ApiOperation(value = "페이지 숫자, 검색 쿼리를 적용한 ")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 406, message = "검색 조건, 페이징 등 에러"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<?> getDoctorList(@PathVariable int departmentId, @RequestBody DoctorListGetReq req) {
-        List<Doctor> doctorList = appointmentService.searchDoctors(departmentId, req.getName(), req.buildPageable());
 
-        String departmentName = appointmentService.getDepartmentNameById(departmentId);
-        if(doctorList.size() == 0)
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"해당 의사가 존재하지 않습니다."));
-        return ResponseEntity.status(200).body(DoctorListGetRes.of(200,"Success", departmentName, doctorList));
-    }
 }
