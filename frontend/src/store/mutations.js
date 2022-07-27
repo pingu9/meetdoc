@@ -13,5 +13,8 @@ export const mutations = {
     },
     setIdErrorMessage(state, data) {
         state.errorMessages.idCheckMessage = data;
+    },
+    setBookList(state, data){
+        state.bookList = data;
     }
 };
