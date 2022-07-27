@@ -48,14 +48,31 @@ public class AppointmentController {
     }
 
     @GetMapping("/info/list/{userId}")
-    @ApiOperation(value = "예약한 진료 리스트")
+    @ApiOperation(value = "예약한 진료 리스트(환자)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "환자가 아닌 회원"),
             @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getAppointmentList(@PathVariable String userId) {
         List<AppointmentGetRes> list = appointmentService.getAppointments(userId);
+        if(list == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "환자가 아닌 회원입니다."));
+        if(list.size() > 0) return ResponseEntity.status(200).body(list);
+        return ResponseEntity.status(404).body(BaseResponseBody.of(404, "진료 내역이 없습니다."));
+    }
+
+    @GetMapping("/info/list/doctor/{userId}")
+    @ApiOperation(value = "예약한 진료 리스트(의사)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "의사가 아닌 회원"),
+            @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getDoctorAppointmentList(@PathVariable String userId) {
+        List<AppointmentGetRes> list = appointmentService.getAppointments(userId);
+        if(list == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401,"의사가 아닌 회원입니다."));
         if(list.size() > 0) return ResponseEntity.status(200).body(list);
         return ResponseEntity.status(404).body(BaseResponseBody.of(404, "진료 내역이 없습니다."));
     }
