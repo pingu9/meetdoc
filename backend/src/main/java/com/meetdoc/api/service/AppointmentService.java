@@ -11,5 +11,7 @@ public interface AppointmentService {
     public List<MedicDepartment> getAllDepartment();
     Appointment getAppointmentById(int appointmentId);
 
-    List<Doctor> searchDoctors(int departmentCode, Pageable pageable);
+    List<Doctor> searchDoctors(int departmentCode, String name, Pageable pageable);
+
+    String getDepartmentNameById(int departmentId);
 }
