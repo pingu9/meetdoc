@@ -25,5 +25,18 @@ export const actions = {
             console.log(a.data.accessToken)
             localStorage.setItem('token',a.data.accessToken)
         })
+    },
+    checkId(context, param) {
+        axios.get('http://localhost:8081/user/'+ param)
+        .then((a) => {
+            console.log(param)
+            console.log(a.data)
+            context.commit('setIdErrorMessage', a.data.message)
+        })
+        .catch(error => {
+            console.log('------------')
+            console.log(error.response.data.message)
+            context.commit('setIdErrorMessage', error.response.data.message)
+        })
     }
 };

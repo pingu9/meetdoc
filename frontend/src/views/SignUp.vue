@@ -3,8 +3,9 @@
     <h4>Signup</h4>
     <div class="input-group mb-3">
       <span class="input-group-text" id="basic-addon1">Username</span>
-      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">중복확인</button>
+      <input type="text" class="form-control" v-model="username"  placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+      <button class="btn btn-outline-secondary" type="submit" @click="checkId()" id="button-addon2">중복확인</button>
+      <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
     </div>
     <div class="form-group has-success">
       <label class="form-label" for="inputValid">비밀번호</label>
@@ -100,8 +101,27 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  data() {
+    return {
+      username: '',
+      password1: '',
+      password2: '',
+    }
+  },
+  computed: {
+    ...mapState(['errorMessages'])
+  },
 
+  methods: {
+    checkId () {
+      if (this.username) {
+        console.log(this.username)
+        this.$store.dispatch('checkId', this.username)
+      }
+    }
+  }
 }
 </script>
 
