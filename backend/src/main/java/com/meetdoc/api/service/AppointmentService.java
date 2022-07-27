@@ -7,6 +7,7 @@ import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentService {
@@ -17,4 +18,6 @@ public interface AppointmentService {
     String getDepartmentNameById(int departmentId);
     List<AppointmentGetRes> getAppointments(String userId);
     List<AppointmentGetRes> getDoctorAppointments(String userId);
+
+    List<Appointment> findAvailableTime(String doctorId, LocalDateTime time);
 }
