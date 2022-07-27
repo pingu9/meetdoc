@@ -1,6 +1,7 @@
 package com.meetdoc.api.controller;
 
 import com.meetdoc.api.response.AppointmentDetailGetRes;
+import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.api.response.DoctorDetailGetRes;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.UserService;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +45,19 @@ public class AppointmentController {
         List<MedicDepartment> list = appointmentService.getAllDepartment();
         if(!list.isEmpty()) return ResponseEntity.status(200).body(list);
         else return ResponseEntity.status(200).body(BaseResponseBody.of(500, "데이터를 가져오는 중 문제가 발생했습니다."));
+    }
+
+    @GetMapping("/info/list/{userId}")
+    @ApiOperation(value = "예약한 진료 리스트")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getAppointmentList(@PathVariable String userId) {
+        List<AppointmentGetRes> list = appointmentService.getAppointments(userId);
+        if(list.size() > 0) return ResponseEntity.status(200).body(list);
+        return ResponseEntity.status(404).body(BaseResponseBody.of(404, "진료 내역이 없습니다."));
     }
 
     @GetMapping("/info/detail/{appointmentId}")
