@@ -42,7 +42,7 @@ const routes = [
         component: ChartList,
     },
     {
-        path: "/chart/detail/1",
+        path: "/chart/detail/:appointmentId",
         component: ChartDetail,
     },
     {
