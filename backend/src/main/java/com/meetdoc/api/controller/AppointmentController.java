@@ -1,10 +1,7 @@
 package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.DoctorListGetReq;
-import com.meetdoc.api.response.AppointmentDetailGetRes;
-import com.meetdoc.api.response.AppointmentGetRes;
-import com.meetdoc.api.response.DoctorDetailGetRes;
-import com.meetdoc.api.response.DoctorListGetRes;
+import com.meetdoc.api.response.*;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
@@ -25,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Api(value = "예약 API", tags = {"Appointment"})
@@ -102,11 +102,23 @@ public class AppointmentController {
             @ApiResponse(code = 404, message = "존재하지 않는 의사"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getAvailableTimeList(@PathVariable int doctorId) {
+    public ResponseEntity<?> getAvailableTimeList(@PathVariable String doctorId, String date) {
 
         AvailableTimeStore timeStore = new AvailableTimeStore();
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Sucess"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime time = LocalDateTime.of(LocalDate.parse(date, formatter), LocalTime.of(0, 0));
+        timeStore.init(time.toLocalDate());
+
+        List<Appointment> appointmentList = appointmentService.findAvailableTime(doctorId, time);
+
+        for (Appointment appointment : appointmentList) {
+           timeStore.book(appointment.getAppointmentDate());
+        }
+
+        List<LocalDateTime> timeList = timeStore.getAvailableTimeList();
+
+        return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "Success", timeList));
     }
 
 
