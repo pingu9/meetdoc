@@ -11,7 +11,17 @@ export const mutations = {
     setDoctorList(state, data) {
         state.doctors = data;
     },
+    setDoctor(state, data){
+        state.department = data;
+    },
     setBookList(state, data){
         state.bookList = data;
+    },
+    setChartList(state, data){
+        state.chartList = data;
+    },
+    setChartDetail(state, data){
+         data.prescriptionDate = data.prescriptionDate.substr(0, 10);
+        state.chartDetail = data;
     }
 };

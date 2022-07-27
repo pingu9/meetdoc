@@ -9,20 +9,20 @@
                 <p class="card-title">환자 및 의사 정보</p>
                 <div class="info-body">
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">환자명 : 김환자</p></div>
-                        <div class="col"><p class="chartDetailData">생년월일 : 1999-09-09</p></div>
+                        <div class="col"><p class="chartDetailData">환자명 : {{$store.state.chartDetail.userName}}</p></div>
+                        <div class="col"><p class="chartDetailData">생년월일 : {{$store.state.chartDetail.userBirthDate}}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">병원명 : 다나아 병원명</p></div>
-                        <div class="col"><p class="chartDetailData">병원 전화번호 : 02-777-7777</p></div>
+                        <div class="col"><p class="chartDetailData">병원명 : {{$store.state.chartDetail.hospitalName}}</p></div>
+                        <div class="col"><p class="chartDetailData">병원 전화번호 : {{$store.state.chartDetail.hospitalPhone}}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">의사명 : 김의사</p></div>
-                    <div class="col"><p class="chartDetailData">면허번호 : 1234567-89123</p></div>
+                        <div class="col"><p class="chartDetailData">의사명 : {{$store.state.chartDetail.doctorName}}</p></div>
+                    <div class="col"><p class="chartDetailData">면허번호 : {{$store.state.chartDetail.licenseNumber}}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">진료일 : 2022-07-25</p></div>
-                        <div class="col"><p class="chartDetailData">병명 진단: ICD</p></div>
+                        <div class="col"><p class="chartDetailData">진료일 : {{$store.state.chartDetail.prescriptionDate}}</p></div>
+                        <div class="col"><p class="chartDetailData">병명 진단: {{$store.state.chartDetail.icd}}</p></div>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="card-body">
                 <p class="card-title">환자증상</p>
                 <div class="symptom">
-                    <p class="chartDetailData">환자 증상은 여기에 들어갑니다asdfasfasdfasdfadfadsfsdfasfasfasfasfasfasfasfsdadfasfadfasdfasdfsdafadsfasdfafasd</p>
+                    <p class="chartDetailData">{{$store.state.chartDetail.symptom}}</p>
                 </div>
             </div>
           </div>
@@ -39,7 +39,7 @@
             <div class="card-body">
                 <p class="card-title">처방전</p>
                 <div class="prescription">
-                    <p class="chartDetailData">처방내용은 여기에 들어갑니다</p>
+                    <p class="chartDetailData">{{$store.state.chartDetail.prescriptionDescription}}</p>
                 </div>
             </div>
           </div>
@@ -47,7 +47,7 @@
             <div class="card-body">
             <p class="card-title">진료비</p>
             <div class="charge">
-                <h4>Charge : $125.85</h4>
+                <h4>Charge : ${{$store.state.chartDetail.charge}}</h4>
             </div>
             </div>
         </div>
@@ -63,7 +63,11 @@ import { mapState } from 'vuex'
 export default {
     computed: {
         ...mapState(['chartDetail']),
-    }
+    },
+    created(){
+        this.$store.dispatch('getChartDetail', this.$route.params.appointmentId);
+    },
+
 }
 </script>
 
