@@ -170,18 +170,16 @@ public class UserController {
     public ResponseEntity<? extends BaseResponseBody> getUserInfo(@ApiIgnore Authentication authentication, @PathVariable String reqUserId) {
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
-
         //요청한 회원에 대한 권한이 없는 경우
         if(!getUserId.equals(reqUserId)) {
             return ResponseEntity.status(401).body(BaseResponseBody.of(401, "접근 권한이 없는 회원입니다."));
         }
         User user = userService.getUserByUserId(getUserId);
-        UserInfo userInfo = userService.getUserInfoByUserId(getUserId);
         //회원 존재여부 확인
         if (user == null) {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "존재하지 않는 회원입니다."));
         } else {
-            return ResponseEntity.status(200).body(UserInfoGetRes.of(200, "Success", user, userInfo));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
         }
     }
 
