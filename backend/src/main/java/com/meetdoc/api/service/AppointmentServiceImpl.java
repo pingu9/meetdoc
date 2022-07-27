@@ -66,8 +66,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             res.setDoctorName(ap.getDoctor().getUser().getName());
             res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
+            res.setDepartmentName(ap.getDepartmentName());
             res.setUserName(user.getName());
             res.setRoomLink(ap.getRoomLink());
+            res.setPhotoUrl(ap.getDoctor().getPhotoUrl());
             list.add(res);
         }
         return list;
@@ -86,8 +88,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             res.setDoctorName(user.getName());
             res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
+            res.setDepartmentName(ap.getDepartmentName());
             res.setUserName(ap.getUser().getName());
             res.setRoomLink(ap.getRoomLink());
+            res.setPhotoUrl(doctor.getPhotoUrl());
             list.add(res);
         }
         return list;

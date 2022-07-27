@@ -38,6 +38,8 @@ public class Doctor implements Serializable {
     @NotNull
     BigDecimal charge;
 
+    String photoUrl;
+
     @OneToMany(mappedBy = "doctor", cascade = ALL, orphanRemoval = true)
     Collection<DoctorMedicDepartment> doctorMedicDepartments = new ArrayList<>();
 

@@ -33,6 +33,8 @@ public class Appointment {
     @NotNull
     String status;
 
+    String departmentName;
+
     String roomLink;
     String enterDoctor;
     String enterPatient;
