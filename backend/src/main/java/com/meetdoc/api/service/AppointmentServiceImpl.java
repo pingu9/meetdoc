@@ -12,6 +12,7 @@ import com.meetdoc.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService{
             AppointmentGetRes res = new AppointmentGetRes();
             res.setAppointmentId(ap.getAppointmentId());
             res.setDoctorName(ap.getDoctor().getUser().getName());
-            res.setAppointmentTime(ap.getAppointmentDate());
+            res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
             res.setUserName(user.getName());
             res.setRoomLink(ap.getRoomLink());
@@ -64,7 +65,7 @@ public class AppointmentServiceImpl implements AppointmentService{
             AppointmentGetRes res = new AppointmentGetRes();
             res.setAppointmentId(ap.getAppointmentId());
             res.setDoctorName(user.getName());
-            res.setAppointmentTime(ap.getAppointmentDate());
+            res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
             res.setUserName(ap.getUser().getName());
             res.setRoomLink(ap.getRoomLink());
