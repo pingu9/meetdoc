@@ -16,7 +16,7 @@ public class AppointmentGetRes {
     @ApiModelProperty(name = "진료 아이디")
     int appointmentId;
     @ApiModelProperty(name = "진료 예약 시간")
-    LocalDateTime appointmentTime;
+    String appointmentTime;
     @ApiModelProperty(name = "진료 상태")
     String status;
     @ApiModelProperty(name = "화상 진료 링크")
