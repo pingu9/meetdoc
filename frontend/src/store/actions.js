@@ -14,9 +14,10 @@ export const actions = {
         })
     },
     getDoctorList(context, param) {
-        axios.get('http://localhost:8081/appointment/doctor/list/' + param, {}).then((a) => {
-            console.log(a.data);
-            context.commit('setDoctorList', a.data);
+        axios.get('http://localhost:8081/doctor/list/'+ param).then((a) => {
+            console.log(a.data.result);
+            context.commit('setDoctor', a.data.result[0].departmentName)
+            context.commit('setDoctorList', a.data.result);
         })
     },
     getBookList(context){
@@ -30,6 +31,19 @@ export const actions = {
         axios.post('http://localhost:8081/user/login', payload).then((a) => {
             console.log(a.data.accessToken)
             localStorage.setItem('token',a.data.accessToken)
+        })
+    },
+    getChartList(context, param){
+        axios.get('http://localhost:8081/appointment/info/list/doctor/'+ param).then((a)=>{
+            console.log(a.data);
+            context.commit('setChartList', a.data)
+        })
+    },
+    getChartDetail(context, param){
+        console.log('http://localhost:8081/appointment/info/detail/' + param);
+        axios.get('http://localhost:8081/appointment/info/detail/' + param).then((a)=>{
+            console.log(a.data);
+            context.commit('setChartDetail', a.data)
         })
     }
 };
