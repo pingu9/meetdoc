@@ -87,7 +87,7 @@ public class DoctorController {
         String departmentName = appointmentService.getDepartmentNameById(departmentId);
 
         if(doctorList.size() == 0)
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"해당 의사가 존재하지 않습니다."));
+            return ResponseEntity.status(406).body(BaseResponseBody.of(406,"해당 의사가 존재하지 않습니다."));
         return ResponseEntity.status(200).body(DoctorListGetRes.of(200,"Success", departmentName, doctorList));
     }
 }

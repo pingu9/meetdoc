@@ -9,6 +9,7 @@ import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.common.model.response.DoctorInfoResBody;
+import com.meetdoc.common.util.AvailableTimeStore;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Api(value = "예약 API", tags = {"Appointment"})
@@ -90,6 +92,21 @@ public class AppointmentController {
         if(appointment == null)
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"진료 내역이 존재하지 않습니다."));
         return ResponseEntity.status(200).body(AppointmentDetailGetRes.of(200,"Success",appointment));
+    }
+
+
+    @GetMapping("/available-time/{doctorId}")
+    @ApiOperation(value = "가능 시간")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "존재하지 않는 의사"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getAvailableTimeList(@PathVariable int doctorId) {
+
+        AvailableTimeStore timeStore = new AvailableTimeStore();
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Sucess"));
     }
 
 
