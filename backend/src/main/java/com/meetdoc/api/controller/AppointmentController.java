@@ -2,14 +2,12 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.request.DoctorListGetReq;
-import com.meetdoc.api.response.AppointmentDetailGetRes;
-import com.meetdoc.api.response.AppointmentGetRes;
-import com.meetdoc.api.response.DoctorDetailGetRes;
-import com.meetdoc.api.response.DoctorListGetRes;
+import com.meetdoc.api.response.*;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.common.model.response.DoctorInfoResBody;
+import com.meetdoc.common.util.AvailableTimeStore;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
@@ -23,6 +21,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.EntityExistsException;
 import java.util.List;
@@ -108,6 +111,33 @@ public class AppointmentController {
         if(appointment == null)
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"진료 내역이 존재하지 않습니다."));
         return ResponseEntity.status(200).body(AppointmentDetailGetRes.of(200,"Success",appointment));
+    }
+
+
+    @GetMapping("/available-time/{doctorId}")
+    @ApiOperation(value = "가능 시간")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "존재하지 않는 의사"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getAvailableTimeList(@PathVariable String doctorId, String date) {
+
+        AvailableTimeStore timeStore = new AvailableTimeStore();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime time = LocalDateTime.of(LocalDate.parse(date, formatter), LocalTime.of(0, 0));
+        timeStore.init(time.toLocalDate());
+
+        List<Appointment> appointmentList = appointmentService.findAvailableTime(doctorId, time);
+
+        for (Appointment appointment : appointmentList) {
+           timeStore.book(appointment.getAppointmentDate());
+        }
+
+        List<LocalDateTime> timeList = timeStore.getAvailableTimeList();
+
+        return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "Success", timeList));
     }
 
 

@@ -6,11 +6,7 @@ import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
 import com.meetdoc.db.entity.User;
-import com.meetdoc.db.repository.AppointmentRepository;
-import com.meetdoc.db.repository.DepartmentRepository;
-import com.meetdoc.db.repository.DoctorRepositorySupport;
-import com.meetdoc.db.repository.UserRepository;
-import com.meetdoc.db.repository.UserRepositorySupport;
+import com.meetdoc.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +27,9 @@ public class AppointmentServiceImpl implements AppointmentService{
     DoctorRepositorySupport doctorRepositorySupport;
     @Autowired
     UserRepositorySupport userRepositorySupport;
+
+    @Autowired
+    AppointmentRepositorySupport appointmentRepositorySupport;
 
     @Override
     public List<MedicDepartment> getAllDepartment() {
@@ -114,5 +113,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             list.add(res);
         }
         return list;
+    }
+
+    @Override
+    public List<Appointment> findAvailableTime(String doctorId, LocalDateTime time) {
+        return appointmentRepositorySupport.findAppointmentByDoctorIdAndDate(doctorId, time);
     }
 }
