@@ -4,8 +4,9 @@
     예약하신 진료시간이 다 되었습니다. <a href="#" class="alert-link">진료실 링크여기</a> 진료실에 입장해주세요!
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="container-departments">
-      <div class="col" v-for="(department, idx) in $store.state.departments" :key="idx" @click="clickDept(`${department.departmentName}`)">
-        <div class="card h-100" @click="$router.push(`/doctors/${department.departmentCode}`)">
+      <div class="col" v-for="(department, idx) in $store.state.departments" :key="idx">
+        <!-- <div class="card h-100" @click="$router.push({`/doctors/${department.departmentCode}`})"> -->
+        <div class="card h-100" @click="$router.push({name: 'doctorList', params: {code: department.departmentCode, departmentName: department.departmentName}})">
           <img src="../assets/images/hospital.png" class="card-img-top" alt="departments">
           <div class="card-body">
             <h5 class="card-title">{{department.departmentName}}</h5>
@@ -42,10 +43,7 @@ export default {
     ...mapGetters(['getName',]),
   },
   methods: {
-    ...mapMutations(['changeName', 'setDepartment']),
-    clickDept(dept) {
-      this.setDepartment(dept);
-    }
+    ...mapMutations(['changeName',]),
   },
   created() {
     this.$store.dispatch('getDepartments');

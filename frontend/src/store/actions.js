@@ -15,11 +15,7 @@ export const actions = {
         });
     },
     getDoctorList(context, param) {
-        axios.get('http://localhost:8081/doctor/list/' + param).then((a) => {
-            console.log(a.data.result);
-            //context.commit('setDoctor', a.data.result[0].departmentName)
-            context.commit('setDoctorList', a.data.result);
-        });
+        return axios.get('http://localhost:8081/doctor/list/' + param);
     },
     getBookList(context) {
         axios.get('http://localhost:8081/appointment/info/list/user8').then((a) => {
