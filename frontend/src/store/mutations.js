@@ -17,12 +17,12 @@ export const mutations = {
     },
 
     setLoginErrorMessage(state, data) {
-      state.errorMessages.loginErrorMessage = data;
+        state.errorMessages.loginErrorMessage = data;
     },
 
-    setDoctor(state, data){
+    setDoctor(state, data) {
         state.department = data;
-    },  
+    },
     setDepartment(state, data) {
         state.department = data;
     },
@@ -36,5 +36,8 @@ export const mutations = {
     setChartDetail(state, data) {
         data.prescriptionDate = data.prescriptionDate.substr(0, 10);
         state.chartDetail = data;
+    },
+    setBookInfo(state, data) {
+        state.bookInfo = data;
     }
 };

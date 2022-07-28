@@ -6,7 +6,8 @@
         <h5 class="card-title">{{list.name}}</h5>
         <p class="card-text">{{list.departmentName}}</p>
         <p class="card-text">{{list.hospitalName}}</p>
-        <a href="/book/request" class="btn btn-primary">예약하기</a>
+        <button @click="this.$router.push({name: 'bookRequest', params:{doctorId: list.userId, departmentName: list.departmentName}})" class="btn btn-primary">예약하기</button>
+        <!-- <a :href="`/book/request?doctorName=${list.name}`" class="btn btn-primary">예약하기</a> -->
         </div>
     </div>
   </div>
