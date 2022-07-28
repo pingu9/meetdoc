@@ -1,0 +1,57 @@
+# docker-compose version
+version: "3.8"
+
+#container list
+services:
+  db:
+    image: mysql:5.7
+    container_name: meetdoc_db
+    restart: always
+    volumes:
+      # Mount cotainer drive to real drive
+      - ./db:/docker-entrypoint-initdb.d
+    networks:
+      # network inside of a container
+      - backend
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: meetdoc
+      TZ: "Asia/Seoul"
+    privileged: true
+  kurento:
+    restart: always
+    image: kurento/kurento-media-server:latest
+    ports:
+      - "8888:8888"
+    environment:
+      TZ: "Asia/Seoul"
+      KMS_STUN_IP: "3.38.166.81"
+      KMS_STUN_PORT: "3478"
+      KMS_STUN_PORT: "myuser:mypassword@3.38.166.81:3478?transport=udp"
+    networks:
+      - backend
+  app:
+    build:
+      context: ./
+    container_name: meetdoc
+ #     dockerfile: ./dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      TZ: "Asia/Seoul"
+      # Spring application.properties DB
+      SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/meetdoc?userUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true"
+      # Kurent Media Server URL
+      JAVA_TOOL_OPTIONS: "-Dkms.url=ws://kurento:8888/kurento"
+      server.address: 0.0.0.0
+    networks:
+      - backend
+    depends_on:
+      - db
+      - kurento
+networks:
+  backend:
+    driver: bridge
