@@ -3,9 +3,6 @@ export const state = {
     value: {},
     doctors: [
     ],
-    department: {
-
-    },
     errorMessages: {
         idCheckMessage: '',
         loginErrorMessage: '',

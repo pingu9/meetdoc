@@ -25,6 +25,7 @@ const routes = [
     {
         path: "/doctors/:code",
         component: DoctorList,
+        name: 'doctorList'
     },
     {
         path: "/book/request",
