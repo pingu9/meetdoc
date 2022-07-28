@@ -54,18 +54,24 @@
         </div>
       </div>
     </div>
-    <a href="/chart/list" class="btn btn-primary">확인</a>
+    <button @click="this.$router.go(-1)" class="btn btn-primary">확인</button>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
     computed: {
         ...mapState(['chartDetail']),
     },
+    methods: {
+    ...mapMutations(['setChartDetail',]),
+    },
     created(){
-        this.$store.dispatch('getChartDetail', this.$route.params.appointmentId);
+        this.$store.dispatch('getChartDetail', this.$route.params.appointmentId).then((a) => {
+            console.log(a.data);
+            this.setChartDetail(a.data);
+        })
     },
 
 }
