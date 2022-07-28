@@ -23,10 +23,6 @@ export const mutations = {
     setDoctor(state, data) {
         state.department = data;
     },
-    setDepartment(state, data) {
-        state.department = data;
-    },
-
     setBookList(state, data) {
         state.bookList = data;
     },

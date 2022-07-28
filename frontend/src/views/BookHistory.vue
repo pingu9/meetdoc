@@ -26,7 +26,7 @@
         </div>
       </div>
       <!-- 원격진료 입장가능 -->
-      <!-- <div class="card">
+      <div class="card">
         <div class="card-body">
           <p class="badge rounded-pill bg-secondary text-white" id="cancel">예약취소</p>
           <p class="card-title">원격진료 입장 불가</p>
@@ -69,7 +69,7 @@
           <button class="btn btn-secondary" type="button" a href="#">진료 완료</button>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
