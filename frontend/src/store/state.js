@@ -7,7 +7,8 @@ export const state = {
 
     },
     errorMessages:{
-        idCheckMessage: ''
+        idCheckMessage: '',
+        loginErrorMessage: '',
     },
     doctorDetail: {
         id: 'doctor1',

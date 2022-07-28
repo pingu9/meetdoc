@@ -15,6 +15,10 @@ export const mutations = {
     setIdErrorMessage(state, data) {
         state.errorMessages.idCheckMessage = data;
     },
+    setLoginErrorMessage(state, data) {
+      state.errorMessages.loginErrorMessage = data;
+    },
+
     setDoctor(state, data){
         state.department = data;
     },  
