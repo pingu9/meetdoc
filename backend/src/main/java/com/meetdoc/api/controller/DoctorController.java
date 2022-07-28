@@ -83,11 +83,8 @@ public class DoctorController {
     })
     public ResponseEntity<?> getDoctorList(@PathVariable int departmentCode, Pageable pageable, String doctorName) {
         List<Doctor> doctorList = appointmentService.searchDoctors(departmentCode, doctorName, pageable);
-
         String departmentName = appointmentService.getDepartmentNameById(departmentCode);
 
-        if(doctorList.size() == 0)
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204,"해당 의사가 존재하지 않습니다."));
         return ResponseEntity.status(200).body(DoctorListGetRes.of(200,"Success", departmentName, doctorList));
     }
 }
