@@ -69,9 +69,20 @@ export default {
         "charge": 0
       };
       this.$store.dispatch('setBookReq', payload).then((a) => {
+        console.log(a.data)
+        console.log(a.data.userName);
+        let userName = a.data.userName;
         if (a.data.message === 'Success') {
-          this.setBookInfo(a.data);
-          this.$router.push('/book/confirm');
+          this.$router.push({
+            name: 'bookConfirm',
+            params: {
+              patientName: userName,
+              doctorName: a.data.doctorName,
+              departmentName: a.data.departmentName,
+              charge: a.data.charge,
+              appointmentTime: a.data.appointmentTime,
+            }
+          });
         } 
       }).catch(error => {
         console.log(error)
