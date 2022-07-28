@@ -48,6 +48,9 @@ INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, 
 INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('10', '2022-07-27 16:00', '103.25', '10', '2022-07-26', '처방 설명', 'Rejected', '증상', 'user2', 'user9', '외과');
 INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('11', '2022-07-28 14:30', '103.25', '10', '2022-07-26', '처방 설명', 'Before', '증상', 'user3', 'user8', '정신과');
 INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('12', '2022-07-28 17:30', '103.25', '10', '2022-07-26', '처방 설명', 'Before', '증상', 'user2', 'user6', '외과');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('13', '2022-07-29 17:30', '103.25', 'Before', '증상', 'user1', 'user6', '내과');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('14', '2022-07-30 17:30', '103.25', 'Before', '증상', 'user2', 'user7', '외과');
+INSERT INTO appointment (`appointment_id`, `appointment_date`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('15', '2022-07-31 17:30', '103.25', 'Before', '증상', 'user2', 'user8', '외과');
 
 INSERT INTO `meetdoc`.`doctor_medic_department` (`user_id`, `department_code`) VALUES ('user1', '1');
 INSERT INTO `meetdoc`.`doctor_medic_department` (`user_id`, `department_code`) VALUES ('user2', '2');
