@@ -59,8 +59,14 @@ export default {
     },
     bookRequest() {
       //시간 api 구현 미완으로 sample data...
-      let apptDate = this.date + ' 0' + this.time;
-      let payload = {
+      let timeChanged = this.time.split(':');
+      if (timeChanged[0].length == 1) {
+        timeChanged = ' 0' + this.time;
+      } else {
+        timeChanged = ' ' + this.time;
+      }
+      let apptDate = this.date + timeChanged;
+      let bookReqInfo = {
         "userId": 'user10',
         "doctorId": this.$route.params.doctorId,
         "appointmentDate": apptDate,
@@ -68,22 +74,24 @@ export default {
         "departmentName": this.$route.params.departmentName,
         "charge": 0
       };
-      this.$store.dispatch('setBookReq', payload).then((a) => {
+      console.log(bookReqInfo)
+      //validation 추가, date, symptom 없을 경우 못하게
+      if (this.symptom === '') {
+        alert('증상을 입력해주세요!');
+        return;
+      }
+      this.$store.dispatch('setBookReq', bookReqInfo).then((a) => {
         console.log(a.data)
-        console.log(a.data.userName);
-        let userName = a.data.userName;
-        if (a.data.message === 'Success') {
-          this.$router.push({
-            name: 'bookConfirm',
+        this.$router.push({
+          name: 'bookConfirm',
             params: {
-              patientName: userName,
-              doctorName: a.data.doctorName,
-              departmentName: a.data.departmentName,
-              charge: a.data.charge,
-              appointmentTime: a.data.appointmentTime,
-            }
-          });
-        } 
+            patientName: a.data.userName,
+            doctorName: a.data.doctorName,
+            departmentName: a.data.departmentName,
+            charge: a.data.charge,
+            appointmentTime: a.data.appointmentTime,
+          }
+        });
       }).catch(error => {
         console.log(error)
         alert('해당 날짜에 예약이 불가합니다!');

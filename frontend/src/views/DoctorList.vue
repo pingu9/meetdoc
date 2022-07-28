@@ -37,13 +37,11 @@ data(){
   },
   created() {
     this.$store.dispatch('getDoctorList', this.$route.params.code).then((a) => {
-     // console.log(a.data.result);
       this.doctorList = true;
       this.setDoctorList(a.data.result);
     }).catch(error => {
       console.log(error);
     })
-    console.log(this.doctorList.length)
   },
 }
 </script>
