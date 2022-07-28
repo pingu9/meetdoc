@@ -40,9 +40,6 @@ export default {
       appointmentTime: this.$route.params.appointmentTime,
     }
   },
-  mounted() {
-    console.log(this.$route.params.patientName)
-  },
 }
 </script>
 
