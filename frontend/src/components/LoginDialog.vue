@@ -1,5 +1,5 @@
 <template>
-<div class="modal fade" tabindex="-1" id="loginModal">
+<div class="modal" tabindex="-1" id="loginModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -14,11 +14,14 @@
         <input type="password" v-model="password" class="form-control" id="floatingPassword" placeholder="Password">
         <label for="floatingPassword">Password</label>
       </div>
+      <div>
+        <span v-if="errorMessages">{{errorMessages.loginErrorMessage}}</span>
+      </div>
       <div class="modal-footer">
         <button type="submit" @click="clickLogin()" class="btn btn-primary">Login</button>
       <br>
       <span>
-        <a style="font-size: small;" href="">비밀번호 찾기</a>
+        <button type="button" class="btn btn-secondary">비밀번호 찾기</button>
       </span>
       </div>
     </div>
@@ -27,13 +30,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
     }
   },
+  computed: {
+    ...mapState(['errorMessages'])
+  },
+
   methods: {
     clickLogin () {
       console.log(this.username)
