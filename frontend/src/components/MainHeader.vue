@@ -46,6 +46,7 @@ export default {
     }
   },
   methods: {
+    //아래 부분 watcher로 수정해야함(중요)
     confirm() {
       if (confirm("로그아웃 하시겠습니까?")) {
         localStorage.setItem('token', '')
@@ -56,16 +57,6 @@ export default {
         }
     }
   },
-  updated() {
-    let token = localStorage.getItem('token');
-    if (token != '') {
-      console.log('token exists updated');
-      this.token = token;
-      console.log(this.token);
-    } else {
-      console.log('no token updated')
-    }
-  },
   created() {
     let token = localStorage.getItem('token');
     if (token != '') {
@@ -74,16 +65,6 @@ export default {
       console.log(this.token);
     } else {
       console.log('no token created')
-    }
-  },
-  mounted() {
-    let token = localStorage.getItem('token');
-    if (token != '') {
-      console.log('token exists mounted');
-      this.token = token;
-      console.log(this.token);
-    } else {
-      console.log('no token mounted')
     }
   },
 }
