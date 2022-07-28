@@ -24,7 +24,7 @@ public class DoctorServiceImpl implements DoctorService{
     @Override
     public Doctor createDoctor(DoctorPostReq doctorInfo) {
         Doctor doctor = new Doctor();
-        doctor.setUserId(doctorInfo.getUserId());
+        doctor.setUserId(doctorInfo.getDoctorId());
         doctor.setLicenseNumber(doctorInfo.getLicenseNumber());
         doctor.setHospitalName(doctorInfo.getHospitalName());
         doctor.setHospitalPhone(doctorInfo.getHospitalPhone());
@@ -41,7 +41,7 @@ public class DoctorServiceImpl implements DoctorService{
             list.add(doctorMedicDepartment);
         }
 
-        doctor.setUser(userRepository.findByUserId(doctorInfo.getUserId()).get());
+        doctor.setUser(userRepository.findByUserId(doctorInfo.getDoctorId()).get());
         return doctorRepository.save(doctor);
     }
 

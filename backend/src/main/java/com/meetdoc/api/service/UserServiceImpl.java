@@ -35,19 +35,19 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         UserInfo userInfo = new UserInfo();
 
-        user.setUserId(userReqInfo.getId());
-        user.setName(userReqInfo.getName());
+        user.setUserId(userReqInfo.getUserId());
+        user.setName(userReqInfo.getUserName());
         user.setStatus("active");
         user.setUserType(userReqInfo.getUserType());
-        user.setBirthdate(userReqInfo.getBirthDate());
+        user.setBirthdate(userReqInfo.getBirthdate());
         user.setGender(userReqInfo.getGender());
 
-        userInfo.setPassword((passwordEncoder.encode(userReqInfo.getPw())));
+        userInfo.setPassword((passwordEncoder.encode(userReqInfo.getPassword())));
         userInfo.setAddress(userReqInfo.getAddress());
         userInfo.setEmail(userReqInfo.getEmail());
-        userInfo.setPhone(userReqInfo.getPhoneNumber());
+        userInfo.setPhone(userReqInfo.getPhone());
         userInfo.setRrn(userReqInfo.getRrn());
-        userInfo.setZipcode(userReqInfo.getZipCode());
+        userInfo.setZipcode(userReqInfo.getZipcode());
 
 
         userInfo.setUser(user);

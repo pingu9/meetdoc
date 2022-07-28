@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 public class DoctorDetailGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "유저 ID")
-    String userId;
+    String doctorId;
     @ApiModelProperty(name = "의사 자격 번호")
     String licenseNumber;
     @ApiModelProperty(name = "병원 이름")
@@ -32,7 +32,7 @@ public class DoctorDetailGetRes extends BaseResponseBody {
         res.setStatusCode(statusCode);
         res.setMessage(message);
 
-        res.setUserId(doctor.getUserId());
+        res.setDoctorId(doctor.getUserId());
         res.setLicenseNumber(doctor.getLicenseNumber());
         res.setHospitalName(doctor.getHospitalName());
         res.setHospitalZipcode(doctor.getHospitalZipcode());

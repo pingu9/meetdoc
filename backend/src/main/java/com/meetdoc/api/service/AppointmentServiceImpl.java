@@ -40,11 +40,11 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public Appointment createAppointment(AppointmentPostReq appointmentInfo) {
         Appointment appointment = new Appointment();
-        User user = userRepositorySupport.findUserByUserId(appointmentInfo.getUserId()).get();
+        User user = userRepositorySupport.findUserByUserId(appointmentInfo.getPatientId()).get();
         Doctor doctor = userRepositorySupport.findUserByUserId(appointmentInfo.getDoctorId()).get().getDoctor();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        appointment.setAppointmentDate(LocalDateTime.parse(appointmentInfo.getAppointmentDate(),formatter));
+        appointment.setAppointmentTime(LocalDateTime.parse(appointmentInfo.getAppointmentTime(),formatter));
 
         appointment.setCharge(appointmentInfo.getCharge());
         appointment.setSymptom(appointmentInfo.getSymptom());
@@ -83,10 +83,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             AppointmentGetRes res = new AppointmentGetRes();
             res.setAppointmentId(ap.getAppointmentId());
             res.setDoctorName(ap.getDoctor().getUser().getName());
-            res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            res.setAppointmentTime(ap.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
             res.setDepartmentName(ap.getDepartmentName());
-            res.setUserName(user.getName());
+            res.setPatientName(user.getName());
             res.setRoomLink(ap.getRoomLink());
             res.setPhotoUrl(ap.getDoctor().getPhotoUrl());
             list.add(res);
@@ -105,10 +105,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             AppointmentGetRes res = new AppointmentGetRes();
             res.setAppointmentId(ap.getAppointmentId());
             res.setDoctorName(user.getName());
-            res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            res.setAppointmentTime(ap.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
             res.setDepartmentName(ap.getDepartmentName());
-            res.setUserName(ap.getUser().getName());
+            res.setPatientName(ap.getUser().getName());
             res.setRoomLink(ap.getRoomLink());
             res.setPhotoUrl(doctor.getPhotoUrl());
             list.add(res);
@@ -126,7 +126,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         Appointment appointment = appointmentRepository.getOne(appointmentId);
         appointment.setPrescriptionDescription(req.getPrescriptionDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        appointment.setAppointmentDate(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
+        appointment.setAppointmentTime(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
         appointment.setIcd(req.getIcd());
 
         appointmentRepository.save(appointment);
