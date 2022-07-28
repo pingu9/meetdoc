@@ -15,6 +15,7 @@ import BookConfirm from '../views/BookConfirm.vue';
 const routes = [
     {
         path: "/",
+        name: 'home',
         component: HomePage,
     },
     {
