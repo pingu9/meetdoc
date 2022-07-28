@@ -5,7 +5,7 @@
      <div class="card">
         <div class="card-body">
           <img src="../assets/images/check.png" alt="confirmed" class="confirmed"/>
-          <p class="card-title">환자 님의 예약이 완료되었습니다.</p>
+          <p class="card-title">{{patientName}} 님의 예약이 완료되었습니다.</p>
           <div class="info-box">
             <div class="half-box">
               <p class="title-box">의사명</p>
@@ -13,13 +13,13 @@
               <p class="title-box">결제금액</p>
             </div>
             <div class="half-box">
-              <p class="content-box">스트레인지</p>
-              <p class="content-box">내과</p>
-              <p class="content-box">10,000원</p>
+              <p class="content-box">{{doctorName}}</p>
+              <p class="content-box">{{departmentName}}</p>
+              <p class="content-box">{{charge}}원</p>
             </div>
           </div>
           <hr>
-          <p class="card-title" style="margin:20px 0">2022년 5월 28일 15:00</p>
+          <p class="card-title" style="margin:20px 0">{{appointmentTime}}</p>
           <div class="d-grid gap-2">
             <a href="/" class="btn btn-primary" style="margin:10px">닫기</a>
           </div>
@@ -31,6 +31,15 @@
 
 <script>
 export default {
+  data() {
+    return {
+      patientName: this.$route.params.patientName,
+      doctorName: this.$route.params.doctorName,
+      departmentName: this.$route.params.departmentName,
+      charge: this.$route.params.charge,
+      appointmentTime: this.$route.params.appointmentTime,
+    }
+  },
 }
 </script>
 

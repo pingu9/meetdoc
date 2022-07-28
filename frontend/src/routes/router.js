@@ -38,6 +38,7 @@ const routes = [
     {
         path: "/book/confirm",
         component: BookConfirm,
+        name: 'bookConfirm'
     },
     {
         path: "/chart/list",
