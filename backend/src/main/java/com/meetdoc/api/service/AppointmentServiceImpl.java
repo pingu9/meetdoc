@@ -1,6 +1,7 @@
 package com.meetdoc.api.service;
 
 import com.meetdoc.api.request.AppointmentPostReq;
+import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
@@ -118,5 +119,16 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public List<Appointment> findAvailableTime(String doctorId, LocalDateTime time) {
         return appointmentRepositorySupport.findAppointmentByDoctorIdAndDate(doctorId, time);
+    }
+
+    @Override
+    public void writePrescription(int appointmentId, PrescriptionPatchReq req) {
+        Appointment appointment = appointmentRepository.getOne(appointmentId);
+        appointment.setPrescriptionDescription(req.getPrescriptionDescription());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        appointment.setAppointmentDate(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
+        appointment.setIcd(req.getIcd());
+
+        appointmentRepository.save(appointment);
     }
 }

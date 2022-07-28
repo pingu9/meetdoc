@@ -2,6 +2,7 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.request.DoctorListGetReq;
+import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.*;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.UserService;
@@ -50,7 +51,7 @@ public class AppointmentController {
     public ResponseEntity<?> getDepartments() {
         List<MedicDepartment> list = appointmentService.getAllDepartment();
         if(!list.isEmpty()) return ResponseEntity.status(200).body(list);
-        else return ResponseEntity.status(200).body(BaseResponseBody.of(500, "데이터를 가져오는 중 문제가 발생했습니다."));
+        else return ResponseEntity.status(500).body(BaseResponseBody.of(500, "데이터를 가져오는 중 문제가 발생했습니다."));
     }
 
     @PostMapping("/reserve")
@@ -103,7 +104,7 @@ public class AppointmentController {
     @ApiOperation(value = "진료 상세 정보")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 404, message = "존재하지 않는 의사"),
+            @ApiResponse(code = 404, message = "존재하지 않는 진료 내역"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getAppointmentDetail(@PathVariable int appointmentId) {
@@ -140,5 +141,22 @@ public class AppointmentController {
         return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "Success", timeList));
     }
 
+    @PatchMapping("/prescription/{appointmentId}")
+    @ApiOperation(value = "처방 입력")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 406, message = "진료 내역 없음"),
+            @ApiResponse(code = 407, message = "처방이 이미 있음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> writePrescription(@PathVariable int appointmentId, @RequestBody PrescriptionPatchReq req) {
+        //유저 로그인을 통해 토큰을 확인하는 과정과 그 유저가 의사가 맞는지를 확인하는 코드 필요
+        Appointment ap = appointmentService.getAppointmentById(appointmentId);
+        if(ap.getPrescriptionDescription() != null)
+            return ResponseEntity.status(407).body(BaseResponseBody.of(407,"처방 내역이 이미 있습니다."));
+        appointmentService.writePrescription(appointmentId, req);
 
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success"));
+    }
 }
