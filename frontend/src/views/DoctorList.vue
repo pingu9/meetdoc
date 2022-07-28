@@ -1,6 +1,6 @@
 <template>
   <div class="container-body">
-    <h1>{{$store.state.department}} 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
+    <h1>{{department}} 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
     <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card">
         <div class="card-body">
         <h5 class="card-title">{{list.name}}</h5>
@@ -10,27 +10,47 @@
         <!-- <a :href="`/book/request?doctorName=${list.name}`" class="btn btn-primary">예약하기</a> -->
         </div>
     </div>
+    <div class="card w-90" id="noDoctorList" v-if="doctorList === false">
+      <div class="card-body">
+        <h5 class="card-title">해당 진료과의 의사리스트가 없습니다.</h5>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
 data(){
-    return{
+    return {
+      department: this.$route.params.departmentName,
+      doctorList : false,
     }
   },
   components: {
   },
-computed: {
+  computed: {
   ...mapState(['doctors']),
   },
+  methods: {
+    ...mapMutations(['setDoctorList',]),
+  },
   created() {
-    this.$store.dispatch('getDoctorList', this.$route.params.code);
+    this.$store.dispatch('getDoctorList', this.$route.params.code).then((a) => {
+     // console.log(a.data.result);
+      this.doctorList = true;
+      this.setDoctorList(a.data.result);
+    }).catch(error => {
+      console.log(error);
+    })
+    console.log(this.doctorList.length)
   },
 }
 </script>
 
 <style>
-
+#noDoctorList{
+  margin-top: 10%;
+  margin-bottom: 70%;
+}
 </style>
