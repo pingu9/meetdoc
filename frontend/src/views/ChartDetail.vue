@@ -21,7 +21,7 @@
                     <div class="col"><p class="chartDetailData">면허번호 : {{$store.state.chartDetail.licenseNumber}}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">진료일 : {{$store.state.chartDetail.prescriptionDate}}</p></div>
+                        <div class="col"><p class="chartDetailData">진료일 : {{$store.state.chartDetail.appointmentDate}}</p></div>
                         <div class="col"><p class="chartDetailData">병명 진단: {{$store.state.chartDetail.icd}}</p></div>
                     </div>
                 </div>
