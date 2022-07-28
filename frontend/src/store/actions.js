@@ -1,3 +1,4 @@
+import router from '@/routes/router';
 import axios from 'axios';
 
 export const actions = {
@@ -28,10 +29,18 @@ export const actions = {
     },
     login(context, payload) {
         console.log(payload)
-        axios.post('http://localhost:8081/user/login', payload).then((a) => {
+        axios.post('http://localhost:8081/user/login', payload)
+        .then((a) => {
             console.log(a.data.accessToken)
-            localStorage.setItem('token', a.data.accessToken)
+            localStorage.setItem('token',a.data.accessToken)
+            router.push({ name: 'home' })
+
         })
+        .catch(error => {
+          console.log('------------')
+          console.log(error.response.data.message)
+          context.commit('setLoginErrorMessage', error.response.data.message)
+      })
     },
     checkId(context, param) {
         axios.get('http://localhost:8081/user/' + param)
