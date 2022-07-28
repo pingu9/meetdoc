@@ -24,12 +24,12 @@
           <div>
             <p class="card-title">증상 입력</p>
             <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="symptom"></textarea>
               <label for="floatingTextarea2">증상에 대해 자세히 입력해주세요.</label>
             </div>
           </div>
           <div class="d-grid gap-2">
-            <a href="/book/confirm" class="btn btn-primary">다음</a>
+            <a href="#" class="btn btn-primary" @click="bookRequest()">진료 예약하기</a>
           </div>
         </div>
       </div>
@@ -39,24 +39,47 @@
 
 <script>
 
+import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
       date: '',
       time: '',
       addTime: 30,
-      timeList : [''],
+      timeList: [''],
+      symptom:''
     }
   },
   computed: {
-    
   },
   methods: {
+    ...mapMutations(['setBookInfo']),
     datePicked() {
       //날짜 선택하면 기능
     },
+    bookRequest() {
+      //시간 api 구현 미완으로 sample data...
+      let apptDate = this.date + ' 0' + this.time;
+      let payload = {
+        "userId": 'user10',
+        "doctorId": this.$route.params.doctorId,
+        "appointmentDate": apptDate,
+        "symptom": this.symptom,
+        "departmentName": this.$route.params.departmentName,
+        "charge": 0
+      };
+      this.$store.dispatch('setBookReq', payload).then((a) => {
+        if (a.data.message === 'Success') {
+          this.setBookInfo(a.data);
+          this.$router.push('/book/confirm');
+        } 
+      }).catch(error => {
+        console.log(error)
+        alert('해당 날짜에 예약이 불가합니다!');
+      });
+    }
   },
-  mounted() {
+  created() {
     let todayDate = new Date();
     let yy = String(todayDate.getFullYear());
     let month = todayDate.getMonth() + 1;
