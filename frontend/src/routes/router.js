@@ -29,6 +29,7 @@ const routes = [
     {
         path: "/book/request",
         component: BookRequest,
+        name: 'bookRequest'
     },
     {
         path: "/book/payment",
