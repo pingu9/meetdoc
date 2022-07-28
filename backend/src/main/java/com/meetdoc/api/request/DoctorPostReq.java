@@ -18,7 +18,7 @@ import java.util.ArrayList;
 @ApiModel("DoctorPostRequest")
 public class DoctorPostReq {
     @ApiModelProperty(name="의사 회원 ID", example="user4")
-    String userId;
+    String doctorId;
     @ApiModelProperty(name="의사면허번호", example="901210-1111111")
     String licenseNumber;
     @ApiModelProperty(name="병원명", example="your_hospital_name")

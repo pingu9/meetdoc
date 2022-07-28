@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -18,11 +17,11 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "진료 ID")
     int appointmentId;
     @ApiModelProperty(name = "환자 ID")
-    String patientUserId;
+    String patientId;
     @ApiModelProperty(name = "의사 ID")
-    String doctorUserId;
+    String doctorId;
     @ApiModelProperty(name = "진료 날짜")
-    String appointmentDate;
+    String appointmentTime;
     @ApiModelProperty(name = "증상")
     String symptom;
     @ApiModelProperty(name = "진료비")
@@ -33,9 +32,9 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "진료과 이름")
     String departmentName;
     @ApiModelProperty(name = "환자 이름")
-    String userName;
+    String patientName;
     @ApiModelProperty(name = "환자 생일")
-    String userBirthDate;
+    String patientBirthdate;
     @ApiModelProperty(name = "의사 이름")
     String doctorName;
     @ApiModelProperty(name = "병원 이름")
@@ -76,16 +75,16 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
         res.setMessage(message);
 
         res.setAppointmentId(appointment.getAppointmentId());
-        res.setDoctorUserId(appointment.getDoctor().getUserId());
-        res.setPatientUserId(appointment.getUser().getUserId());
+        res.setDoctorId(appointment.getDoctor().getUserId());
+        res.setPatientId(appointment.getUser().getUserId());
         res.setAppointmentId(appointment.getAppointmentId());
         res.setSymptom(appointment.getSymptom());
-        res.setAppointmentDate(appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        res.setAppointmentTime(appointment.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         res.setCharge(appointment.getCharge());
         res.setStatus(appointment.getStatus());
 
-        res.setUserName(patient.getName());
-        res.setUserBirthDate(patient.getBirthdate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        res.setPatientName(patient.getName());
+        res.setPatientBirthdate(patient.getBirthdate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         res.setDoctorName(doctor.getUser().getName());
         res.setHospitalName(doctor.getHospitalName());
         res.setHospitalPhone(doctor.getHospitalPhone());
