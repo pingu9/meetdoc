@@ -60,14 +60,14 @@ public class DoctorController {
     @ApiOperation(value = "의사 상세 정보")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 200, message = "존재하지 않는 아이디"),
             @ApiResponse(code = 403, message = "의사 회원이 아닙니다."),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getDoctorDetail(@PathVariable  String doctorId) {
         User user = userService.getUserByUserId(doctorId);
         if(user == null)
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 회원입니다."));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         Doctor doctor = user.getDoctor();
         if (doctor == null) {
             return ResponseEntity.status(403).body(BaseResponseBody.of(403, "의사 회원이 아닙니다."));

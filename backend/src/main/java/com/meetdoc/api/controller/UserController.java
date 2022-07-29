@@ -55,8 +55,8 @@ public class UserController {
     @ApiOperation(value = "로그인", notes = "회원 로그인")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "비밀번호가 틀렸을 경우"),
-            @ApiResponse(code = 204, message = "존재하지 않는 회원일 경우"),
+            @ApiResponse(code = 200, message = "비밀번호가 틀렸을 경우"),
+            @ApiResponse(code = 200, message = "존재하지 않는 회원일 경우"),
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
 
@@ -70,7 +70,7 @@ public class UserController {
         try {
             user = userService.getUserByUserId(userId);
         } catch (Exception e) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 회원입니다."));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         }
 
         // 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
@@ -79,7 +79,7 @@ public class UserController {
             return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId), user));
         }
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-        return ResponseEntity.status(204).body(BaseResponseBody.of(204, "비밀번호가 틀렸습니다."));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "비밀번호가 틀렸습니다."));
     }
 
     @GetMapping("/{userId}")
@@ -104,7 +104,6 @@ public class UserController {
     @ApiOperation(value = "회원정보 수정", notes = "회원 정보 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "사용자 없음"),
             @ApiResponse(code = 401, message = "권한 에러"),
             @ApiResponse(code = 406, message = "입력 형식 에러"),
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
@@ -117,7 +116,7 @@ public class UserController {
         User user = userService.getUserByUserId(getUserId);
         //회원 존재여부 확인
         if (user == null) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 회원입니다."));
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러."));
         }
         Long affectedRow = userService.updateUserByUserId(getUserId, patchUserReq);
         //변경 없을 경우
@@ -133,7 +132,6 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "사용자 없음"),
             @ApiResponse(code = 401, message = "권한 에러"),
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
@@ -142,10 +140,6 @@ public class UserController {
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
         User user = userService.getUserByUserId(getUserId);
-        //회원 존재여부 확인
-        if (user == null) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 회원입니다."));
-        }
         Long affectedRow = userService.deleteUserByUserId(getUserId);
         //변경 없을 경우
         if (affectedRow == 0) {
@@ -176,7 +170,7 @@ public class UserController {
         User user = userService.getUserByUserId(getUserId);
         //회원 존재여부 확인
         if (user == null) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 회원입니다."));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         } else {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
         }
