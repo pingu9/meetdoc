@@ -5,19 +5,22 @@ import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.*;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.UserService;
+import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.common.util.AvailableTimeStore;
 import com.meetdoc.db.entity.Appointment;
-import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
 import com.meetdoc.db.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -169,5 +172,36 @@ public class AppointmentController {
         List<LocalDateTime> timeList = timeStore.getAvailableTimeList();
 
         return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "Success", timeList));
+    }
+
+
+    @DeleteMapping("/cancel/{appointmentId}")
+    @ApiOperation(value = "예약 취소")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 204, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 403, message = "권한이 없는 요청"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> cancelAppointment(@ApiIgnore Authentication authentication,
+                                               @ApiParam(value = "예약 번호", required = true)
+                                               @PathVariable int appointmentId) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+        if(user == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
+
+        try {
+            Appointment appointment = appointmentService.findAppointmentByAppointmentId(appointmentId);
+            if (!appointment.getUser().getUserId().equals(user.getUserId())) {
+                return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+            }
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 진료 내역입니다"));
+        }
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }
