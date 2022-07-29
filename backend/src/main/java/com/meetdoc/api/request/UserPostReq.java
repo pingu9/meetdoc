@@ -15,25 +15,25 @@ import java.time.LocalDate;
 @ApiModel("UserPostRequest")
 public class UserPostReq {
     @ApiModelProperty(name="유저 ID", example="your_id")
-    String id;
+    String userId;
     @ApiModelProperty(name="유저 Password", example="your_password")
-    String pw;
+    String password;
 
     @ApiModelProperty(name="유저 type", example="doctor일때 D, 일반 유저일때 U")
     String userType;
     @ApiModelProperty(name="유저 name", example="XXX")
-    String name;
+    String userName;
     @ApiModelProperty(name="주민등록번호", example="200101-1111111")
     String rrn;
     @ApiModelProperty(name="생년월일", example="2000-01-01")
-    LocalDate birthDate;
+    LocalDate birthdate;
     @ApiModelProperty(name="성별", example="male/female")
     String gender;
 
     @ApiModelProperty(name="phone number", example="010-0000-0000")
-    String phoneNumber;
+    String phone;
     @ApiModelProperty(name="우편번호", example="123-456")
-    String zipCode;
+    String zipcode;
     @ApiModelProperty(name="상세 주소", example="XX아파트 X동 X호")
     String address;
     @ApiModelProperty(name="이메일(선택)", example="XXXXX@gmail.com")
