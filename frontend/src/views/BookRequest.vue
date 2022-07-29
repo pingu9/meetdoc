@@ -5,14 +5,14 @@
       <div class="card">
         <div class="card-body">
           <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
-          <p class="card-title">닥터스트레인지 의사</p>
+          <p class="card-title">{{doctorName}}</p>
           <div>
               <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
           </div>
           <div class="info-box">
             <div class="half-box">
               <form name="해당 폼의 이름" action="값을 보낼 주소" method="post">
-                <input type='date' name='userBirthday'  @change="datePicked" v-model="date"/>
+                <input type='date' name='userBirthday'  @change="datePicked()" v-model="date"/>
             </form>
             </div>
             <div class="half-box">
@@ -47,7 +47,10 @@ export default {
       time: '',
       addTime: 30,
       timeList: [''],
-      symptom:''
+      symptom: '',
+      doctorName: '',
+      doctorId: '',
+      departmentName:'',
     }
   },
   computed: {
@@ -56,6 +59,14 @@ export default {
     ...mapMutations(['setBookInfo']),
     datePicked() {
       //날짜 선택하면 기능
+      const param = {
+        doctorId: this.doctorId,
+        selectedDate: this.date,
+      };
+      console.log(param);
+      this.$store.dispatch('setAvailTime', param).then((a) => {
+        console.log(a.data);
+      })
     },
     bookRequest() {
       //시간 api 구현 미완으로 sample data...
@@ -68,7 +79,7 @@ export default {
       let apptDate = this.date + timeChanged;
       let bookReqInfo = {
         "userId": 'user8',
-        "doctorId": this.$route.params.doctorId,
+        "doctorId": this.doctorId,
         "appointmentDate": apptDate,
         "symptom": this.symptom,
         "departmentName": this.$route.params.departmentName,
@@ -81,7 +92,7 @@ export default {
         return;
       }
       this.$store.dispatch('setBookReq', bookReqInfo).then((a) => {
-        console.log(a.data)
+        console.log(a.data);
         this.$router.push({
           name: 'bookConfirm',
             params: {
@@ -99,6 +110,14 @@ export default {
     }
   },
   created() {
+    this.doctorId = this.$route.params.doctorId;
+    this.departmentName = this.$route.params.departmentName;
+    this.doctorName = this.$route.params.doctorName;
+    //의사 상세정보
+    this.$store.dispatch('getDoctorDetail', this.doctorId).then((a) => {
+      console.log(a.data);
+      
+    });
     let todayDate = new Date();
     let yy = String(todayDate.getFullYear());
     let month = todayDate.getMonth() + 1;
@@ -117,6 +136,8 @@ export default {
     //data 값 입력
     let date = yy + '-' + mm + '-' + dd;
     this.date = date;
+
+    this.datePicked();
     this.time = hou + ':' + min;
     this.timeList.push(this.time);
 
