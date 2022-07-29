@@ -8,6 +8,7 @@ import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.common.util.AvailableTimeStore;
+import com.meetdoc.common.util.DateConverter;
 import com.meetdoc.common.util.DayOffWeekMapper;
 import com.meetdoc.db.entity.*;
 import com.querydsl.core.NonUniqueResultException;
@@ -149,41 +150,36 @@ public class AppointmentController {
     })
     public ResponseEntity<?> getAvailableTimeList(@PathVariable String doctorId, @PathVariable String selectedDate) {
         User user;
+        String userId;
+        OpeningHours openingHour;
+        LocalDateTime time = DateConverter.dateStringToLocalDateTime(selectedDate);
+        String dayOfWeek = DayOffWeekMapper.DayOfWeekToString(time.getDayOfWeek());
+
         try {
             user = userService.getUserByUserId(doctorId);
-            if (user.getDoctor() == null) {
-                throw new NoSuchElementException();
+            userId = user.getUserId();
+            if (!userService.isDoctor(user)) {
+                throw new Exception();
             }
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200,"no data"));
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime time = LocalDateTime.of(LocalDate.parse(selectedDate, formatter), LocalTime.of(0, 0));
-
-        if (userService.isDayOff(user.getUserId(), time.toLocalDate())) {
+        if (userService.isDayOff(userId, time.toLocalDate())) {
             return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "no data", new ArrayList<>()));
         }
 
-        OpeningHours openingHour;
         try {
-            openingHour = userService.getOpeningHoursByIdAndWeekDay(user.getUserId(), DayOffWeekMapper.DayOfWeekToString(time.getDayOfWeek()));
+            openingHour = userService.getOpeningHoursByIdAndWeekDay(user.getUserId(), dayOfWeek);
         } catch (NoSuchElementException e) {
+            // 해당일에 근무하지 않을 경우
             return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "no data", new ArrayList<>()));
         } catch (NonUniqueResultException e) {
+            // 해당일 근무 정보가 여러개 들어있을 경우(서버 에러)
             return ResponseEntity.status(500).body(AvailableTimeGetRes.of(500, "서버 에러 발생"));
         }
 
-
-        AvailableTimeStore timeStore = new AvailableTimeStore(openingHour, time.toLocalDate());
-
-        List<Appointment> appointmentList = appointmentService.findAvailableTime(doctorId, time);
-
-        for (Appointment appointment : appointmentList) {
-           timeStore.book(appointment.getAppointmentTime());
-        }
-
-        List<LocalDateTime> timeList = timeStore.getAvailableTimeList();
+        List<LocalDateTime> timeList = appointmentService.getAvailableTimeList(doctorId, time, openingHour);
 
         return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "Success", timeList));
     }

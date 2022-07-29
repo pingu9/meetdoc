@@ -99,4 +99,16 @@ public class UserServiceImpl implements UserService {
     public OpeningHours getOpeningHoursByIdAndWeekDay(String userId, String weekDay) {
         return openingHoursRepositorySupport.findOpeningHourByIdAndWeekDay(userId, weekDay).get();
     }
+
+    @Override
+    public Boolean isDoctor(User user) {
+        if (user == null) {
+            throw new RuntimeException();
+        }
+        if (user.getDoctor() == null) {
+            return false;
+        }
+
+        return true;
+    }
 }
