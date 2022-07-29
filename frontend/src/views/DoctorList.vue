@@ -7,6 +7,7 @@
         <p class="card-text">{{list.departmentName}}</p>
         <p class="card-text">{{list.hospitalName}}</p>
         <button @click="this.$router.push({name: 'bookRequest', params:{doctorId: list.userId, departmentName: list.departmentName}})" class="btn btn-primary">예약하기</button>
+        <button @click="this.$router.push('/book/confirm')" class="btn btn-primary">예약하기</button>
         <!-- <a :href="`/book/request?doctorName=${list.name}`" class="btn btn-primary">예약하기</a> -->
         </div>
     </div>
@@ -37,7 +38,7 @@ data(){
   },
   created() {
     this.$store.dispatch('getDoctorList', this.$route.params.code).then((a) => {
-      this.doctorList = true;
+      if (a.data.result.length !== 0) this.doctorList = true;
       this.setDoctorList(a.data.result);
     }).catch(error => {
       console.log(error);

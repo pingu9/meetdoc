@@ -5,7 +5,7 @@
      <div class="card">
         <div class="card-body">
           <img src="../assets/images/check.png" alt="confirmed" class="confirmed"/>
-          <p class="card-title">{{patientName}} 님의 예약이 완료되었습니다.</p>
+          <p class="card-title" id="confirmBold">{{patientName}} 님의 예약이 완료되었습니다.</p>
           <div class="info-box">
             <div class="half-box">
               <p class="title-box">의사명</p>
@@ -46,8 +46,6 @@ export default {
 <style>
 .title-box{
   font-size: 25px;
-  color: gray;
-  font-weight: bold;
   margin: 50px 0px;
 }
 
@@ -60,6 +58,10 @@ export default {
   width: 50px;
   height: 50px;
   margin: 20px 0px;
+}
+
+.confirmBold{
+  font-weight: bold;
 }
 
 </style>
