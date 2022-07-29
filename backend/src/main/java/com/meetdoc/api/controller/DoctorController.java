@@ -78,7 +78,6 @@ public class DoctorController {
     @ApiOperation(value = "페이지 숫자, 검색 쿼리를 적용한 ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "해당 의사가 없을 때"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getDoctorList(@PathVariable int departmentCode, Pageable pageable, String doctorName) {

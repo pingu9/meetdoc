@@ -155,7 +155,7 @@ public class UserController {
     @ApiOperation(value = "회원 정보 조회", notes = "회원 정보를 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 200, message = "존재하지 않는 아이디"),
             @ApiResponse(code = 401, message = "권한 에러"),
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
