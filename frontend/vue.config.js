@@ -7,11 +7,11 @@ module.exports = defineConfig({
 module.exports = {
   devServer: {
     https: true,
-    port: 8083,
+    port: 8080,
     open: true,
     proxy: {
       '/api/v1': {
-        target: 'https://localhost:8443/'
+        target: 'https://localhost:8080/'
       },
     },
     historyApiFallback: true,
