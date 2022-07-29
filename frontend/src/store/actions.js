@@ -21,6 +21,17 @@ export const actions = {
         const patientId = 'user8';
         return axios.get('http://localhost:8081/appointment/info/list/' + patientId);
     },
+    signUp(context, payload) {
+        console.log(payload)
+        axios.post('http://localhost:8081/user/', payload)
+            .then((a) => {
+                console.log(a.data)
+            })
+            .catch(error => {
+              console.log('------------');
+              console.log(error.response.data.message);
+          });
+    },
     login(context, idpw) {
         console.log(idpw)
         axios.post('http://localhost:8081/user/login', idpw)
@@ -63,5 +74,5 @@ export const actions = {
     },
     cancelAppt(context, appointmentId) {
         return axios.delete('http://localhost:8081/appointment/cancel/' + appointmentId);
-    }
+    },
 };
