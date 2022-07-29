@@ -3,7 +3,7 @@
     <h1>{{department}} 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
     <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card">
         <div class="card-body">
-        <h5 class="card-title">{{list.name}}</h5>
+        <h5 class="card-title">{{list.doctorName}}</h5>
         <p class="card-text">{{list.departmentName}}</p>
         <p class="card-text">{{list.hospitalName}}</p>
         <button @click="this.$router.push({name: 'bookRequest', params:{doctorId: list.doctorId, departmentName: list.departmentName, doctorName: list.doctorName}})" class="btn btn-primary">예약하기</button>
@@ -36,7 +36,7 @@ data(){
     ...mapMutations(['setDoctorList',]),
   },
   created() {
-    this.$store.dispatch('getDoctorList', this.$route.params.code).then((a) => {
+    this.$store.dispatch('getDoctorList', this.$route.params.departmentCode).then((a) => {
       console.log(a.data.result);
       if (a.data.result.length !== 0) this.doctorList = true;
       this.setDoctorList(a.data.result);
