@@ -28,17 +28,17 @@ export const actions = {
                 console.log(a.data)
             })
             .catch(error => {
-              console.log('------------');
-              console.log(error.response.data.message);
-          });
+                console.log('------------');
+                console.log(error.response.data.message);
+            });
     },
     login(context, idpw) {
         console.log(idpw)
         axios.post('http://localhost:8081/user/login', idpw)
             .then((a) => {
                 console.log(a.data.accessToken);
-                console.log(a.data);
                 localStorage.setItem('token', a.data.accessToken);
+                localStorage.setItem('userId', a.data.userId);
                 router.push({ name: 'home' });
 
             })
@@ -76,4 +76,13 @@ export const actions = {
     cancelAppt(context, appointmentId) {
         return axios.delete('http://localhost:8081/appointment/cancel/' + appointmentId);
     },
+    setAvailTime(context, param) {
+        const doctorId = param.doctorId;
+        const selectedDate = param.selectedDate;
+        console.log('http://localhost:8081/appointment/available-time/' + doctorId + '/' + selectedDate);
+        return axios.get('http://localhost:8081/appointment/available-time/' + doctorId + '/' + selectedDate);
+    },
+    getDoctorDetail(context, doctorId) {
+        return axios.get('http://localhost:8081/doctor/detail/' + doctorId);
+    }
 };
