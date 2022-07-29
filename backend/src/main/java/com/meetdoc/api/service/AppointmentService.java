@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public interface AppointmentService {
     List<MedicDepartment> getAllDepartment();
@@ -21,4 +22,8 @@ public interface AppointmentService {
     List<AppointmentGetRes> getDoctorAppointments(String userId);
     List<Appointment> findAvailableTime(String doctorId, LocalDateTime time);
     void writePrescription(int appointmentId, PrescriptionPatchReq req);
+
+    Appointment findAppointmentByAppointmentId(int appointmentId) throws NoSuchElementException;
+
+    void deleteAppointment(Appointment appointment);
 }
