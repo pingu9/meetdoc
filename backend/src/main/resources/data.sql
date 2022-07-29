@@ -1,14 +1,14 @@
 use meetdoc;
 
-insert into medic_department (department_name) values ('내과');
-insert into medic_department (department_name) values ('외과');
-insert into medic_department (department_name) values ('정신과');
-insert into medic_department (department_name) values ('산부인과');
-insert into medic_department (department_name) values ('피부과');
-insert into medic_department (department_name) values ('안과');
-insert into medic_department (department_name) values ('이비인후과');
-insert into medic_department (department_name) values ('소아청소년과');
-insert into medic_department (department_name) values ('비뇨기과');
+insert into medic_department (department_name, photo_url) values ('내과', 'stomache');
+insert into medic_department (department_name, photo_url) values ('외과', 'surgery');
+insert into medic_department (department_name, photo_url) values ('정신과', 'mental-health');
+insert into medic_department (department_name, photo_url) values ('산부인과', 'pregnancy');
+insert into medic_department (department_name, photo_url) values ('피부과', 'dermatology');
+insert into medic_department (department_name, photo_url) values ('안과', 'eye');
+insert into medic_department (department_name, photo_url) values ('이비인후과', 'ear');
+insert into medic_department (department_name, photo_url) values ('소아청소년과', 'pediatric');
+insert into medic_department (department_name, photo_url) values ('비뇨기과', 'urology');
 
 insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user1', 'D', 'doctor1', 'male', '2000-01-01', 'active');
 insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user2', 'D', 'doctor2', 'male', '2000-01-01', 'active');
