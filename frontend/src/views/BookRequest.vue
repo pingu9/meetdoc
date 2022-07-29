@@ -7,7 +7,7 @@
           <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
           <p class="card-title">{{doctorName}}</p>
           <div>
-              <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
+              <h3 style="text-align: center;">예약하실 날짜 : {{appointmentTime}}</h3>
           </div>
           <div class="info-box">
             <div class="half-box">
@@ -50,13 +50,14 @@ export default {
       symptom: '',
       doctorName: '',
       doctorId: '',
-      departmentName:'',
+      departmentName: '',
+      appointmentTime: '',
     }
   },
   computed: {
   },
   methods: {
-    ...mapMutations(['setBookInfo']),
+    ...mapMutations(['setBookInfo','setDoctorId']),
     datePicked() {
       //날짜 선택하면 기능
       const param = {
@@ -66,7 +67,9 @@ export default {
       console.log(param);
       this.$store.dispatch('setAvailTime', param).then((a) => {
         console.log(a.data);
-      })
+        console.log(a.data.result);
+        this.appointmentTime = a.data.result[0];
+      });
     },
     bookRequest() {
       //시간 api 구현 미완으로 sample data...
@@ -76,16 +79,17 @@ export default {
       } else {
         timeChanged = ' ' + this.time;
       }
-      let apptDate = this.date + timeChanged;
+      //let apptDate = this.date + timeChanged;
       let bookReqInfo = {
-        "userId": 'user8',
+        "patientId": localStorage.getItem('userId'),
         "doctorId": this.doctorId,
-        "appointmentDate": apptDate,
+        "appointmentTime": this.appointmentTime,
         "symptom": this.symptom,
         "departmentName": this.$route.params.departmentName,
         "charge": 0
       };
-      console.log(bookReqInfo)
+      console.log('bookreq')
+      console.log(bookReqInfo);
       //validation 추가, date, symptom 없을 경우 못하게
       if (this.symptom === '') {
         alert('증상을 입력해주세요!');
@@ -96,7 +100,7 @@ export default {
         this.$router.push({
           name: 'bookConfirm',
             params: {
-            patientName: a.data.userName,
+            patientName: a.data.patientName,
             doctorName: a.data.doctorName,
             departmentName: a.data.departmentName,
             charge: a.data.charge,
@@ -110,52 +114,43 @@ export default {
     }
   },
   created() {
+    //파라미터 값들 저장
     this.doctorId = this.$route.params.doctorId;
     this.departmentName = this.$route.params.departmentName;
     this.doctorName = this.$route.params.doctorName;
-    //의사 상세정보
+    this.setDoctorId(this.$route.params.doctorId);
+    //의사 상세정보 api
     this.$store.dispatch('getDoctorDetail', this.doctorId).then((a) => {
       console.log(a.data);
-      
     });
+    //오늘 날짜 설정
     let todayDate = new Date();
     let yy = String(todayDate.getFullYear());
     let month = todayDate.getMonth() + 1;
     let mm = month < 10 ? '0' + month : month;
     let dd = String(todayDate.getDate() < 10 ? '0' + todayDate.getDate() : todayDate.getDate());
-    let hou = String(todayDate.getHours() > 12 ? todayDate.getHours() - 12 : todayDate.getHours());
-    let min = '';
-    let minuates = todayDate.getMinutes();
-     //min 30분 단위 설정
-    if (minuates > 0 && minuates <= 30) {//1분 ~ 30분(포함) 사이에는 30분으로 표시
-      min = '30';
-    } else {//30분 초과 ~ 0분까지는 0으로
-      hou++;
-      min = '00';
-    }
+
     //data 값 입력
     let date = yy + '-' + mm + '-' + dd;
     this.date = date;
 
     this.datePicked();
-    this.time = hou + ':' + min;
-    this.timeList.push(this.time);
 
     //현재시간으로부터 시간 10개 뿌리기
-    var minStandard = min;
-    var houStandard = Number(hou);
-    for (let i = 0; i < 9; i++) {
-      let added = '';
-      if (minStandard == 30) {
-        houStandard += 1;
-        minStandard = 0;
-        added += String(houStandard) + ':00';
-      } else {
-        added += String(houStandard) + ':30';
-        minStandard = 30;
-      }
-      this.timeList.push(added);
-    }
+    // var minStandard = min;
+    // var houStandard = Number(hou);
+    // for (let i = 0; i < 9; i++) {
+    //   let added = '';
+    //   if (minStandard == 30) {
+    //     houStandard += 1;
+    //     minStandard = 0;
+    //     added += String(houStandard) + ':00';
+    //   } else {
+    //     added += String(houStandard) + ':30';
+    //     minStandard = 30;
+    //   }
+    //   this.timeList.push(added);
+    // }
   },
 }
 </script>

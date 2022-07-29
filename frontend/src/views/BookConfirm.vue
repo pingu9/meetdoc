@@ -19,7 +19,7 @@
             </div>
           </div>
           <hr>
-          <p class="card-title" style="margin:20px 0">{{appointmentTime}}</p>
+          <p class="card-title" style="margin:20px 0">{{appointment}}</p>
           <div class="d-grid gap-2">
             <a href="/" class="btn btn-primary" style="margin:10px">닫기</a>
           </div>
@@ -38,7 +38,40 @@ export default {
       departmentName: this.$route.params.departmentName,
       charge: this.$route.params.charge,
       appointmentTime: this.$route.params.appointmentTime,
+      appointment: '',
     }
+  },
+  created() {
+    //2022-08-01 09:00 => 2022년 8월 01일 월요일 09:00
+    const year = new Date(this.appointmentTime).getFullYear();
+    const month = new Date(this.appointmentTime).getMonth() + 1;
+    const date = new Date(this.appointmentTime).getDate();
+    const daybefore = new Date(this.appointmentTime).getDay();
+    let day = '';
+    switch (daybefore) {
+      case 1:
+        day = '월요일 ';
+        break;
+      case 2:
+        day = '화요일 ';
+        break;
+      case 3:
+        day = '수요일 ';
+        break;
+      case 4:
+        day = '목요일 ';
+        break;
+      case 5:
+        day = '금요일 ';
+        break;
+    }
+    const hour = new Date(this.appointmentTime).getHours();
+    let minuates = new Date(this.appointmentTime).getMinutes();
+    if (minuates === 0) {
+      minuates = '00';
+    }
+    //console.log(year + '년 ' + month + '월 ' + date + '일 ' + day + hour + ':' + minuates);
+    this.appointment = year + '년 ' + month + '월 ' + date + '일 ' + day + hour + ':' + minuates;
   },
 }
 </script>

@@ -23,7 +23,7 @@ const routes = [
         component: MyPage,
     },
     {
-        path: "/doctors/:code",
+        path: "/doctors/:departmentCode",
         component: DoctorList,
         name: 'doctorList'
     },

@@ -11,7 +11,7 @@
             </div>
             <div class="half-box">
                 <p style="margin-top:10px;text-align: left; font-weight: bold; color: gray;">환자명</p>
-                <p style="text-align: left; font-size: 20px;">{{data.userName}} 님</p>
+                <p style="text-align: left; font-size: 20px;">{{data.patientName}} 님</p>
                 <p style="text-align: left; font-weight: bold; color: gray;">진료시간</p>
                 <p style="text-align: left; font-size: 20px;">{{data.appointmentTime}}</p>
             </div>

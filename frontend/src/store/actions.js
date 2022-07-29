@@ -18,7 +18,7 @@ export const actions = {
         return axios.get('http://localhost:8081/doctor/list/' + departmentCode);
     },
     getBookList() {
-        const patientId = 'user8';
+        const patientId = localStorage.getItem('userId');
         return axios.get('http://localhost:8081/appointment/info/list/' + patientId);
     },
     signUp(context, payload) {
