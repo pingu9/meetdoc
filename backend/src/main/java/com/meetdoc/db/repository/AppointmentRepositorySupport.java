@@ -23,7 +23,7 @@ public class AppointmentRepositorySupport {
                 .select(qAppointment)
                 .from(qAppointment)
                 .where(qAppointment.doctor.userId.eq(userId)
-                        .and(qAppointment.appointmentDate
+                        .and(qAppointment.appointmentTime
                                 .between(date, date.plusDays(1)))
                 )
                 .fetch();

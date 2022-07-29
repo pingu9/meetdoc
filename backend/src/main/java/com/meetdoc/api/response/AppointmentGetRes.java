@@ -7,14 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
 public class AppointmentGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "환자 이름")
-    String userName;
+    String patientName;
     @ApiModelProperty(name = "의사 이름")
     String doctorName;
     @ApiModelProperty(name = "진료 아이디")
@@ -40,10 +39,10 @@ public class AppointmentGetRes extends BaseResponseBody {
 
         res.setAppointmentId(appointment.getAppointmentId());
         res.setDepartmentName(appointment.getDepartmentName());
-        res.setUserName(appointment.getUser().getName());
+        res.setPatientName(appointment.getUser().getName());
         res.setDoctorName(appointment.getDoctor().getUser().getName());
         res.setStatus(appointment.getStatus());
-        res.setAppointmentTime(appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        res.setAppointmentTime(appointment.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         res.setCharge(appointment.getCharge());
 
         res.setRoomLink(appointment.getRoomLink());
