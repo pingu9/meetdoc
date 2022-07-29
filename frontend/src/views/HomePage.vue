@@ -6,7 +6,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4" id="container-departments">
       <div class="col" v-for="(department, idx) in $store.state.departments" :key="idx">
         <!-- <div class="card h-100" @click="$router.push({`/doctors/${department.departmentCode}`})"> -->
-        <div class="card" @click="$router.push({name: 'doctorList', params: {code: department.departmentCode, departmentName: department.departmentName}})">
+        <div class="card" @click="$router.push({name: 'doctorList', params: {departmentCode: department.departmentCode, departmentName: department.departmentName}})">
           <img :src="getIconPath(department.photoUrl)" class="card-img-top" :alt="`${department.departmentName}`" id="deptImg">
           <div class="card-body">
             <h5 class="card-title">{{department.departmentName}}</h5>
