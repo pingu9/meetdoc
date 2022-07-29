@@ -32,5 +32,8 @@ export const mutations = {
     },
     setBookInfo(state, data) {
         state.bookInfo = data;
+    },
+    setDoctorId(state, data) {
+        state.doctorId = data;
     }
 };

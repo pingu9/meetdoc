@@ -9,8 +9,8 @@
                 <p class="card-title">환자 및 의사 정보</p>
                 <div class="info-body">
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">환자명 : {{$store.state.chartDetail.userName}}</p></div>
-                        <div class="col"><p class="chartDetailData">생년월일 : {{$store.state.chartDetail.userBirthDate}}</p></div>
+                        <div class="col"><p class="chartDetailData">환자명 : {{$store.state.chartDetail.patientName}}</p></div>
+                        <div class="col"><p class="chartDetailData">생년월일 : {{$store.state.chartDetail.patientBirthdate}}</p></div>
                     </div>
                     <div class="row">
                         <div class="col"><p class="chartDetailData">병원명 : {{$store.state.chartDetail.hospitalName}}</p></div>
@@ -21,7 +21,7 @@
                     <div class="col"><p class="chartDetailData">면허번호 : {{$store.state.chartDetail.licenseNumber}}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col"><p class="chartDetailData">진료일 : {{$store.state.chartDetail.appointmentDate}}</p></div>
+                        <div class="col"><p class="chartDetailData">진료일 : {{$store.state.chartDetail.appointmentTime}}</p></div>
                         <div class="col"><p class="chartDetailData">병명 진단: {{$store.state.chartDetail.icd}}</p></div>
                     </div>
                 </div>
