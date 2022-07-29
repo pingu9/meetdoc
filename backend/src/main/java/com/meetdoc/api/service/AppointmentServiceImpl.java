@@ -3,10 +3,8 @@ package com.meetdoc.api.service;
 import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.AppointmentGetRes;
-import com.meetdoc.db.entity.Appointment;
-import com.meetdoc.db.entity.Doctor;
-import com.meetdoc.db.entity.MedicDepartment;
-import com.meetdoc.db.entity.User;
+import com.meetdoc.common.util.AvailableTimeStore;
+import com.meetdoc.db.entity.*;
 import com.meetdoc.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -143,4 +141,16 @@ public class AppointmentServiceImpl implements AppointmentService{
         appointmentRepository.delete(appointment);
     }
 
+    @Override
+    public List<LocalDateTime> getAvailableTimeList(String doctorId, LocalDateTime time, OpeningHours openingHour) {
+        AvailableTimeStore timeStore = new AvailableTimeStore(openingHour, time.toLocalDate());
+
+        List<Appointment> appointmentList = findAvailableTime(doctorId, time);
+
+        for (Appointment appointment : appointmentList) {
+            timeStore.book(appointment.getAppointmentTime());
+        }
+
+        return timeStore.getAvailableTimeList();
+    }
 }
