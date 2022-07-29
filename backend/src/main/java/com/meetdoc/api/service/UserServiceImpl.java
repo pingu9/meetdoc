@@ -2,14 +2,14 @@ package com.meetdoc.api.service;
 
 import com.meetdoc.api.request.UserPostReq;
 import com.meetdoc.db.entity.*;
-import com.meetdoc.db.repository.UserRepository;
-import com.meetdoc.db.repository.DoctorMedicDepartmentRepositorySupport;
-import com.meetdoc.db.repository.DoctorRepository;
+import com.meetdoc.db.repository.*;
 import com.meetdoc.api.request.UserPatchReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.meetdoc.db.repository.UserRepositorySupport;
+
+import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    DayOffRepositorySupport dayOffRepositorySupport;
+
+    @Autowired
+    OpeningHoursRepositorySupport openingHoursRepositorySupport;
 
     @Override
     public User createUser(UserPostReq userReqInfo) {
@@ -77,5 +83,20 @@ public class UserServiceImpl implements UserService {
     public Long deleteUserByUserId(String userId) {
         Long affectedRow = userRepositorySupport.deleteUserByUserId(userId);
         return affectedRow;
+    }
+
+    @Override
+    public Boolean isDayOff(String userId, LocalDate localDate) {
+        try {
+            DayOff dayoff =  dayOffRepositorySupport.findDayOffByIdAndDate(userId, localDate).get();
+            return true;
+        } catch(NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public OpeningHours getOpeningHoursByIdAndWeekDay(String userId, String weekDay) {
+        return openingHoursRepositorySupport.findOpeningHourByIdAndWeekDay(userId, weekDay).get();
     }
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,5 +16,5 @@ public class DayOff implements Serializable {
     @Id
     Doctor doctor;
 
-    LocalDateTime dayOffDate;
+    LocalDate dayOffDate;
 }

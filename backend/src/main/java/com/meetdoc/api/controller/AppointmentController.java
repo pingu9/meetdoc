@@ -8,9 +8,9 @@ import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.common.util.AvailableTimeStore;
-import com.meetdoc.db.entity.Appointment;
-import com.meetdoc.db.entity.MedicDepartment;
-import com.meetdoc.db.entity.User;
+import com.meetdoc.common.util.DayOffWeekMapper;
+import com.meetdoc.db.entity.*;
+import com.querydsl.core.NonUniqueResultException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,6 +28,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.EntityExistsException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -149,8 +150,9 @@ public class AppointmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getAvailableTimeList(@PathVariable String doctorId, @PathVariable String selectedDate) {
+        User user;
         try {
-            User user = userService.getUserByUserId(doctorId);
+            user = userService.getUserByUserId(doctorId);
             if (user.getDoctor() == null) {
                 throw new NoSuchElementException();
             }
@@ -158,12 +160,24 @@ public class AppointmentController {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200,"no data"));
         }
 
-
-        AvailableTimeStore timeStore = new AvailableTimeStore();
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime time = LocalDateTime.of(LocalDate.parse(selectedDate, formatter), LocalTime.of(0, 0));
-        timeStore.init(time.toLocalDate());
+
+        if (userService.isDayOff(user.getUserId(), time.toLocalDate())) {
+            return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "no data", new ArrayList<>()));
+        }
+
+        OpeningHours openingHour;
+        try {
+            openingHour = userService.getOpeningHoursByIdAndWeekDay(user.getUserId(), DayOffWeekMapper.DayOfWeekToString(time.getDayOfWeek()));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(200).body(AvailableTimeGetRes.of(200, "no data", new ArrayList<>()));
+        } catch (NonUniqueResultException e) {
+            return ResponseEntity.status(500).body(AvailableTimeGetRes.of(500, "서버 에러 발생"));
+        }
+
+
+        AvailableTimeStore timeStore = new AvailableTimeStore(openingHour, time.toLocalDate());
 
         List<Appointment> appointmentList = appointmentService.findAvailableTime(doctorId, time);
 
