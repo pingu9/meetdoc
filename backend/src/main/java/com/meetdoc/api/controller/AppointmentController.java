@@ -58,12 +58,14 @@ public class AppointmentController {
     @ApiOperation(value = "진료 예약 요청")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공"),
+            @ApiResponse(code = 400, message = "잘못된 요청"),
             @ApiResponse(code = 409, message = "중복 진료 내역"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> reserveAppointment(@RequestBody AppointmentPostReq req) {
         try {
             Appointment ap = appointmentService.createAppointment(req);
+            if(ap == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400,"잘못된 요청"));
             return ResponseEntity.status(201).body(AppointmentGetRes.of(201, "Success", ap));
         } catch (EntityExistsException e) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 진료 아이디입니다."));
@@ -195,13 +197,13 @@ public class AppointmentController {
 
         try {
             Appointment appointment = appointmentService.findAppointmentByAppointmentId(appointmentId);
+            appointmentService.deleteAppointment(appointment);
             if (!appointment.getUser().getUserId().equals(user.getUserId())) {
                 return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
             }
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         }
-
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }
