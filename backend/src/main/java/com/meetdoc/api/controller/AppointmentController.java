@@ -74,7 +74,7 @@ public class AppointmentController {
     @ApiOperation(value = "예약한 진료 리스트(환자)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "진료 내역이 없습니다"),
+            @ApiResponse(code = 200, message = "진료 내역이 없습니다"),
             @ApiResponse(code = 403, message = "환자가 아닌 회원"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
@@ -82,14 +82,14 @@ public class AppointmentController {
         List<AppointmentGetRes> list = appointmentService.getAppointments(patientId);
         if(list == null) return ResponseEntity.status(403).body(BaseResponseBody.of(403, "환자가 아닌 회원입니다."));
         if(list.size() > 0) return ResponseEntity.status(200).body(list);
-        return ResponseEntity.status(204).body(BaseResponseBody.of(204, "진료 내역이 없습니다."));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
     }
 
     @GetMapping("/info/list/doctor/{doctorId}")
     @ApiOperation(value = "예약한 진료 리스트(의사)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 200, message = "존재하지 않는 아이디"),
             @ApiResponse(code = 403, message = "의사가 아닌 회원"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
@@ -97,7 +97,7 @@ public class AppointmentController {
         List<AppointmentGetRes> list = appointmentService.getDoctorAppointments(doctorId);
         if(list == null) return ResponseEntity.status(403).body(BaseResponseBody.of(403,"의사가 아닌 회원입니다."));
         if(list.size() > 0) return ResponseEntity.status(200).body(list);
-        return ResponseEntity.status(204).body(BaseResponseBody.of(204, "진료 내역이 없습니다."));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
     }
 
     @GetMapping("/info/detail/{appointmentId}")
@@ -120,7 +120,7 @@ public class AppointmentController {
     @ApiOperation(value = "처방 입력")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "진료 내역 없음"),
+            @ApiResponse(code = 200, message = "진료 내역 없음"),
             @ApiResponse(code = 401, message = "권한 없음"),
             @ApiResponse(code = 409, message = "처방이 이미 있음"),
             @ApiResponse(code = 500, message = "서버 오류")
@@ -179,7 +179,7 @@ public class AppointmentController {
     @ApiOperation(value = "예약 취소")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
             @ApiResponse(code = 403, message = "권한이 없는 요청"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
@@ -199,7 +199,7 @@ public class AppointmentController {
                 return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
             }
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 진료 내역입니다"));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
