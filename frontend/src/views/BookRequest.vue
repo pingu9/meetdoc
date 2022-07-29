@@ -67,7 +67,7 @@ export default {
       }
       let apptDate = this.date + timeChanged;
       let bookReqInfo = {
-        "userId": 'user10',
+        "userId": 'user8',
         "doctorId": this.$route.params.doctorId,
         "appointmentDate": apptDate,
         "symptom": this.symptom,
