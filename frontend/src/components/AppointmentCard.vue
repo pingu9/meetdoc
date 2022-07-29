@@ -83,5 +83,7 @@ export default {
 </script>
 
 <style>
-
+.check{
+    
+}
 </style>
