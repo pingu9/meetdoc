@@ -23,7 +23,7 @@ public class AppointmentGetRes extends BaseResponseBody {
     @ApiModelProperty(name = "진료 상태")
     String status;
     @ApiModelProperty(name = "진료비")
-    BigDecimal charge;
+    BigDecimal charge = BigDecimal.valueOf(0);
     @ApiModelProperty(name = "진료과 이름")
     String departmentName;
     @ApiModelProperty(name = "화상 진료 링크")
