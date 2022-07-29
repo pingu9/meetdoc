@@ -8,7 +8,9 @@ import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.common.util.AvailableTimeStore;
 import com.meetdoc.db.entity.Appointment;
+import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.MedicDepartment;
+import com.meetdoc.db.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 
 import javax.persistence.EntityExistsException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Api(value = "예약 API", tags = {"Appointment"})
 @RestController
@@ -98,13 +101,13 @@ public class AppointmentController {
     @ApiOperation(value = "진료 상세 정보")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getAppointmentDetail(@PathVariable int appointmentId) {
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
         if(appointment == null)
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204,"진료 내역이 존재하지 않습니다."));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"no data"));
         return ResponseEntity.status(200).body(AppointmentDetailGetRes.of(200,"Success",appointment));
     }
 
@@ -123,7 +126,7 @@ public class AppointmentController {
         //유저 로그인을 통해 토큰을 확인하는 과정과 그 유저가 의사가 맞는지를 확인하는 코드 필요
         Appointment ap = appointmentService.getAppointmentById(appointmentId);
         if(ap == null)
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "존재하지 않는 진료 내역입니다."));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
 
         if(ap.getPrescriptionDescription() != null)
             return ResponseEntity.status(409).body(BaseResponseBody.of(409,"처방 내역이 이미 있습니다."));
@@ -133,15 +136,23 @@ public class AppointmentController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success"));
     }
 
-    /* TODO: 204 에러 처리 */
     @GetMapping("/available-time/{doctorId}/{selectedDate}")
     @ApiOperation(value = "가능 시간")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 204, message = "존재하지 않는 의사"),
+            @ApiResponse(code = 200, message = "존재하지 않는 의사"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getAvailableTimeList(@PathVariable String doctorId, @PathVariable String selectedDate) {
+        try {
+            User user = userService.getUserByUserId(doctorId);
+            if (user.getDoctor() == null) {
+                throw new NoSuchElementException();
+            }
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"no data"));
+        }
+
 
         AvailableTimeStore timeStore = new AvailableTimeStore();
 
