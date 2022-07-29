@@ -37,6 +37,7 @@ export const actions = {
         axios.post('http://localhost:8081/user/login', idpw)
             .then((a) => {
                 console.log(a.data.accessToken);
+                console.log(a.data);
                 localStorage.setItem('token', a.data.accessToken);
                 router.push({ name: 'home' });
 
