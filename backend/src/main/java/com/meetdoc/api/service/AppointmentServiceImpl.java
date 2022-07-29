@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
@@ -131,4 +132,15 @@ public class AppointmentServiceImpl implements AppointmentService{
 
         appointmentRepository.save(appointment);
     }
+
+    @Override
+    public Appointment findAppointmentByAppointmentId (int appointmentId) throws NoSuchElementException {
+        return appointmentRepository.findById(appointmentId).get();
+    }
+
+    @Override
+    public void deleteAppointment(Appointment appointment) {
+        appointmentRepository.delete(appointment);
+    }
+
 }
