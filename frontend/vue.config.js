@@ -10,8 +10,8 @@ module.exports = {
     port: 8080,
     open: true,
     proxy: {
-      '/api/v1': {
-        target: 'https://localhost:8080/'
+      '^/': {
+        target: 'http://localhost:8081/'
       },
     },
     historyApiFallback: true,
