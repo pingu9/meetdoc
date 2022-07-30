@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+const target = 'http://localhost:8081/';
 
 module.exports = defineConfig({
   transpileDependencies: true
@@ -10,8 +11,14 @@ module.exports = {
     port: 8080,
     open: true,
     proxy: {
-      '^/': {
-        target: 'http://localhost:8081/'
+      '/user': {
+        target: target
+      },
+      '/appointment': {
+        target: target
+      },
+      '/doctor': {
+        target: target
       },
     },
     historyApiFallback: true,
