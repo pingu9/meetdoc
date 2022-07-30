@@ -5,23 +5,23 @@ version: "3.8"
 services:
   db:
     image: mysql:5.7
-    container_name: meetdoc_db
+    container_name: mysql
     restart: always
+    volumes:
+      # Mount cotainer drive to real drive
+      - ./db:/docker-entrypoint-initdb.d
+    networks:
+      # network inside of a container
+      - app-network
     ports:
       - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: meetdoc
       TZ: "Asia/Seoul"
     privileged: true
-    volumes:
-      # Mount cotainer drive to real drive
-      - ./db:/docker-entrypoint-initdb.d
-    networks:
-      # network inside of a container
-      - backend
   kurento:
     image: kurento/kurento-media-server:latest
-    container_name: meetdoc_kurento
+    container_name: kurento
     restart: always
     ports:
       - "8888:8888"
@@ -31,14 +31,13 @@ services:
       KMS_STUN_PORT: "3478"
       KMS_STUN_PORT: "myuser:mypassword@3.38.166.81:3478?transport=udp"
     networks:
-      - backend
-  app:
+      - app-network
+  meetdoc:
     image: ramtk6726/meetdoc
     container_name: meetdoc
- #     dockerfile: ./dockerfile
+    #     dockerfile: ./dockerfile
     restart: always
     ports:
-      - "8080:8080"
       - "8081:8081"
     environment:
       TZ: "Asia/Seoul"
@@ -48,10 +47,38 @@ services:
       JAVA_TOOL_OPTIONS: "-Dkms.url=ws://kurento:8888/kurento"
       server.address: 0.0.0.0
     networks:
-      - backend
+      - app-network
     depends_on:
       - db
       - kurento
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./dist:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - ./certbot-etc:/etc/letsencrypt
+    networks:
+      - app-network
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    volumes:
+      - ./certbot-etc:/etc/letsencrypt
+      - ./dist:/var/www/html
+    depends_on:
+      - nginx
+    command: renew
+
+volumes:
+  certbot-etc:
+  dist:
+  nginx-conf:
+
 networks:
-  backend:
+  app-network:
     driver: bridge
