@@ -3,10 +3,7 @@ export const state = {
     value: {},
     doctors: [
     ],
-    department:{
-
-    },
-    errorMessages:{
+    errorMessages: {
         idCheckMessage: '',
         loginErrorMessage: '',
     },
@@ -22,15 +19,18 @@ export const state = {
         address: '서울시 강남구 역삼동 12-345', phone: '012-3456-7890', email: 'dsaddas@naver.com'
     },
     chartList: [
-       
+
     ],
     chartDetail: {
-       
+
     },
     departments: {
 
     },
-    bookList :{
+    bookList: {
 
     },
+    bookInfo: {
+
+    }
 };

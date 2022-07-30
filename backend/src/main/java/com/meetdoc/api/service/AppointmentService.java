@@ -1,6 +1,7 @@
 package com.meetdoc.api.service;
 
 import com.meetdoc.api.request.AppointmentPostReq;
+import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public interface AppointmentService {
     List<MedicDepartment> getAllDepartment();
@@ -18,6 +20,10 @@ public interface AppointmentService {
     String getDepartmentNameById(int departmentId);
     List<AppointmentGetRes> getAppointments(String userId);
     List<AppointmentGetRes> getDoctorAppointments(String userId);
-
     List<Appointment> findAvailableTime(String doctorId, LocalDateTime time);
+    void writePrescription(int appointmentId, PrescriptionPatchReq req);
+
+    Appointment findAppointmentByAppointmentId(int appointmentId) throws NoSuchElementException;
+
+    void deleteAppointment(Appointment appointment);
 }

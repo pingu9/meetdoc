@@ -1,6 +1,7 @@
 package com.meetdoc.api.service;
 
 import com.meetdoc.api.request.AppointmentPostReq;
+import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.AppointmentGetRes;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
@@ -39,11 +41,11 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public Appointment createAppointment(AppointmentPostReq appointmentInfo) {
         Appointment appointment = new Appointment();
-        User user = userRepositorySupport.findUserByUserId(appointmentInfo.getUserId()).get();
+        User user = userRepositorySupport.findUserByUserId(appointmentInfo.getPatientId()).get();
         Doctor doctor = userRepositorySupport.findUserByUserId(appointmentInfo.getDoctorId()).get().getDoctor();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        appointment.setAppointmentDate(LocalDateTime.parse(appointmentInfo.getAppointmentDate(),formatter));
+        appointment.setAppointmentTime(LocalDateTime.parse(appointmentInfo.getAppointmentTime(),formatter));
 
         appointment.setCharge(appointmentInfo.getCharge());
         appointment.setSymptom(appointmentInfo.getSymptom());
@@ -82,10 +84,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             AppointmentGetRes res = new AppointmentGetRes();
             res.setAppointmentId(ap.getAppointmentId());
             res.setDoctorName(ap.getDoctor().getUser().getName());
-            res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            res.setAppointmentTime(ap.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
             res.setDepartmentName(ap.getDepartmentName());
-            res.setUserName(user.getName());
+            res.setPatientName(user.getName());
             res.setRoomLink(ap.getRoomLink());
             res.setPhotoUrl(ap.getDoctor().getPhotoUrl());
             list.add(res);
@@ -104,10 +106,10 @@ public class AppointmentServiceImpl implements AppointmentService{
             AppointmentGetRes res = new AppointmentGetRes();
             res.setAppointmentId(ap.getAppointmentId());
             res.setDoctorName(user.getName());
-            res.setAppointmentTime(ap.getAppointmentDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            res.setAppointmentTime(ap.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             res.setStatus(ap.getStatus());
             res.setDepartmentName(ap.getDepartmentName());
-            res.setUserName(ap.getUser().getName());
+            res.setPatientName(ap.getUser().getName());
             res.setRoomLink(ap.getRoomLink());
             res.setPhotoUrl(doctor.getPhotoUrl());
             list.add(res);
@@ -119,4 +121,26 @@ public class AppointmentServiceImpl implements AppointmentService{
     public List<Appointment> findAvailableTime(String doctorId, LocalDateTime time) {
         return appointmentRepositorySupport.findAppointmentByDoctorIdAndDate(doctorId, time);
     }
+
+    @Override
+    public void writePrescription(int appointmentId, PrescriptionPatchReq req) {
+        Appointment appointment = appointmentRepository.getOne(appointmentId);
+        appointment.setPrescriptionDescription(req.getPrescriptionDescription());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        appointment.setAppointmentTime(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
+        appointment.setIcd(req.getIcd());
+
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public Appointment findAppointmentByAppointmentId (int appointmentId) throws NoSuchElementException {
+        return appointmentRepository.findById(appointmentId).get();
+    }
+
+    @Override
+    public void deleteAppointment(Appointment appointment) {
+        appointmentRepository.delete(appointment);
+    }
+
 }
