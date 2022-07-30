@@ -19,4 +19,5 @@ public interface UserService {
 
     Boolean isDayOff(String userId, LocalDate localDate);
     OpeningHours getOpeningHoursByIdAndWeekDay(String userId, String weekDay);
+    Boolean isDoctor(User user);
 }
