@@ -1,6 +1,6 @@
 <template>
   <div class="container-body">
-    <h1>{{user1.name}} 님의 예약 내역</h1>
+    <h1>{{user1.name}} 님의 예약내역</h1>
     <div class="card w-90" id="noDoctorList" v-if="bookExist === false">
       <div class="card-body">
         <h5 class="card-title">예약 내역이 없습니다.</h5>
