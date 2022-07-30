@@ -9,21 +9,21 @@ export const actions = {
         });
     },
     getDepartments(context) {
-        axios.get('http://localhost:8081/appointment/departments').then((a) => {
+        axios.get('/appointment/departments').then((a) => {
             console.log(a.data);
             context.commit('setDepartments', a.data);
         });
     },
     getDoctorList(context, departmentCode) {
-        return axios.get('http://localhost:8081/doctor/list/' + departmentCode);
+        return axios.get('/doctor/list/' + departmentCode);
     },
     getBookList() {
         const patientId = localStorage.getItem('userId');
-        return axios.get('http://localhost:8081/appointment/info/list/' + patientId);
+        return axios.get('/appointment/info/list/' + patientId);
     },
     signUp(context, payload) {
         console.log(payload)
-        axios.post('http://localhost:8081/user/', payload)
+        axios.post('/user/', payload)
             .then((a) => {
                 console.log(a.data)
             })
@@ -34,7 +34,7 @@ export const actions = {
     },
     login(context, idpw) {
         console.log(idpw)
-        axios.post('http://localhost:8081/user/login', idpw)
+        axios.post('/user/login', idpw)
             .then((a) => {
                 console.log(a.data.accessToken);
                 localStorage.setItem('token', a.data.accessToken);
@@ -49,7 +49,7 @@ export const actions = {
             });
     },
     checkId(context, userId) {
-        axios.get('http://localhost:8081/user/' + userId)
+        axios.get('/user/' + userId)
             .then((a) => {
                 console.log(userId);
                 console.log(a.data);
@@ -62,27 +62,27 @@ export const actions = {
             });
     },
     getChartList(context, doctorId) {
-        axios.get('http://localhost:8081/appointment/info/list/doctor/' + doctorId).then((a) => {
+        axios.get('/appointment/info/list/doctor/' + doctorId).then((a) => {
             console.log(a.data);
             context.commit('setChartList', a.data);
         });
     },
     getChartDetail(context, appointmentId) {
-        return axios.get('http://localhost:8081/appointment/info/detail/' + appointmentId);
+        return axios.get('/appointment/info/detail/' + appointmentId);
     },
     setBookReq(context, bookReqInfo) {
-        return axios.post('http://localhost:8081/appointment/reserve', bookReqInfo);
+        return axios.post('/appointment/reserve', bookReqInfo);
     },
     cancelAppt(context, appointmentId) {
-        return axios.delete('http://localhost:8081/appointment/cancel/' + appointmentId);
+        return axios.delete('/appointment/cancel/' + appointmentId);
     },
     setAvailTime(context, param) {
         const doctorId = param.doctorId;
         const selectedDate = param.selectedDate;
-        console.log('http://localhost:8081/appointment/available-time/' + doctorId + '/' + selectedDate);
-        return axios.get('http://localhost:8081/appointment/available-time/' + doctorId + '/' + selectedDate);
+        console.log('/appointment/available-time/' + doctorId + '/' + selectedDate);
+        return axios.get('/appointment/available-time/' + doctorId + '/' + selectedDate);
     },
     getDoctorDetail(context, doctorId) {
-        return axios.get('http://localhost:8081/doctor/detail/' + doctorId);
+        return axios.get('/doctor/detail/' + doctorId);
     }
 };
