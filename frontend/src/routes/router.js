@@ -25,10 +25,12 @@ const routes = [
     {
         path: "/doctors/:code",
         component: DoctorList,
+        name: 'doctorList'
     },
     {
         path: "/book/request",
         component: BookRequest,
+        name: 'bookRequest'
     },
     {
         path: "/book/payment",
@@ -37,6 +39,7 @@ const routes = [
     {
         path: "/book/confirm",
         component: BookConfirm,
+        name: 'bookConfirm'
     },
     {
         path: "/chart/list",

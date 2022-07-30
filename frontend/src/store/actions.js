@@ -3,70 +3,86 @@ import axios from 'axios';
 
 export const actions = {
     getData(context) {
-        axios.get('https://jsonplaceholder.typicode.com/users/').then((a) => {//test url 입력되있습니다
+        axios.get('https://jsonplaceholder.typicode.com/users').then((a) => {//test url 입력되있습니다
             console.log(a.data);
             context.commit('setData', a.data);
-        })
+        });
     },
     getDepartments(context) {
         axios.get('http://localhost:8081/appointment/departments').then((a) => {
             console.log(a.data);
             context.commit('setDepartments', a.data);
-        })
+        });
     },
-    getDoctorList(context, param) {
-        axios.get('http://localhost:8081/doctor/list/' + param).then((a) => {
-            console.log(a.data.result);
-            //context.commit('setDoctor', a.data.result[0].departmentName)
-            context.commit('setDoctorList', a.data.result);
-        })
+    getDoctorList(context, departmentCode) {
+        return axios.get('http://localhost:8081/doctor/list/' + departmentCode);
     },
-    getBookList(context) {
-        axios.get('http://localhost:8081/appointment/info/list/user8').then((a) => {
-            console.log(a.data);
-            context.commit('setBookList', a.data)
-        })
+    getBookList() {
+        const patientId = 'user8';
+        return axios.get('http://localhost:8081/appointment/info/list/' + patientId);
     },
-    login(context, payload) {
+    signUp(context, payload) {
         console.log(payload)
-        axios.post('http://localhost:8081/user/login', payload)
-        .then((a) => {
-            console.log(a.data.accessToken)
-            localStorage.setItem('token',a.data.accessToken)
-            router.push({ name: 'home' })
-
-        })
-        .catch(error => {
-          console.log('------------')
-          console.log(error.response.data.message)
-          context.commit('setLoginErrorMessage', error.response.data.message)
-      })
-    },
-    checkId(context, param) {
-        axios.get('http://localhost:8081/user/' + param)
+        axios.post('http://localhost:8081/user/', payload)
             .then((a) => {
-                console.log(param)
                 console.log(a.data)
-                context.commit('setIdErrorMessage', a.data.message)
             })
             .catch(error => {
-                console.log('------------')
-                console.log(error.response.data.message)
-                context.commit('setIdErrorMessage', error.response.data.message)
-            })
+                console.log('------------');
+                console.log(error.response.data.message);
+            });
     },
-    getChartList(context, param) {
-        axios.get('http://localhost:8081/appointment/info/list/doctor/' + param).then((a) => {
-            console.log(a.data);
-            context.commit('setChartList', a.data)
-        })
-    },
-    getChartDetail(context, param) {
-        console.log('http://localhost:8081/appointment/info/detail/' + param);
-        axios.get('http://localhost:8081/appointment/info/detail/' + param).then((a) => {
-            console.log(a.data);
-            context.commit('setChartDetail', a.data)
+    login(context, idpw) {
+        console.log(idpw)
+        axios.post('http://localhost:8081/user/login', idpw)
+            .then((a) => {
+                console.log(a.data.accessToken);
+                localStorage.setItem('token', a.data.accessToken);
+                localStorage.setItem('userId', a.data.userId);
+                router.push({ name: 'home' });
 
-        })
+            })
+            .catch(error => {
+                console.log('------------');
+                console.log(error.response.data.message);
+                context.commit('setLoginErrorMessage', error.response.data.message);
+            });
+    },
+    checkId(context, userId) {
+        axios.get('http://localhost:8081/user/' + userId)
+            .then((a) => {
+                console.log(userId);
+                console.log(a.data);
+                context.commit('setIdErrorMessage', a.data.message);
+            })
+            .catch(error => {
+                console.log('------------');
+                console.log(error.response.data.message);
+                context.commit('setIdErrorMessage', error.response.data.message);
+            });
+    },
+    getChartList(context, doctorId) {
+        axios.get('http://localhost:8081/appointment/info/list/doctor/' + doctorId).then((a) => {
+            console.log(a.data);
+            context.commit('setChartList', a.data);
+        });
+    },
+    getChartDetail(context, appointmentId) {
+        return axios.get('http://localhost:8081/appointment/info/detail/' + appointmentId);
+    },
+    setBookReq(context, bookReqInfo) {
+        return axios.post('http://localhost:8081/appointment/reserve', bookReqInfo);
+    },
+    cancelAppt(context, appointmentId) {
+        return axios.delete('http://localhost:8081/appointment/cancel/' + appointmentId);
+    },
+    setAvailTime(context, param) {
+        const doctorId = param.doctorId;
+        const selectedDate = param.selectedDate;
+        console.log('http://localhost:8081/appointment/available-time/' + doctorId + '/' + selectedDate);
+        return axios.get('http://localhost:8081/appointment/available-time/' + doctorId + '/' + selectedDate);
+    },
+    getDoctorDetail(context, doctorId) {
+        return axios.get('http://localhost:8081/doctor/detail/' + doctorId);
     }
 };

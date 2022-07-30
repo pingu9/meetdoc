@@ -25,7 +25,7 @@ public class Appointment {
     User user;
 
     @NotNull
-    LocalDateTime appointmentDate;
+    LocalDateTime appointmentTime;
     @NotNull
     String symptom;
     @NotNull

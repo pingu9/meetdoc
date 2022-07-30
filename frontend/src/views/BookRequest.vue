@@ -5,14 +5,14 @@
       <div class="card">
         <div class="card-body">
           <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
-          <p class="card-title">닥터스트레인지 의사</p>
+          <p class="card-title">{{doctorName}}</p>
           <div>
               <h3 style="text-align: center;">예약하실 날짜 : {{date}} {{time}}</h3>
           </div>
           <div class="info-box">
             <div class="half-box">
               <form name="해당 폼의 이름" action="값을 보낼 주소" method="post">
-                <input type='date' name='userBirthday'  @change="datePicked" v-model="date"/>
+                <input type='date' name='userBirthday'  @change="datePicked()" v-model="date"/>
             </form>
             </div>
             <div class="half-box">
@@ -24,12 +24,12 @@
           <div>
             <p class="card-title">증상 입력</p>
             <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="symptom"></textarea>
               <label for="floatingTextarea2">증상에 대해 자세히 입력해주세요.</label>
             </div>
           </div>
           <div class="d-grid gap-2">
-            <a href="/book/confirm" class="btn btn-primary">다음</a>
+            <a href="#" class="btn btn-primary" @click="bookRequest()">진료 예약하기</a>
           </div>
         </div>
       </div>
@@ -39,24 +39,85 @@
 
 <script>
 
+import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
       date: '',
       time: '',
       addTime: 30,
-      timeList : [''],
+      timeList: [''],
+      symptom: '',
+      doctorName: '',
+      doctorId: '',
+      departmentName:'',
     }
   },
   computed: {
-    
   },
   methods: {
+    ...mapMutations(['setBookInfo']),
     datePicked() {
       //날짜 선택하면 기능
+      const param = {
+        doctorId: this.doctorId,
+        selectedDate: this.date,
+      };
+      console.log(param);
+      this.$store.dispatch('setAvailTime', param).then((a) => {
+        console.log(a.data);
+      })
     },
+    bookRequest() {
+      //시간 api 구현 미완으로 sample data...
+      let timeChanged = this.time.split(':');
+      if (timeChanged[0].length == 1) {
+        timeChanged = ' 0' + this.time;
+      } else {
+        timeChanged = ' ' + this.time;
+      }
+      let apptDate = this.date + timeChanged;
+      let bookReqInfo = {
+        "userId": 'user8',
+        "doctorId": this.doctorId,
+        "appointmentDate": apptDate,
+        "symptom": this.symptom,
+        "departmentName": this.$route.params.departmentName,
+        "charge": 0
+      };
+      console.log(bookReqInfo)
+      //validation 추가, date, symptom 없을 경우 못하게
+      if (this.symptom === '') {
+        alert('증상을 입력해주세요!');
+        return;
+      }
+      this.$store.dispatch('setBookReq', bookReqInfo).then((a) => {
+        console.log(a.data);
+        this.$router.push({
+          name: 'bookConfirm',
+            params: {
+            patientName: a.data.userName,
+            doctorName: a.data.doctorName,
+            departmentName: a.data.departmentName,
+            charge: a.data.charge,
+            appointmentTime: a.data.appointmentTime,
+          }
+        });
+      }).catch(error => {
+        console.log(error)
+        alert('해당 날짜에 예약이 불가합니다!');
+      });
+    }
   },
-  mounted() {
+  created() {
+    this.doctorId = this.$route.params.doctorId;
+    this.departmentName = this.$route.params.departmentName;
+    this.doctorName = this.$route.params.doctorName;
+    //의사 상세정보
+    this.$store.dispatch('getDoctorDetail', this.doctorId).then((a) => {
+      console.log(a.data);
+      
+    });
     let todayDate = new Date();
     let yy = String(todayDate.getFullYear());
     let month = todayDate.getMonth() + 1;
@@ -75,6 +136,8 @@ export default {
     //data 값 입력
     let date = yy + '-' + mm + '-' + dd;
     this.date = date;
+
+    this.datePicked();
     this.time = hou + ':' + min;
     this.timeList.push(this.time);
 
