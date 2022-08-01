@@ -47,6 +47,8 @@ export default {
       console.log(this.username)
       console.log(this.password)
       this.$store.dispatch('login',{userId: this.username, password: this.password})
+      this.username=''
+      this.password=''
     }
   }
 }
