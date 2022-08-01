@@ -17,11 +17,11 @@ import lombok.Setter;
 @ApiModel("UserInfoGetRes")
 public class UserInfoGetRes extends BaseResponseBody{
     @ApiModelProperty(name="유저 ID", example="your_id")
-    String id;
+    String userId;
     @ApiModelProperty(name="유저 타입", example="의사일경우 doctor, 일반 회원일 경우 normal")
     String userType;
     @ApiModelProperty(name="유저 name", example="XXX")
-    String name;
+    String userName;
     @ApiModelProperty(name="유저 성별", example="male")
     String gender;
     @ApiModelProperty(name="유저 생년월일", example="2000-01-01")
@@ -56,9 +56,9 @@ public class UserInfoGetRes extends BaseResponseBody{
         res.setStatusCode(statusCode);
         res.setMessage(message);
 
-        res.setId(user.getUserId());
+        res.setUserId(user.getUserId());
         res.setUserType(user.getUserType());
-        res.setName(user.getName());
+        res.setUserName(user.getName());
         res.setGender(user.getGender());
         res.setBirthdate(user.getBirthdate().toString());
 
