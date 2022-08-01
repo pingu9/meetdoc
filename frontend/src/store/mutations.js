@@ -11,7 +11,9 @@ export const mutations = {
     setDoctorList(state, data) {
         state.doctors = data;
     },
-
+    setCurrentUser(state, data) {
+        state.currentUser = data;
+    },
     setIdErrorMessage(state, data) {
         state.errorMessages.idCheckMessage = data;
     },
