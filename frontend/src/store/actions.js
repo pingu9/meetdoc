@@ -24,8 +24,8 @@ export const actions = {
     signUp(context, payload) {
         console.log(payload)
         axios.post('/user/', payload)
-            .then((a) => {
-                console.log(a.data)
+            .then(() => {
+                router.push({ name: 'home' });
             })
             .catch(error => {
                 console.log('------------');
