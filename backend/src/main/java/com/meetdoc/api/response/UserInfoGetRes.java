@@ -50,7 +50,8 @@ public class UserInfoGetRes extends BaseResponseBody{
 //    @ApiModelProperty(name="병원 설명", example="병원에 대한 설명")
 //    String description;
 
-    public static UserInfoGetRes of(Integer statusCode, String message, User user, UserInfo userInfo) {
+    public static UserInfoGetRes of(Integer statusCode, String message, User user) {
+        UserInfo userInfo = user.getUserInfo();
         UserInfoGetRes res = new UserInfoGetRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);

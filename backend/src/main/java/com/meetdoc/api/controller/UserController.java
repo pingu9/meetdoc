@@ -2,6 +2,7 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.UserLoginPostReq;
 import com.meetdoc.api.request.UserPostReq;
+import com.meetdoc.api.response.UserInfoGetRes;
 import com.meetdoc.api.response.UserLoginPostRes;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
@@ -172,7 +173,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         } else {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+            return ResponseEntity.status(200).body(UserInfoGetRes.of(200,"Success", user));
         }
     }
 
