@@ -40,15 +40,21 @@ public class UserRepositorySupport {
 
     @Transactional
     public Long updateUserByUserId(String userId, UserPatchReq patchUserReq) {
+        User user = findUserByUserId(userId).get();
+        UserInfo info = user.getUserInfo();
         Long affectedRow = jpaQueryFactory.update(qUserInfo)
                 .where(qUserInfo.user.userId.eq(userId))
-                .set(qUserInfo.password, patchUserReq.getPassword())
-                .set(qUserInfo.phone, patchUserReq.getPhone())
-                .set(qUserInfo.zipcode, patchUserReq.getZipcode())
-                .set(qUserInfo.address, patchUserReq.getAddress())
-                .set(qUserInfo.email, patchUserReq.getEmail())
+                .set(qUserInfo.password, patchUserReq.getPassword() == null ? info.getPassword() : patchUserReq.getPassword())
+                .set(qUserInfo.phone, patchUserReq.getPhone() == null ? info.getPhone() : patchUserReq.getPhone())
+                .set(qUserInfo.zipcode, patchUserReq.getZipcode() == null ? info.getZipcode() : patchUserReq.getZipcode())
+                .set(qUserInfo.address, patchUserReq.getAddress() == null ? info.getAddress() : patchUserReq.getAddress())
+                .set(qUserInfo.email, patchUserReq.getEmail() == null ? info.getEmail() : patchUserReq.getEmail())
                 .execute();
-        return affectedRow;
+        Long affectedRow2 = jpaQueryFactory.update(qUser)
+                .where(qUser.userId.eq(userId))
+                .set(qUser.name, patchUserReq.getUserName() == null ? user.getName() : patchUserReq.getUserName())
+                .execute();
+        return affectedRow + affectedRow2;
     }
 
     @Transactional
