@@ -1,6 +1,7 @@
 import router from '@/routes/router';
 import axios from 'axios';
 
+
 export const actions = {
     getData(context) {
         axios.get('https://jsonplaceholder.typicode.com/users').then((a) => {//test url 입력되있습니다
@@ -20,6 +21,20 @@ export const actions = {
     getBookList() {
         const patientId = localStorage.getItem('userId');
         return axios.get('/appointment/info/list/' + patientId);
+    },
+
+    getCurrentUserInfo(context, param, token) {
+        console.log(param)
+        return axios.get('/user/info/' + param,{
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then((a) => {
+            console.log('현재유저요청')
+            console.log(a.data.result);
+            context.commit('setCurrentUser', a.data.result);
+      })
     },
     signUp(context, payload) {
         console.log(payload)
