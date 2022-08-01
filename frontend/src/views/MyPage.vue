@@ -1,13 +1,13 @@
 <template>
   <div class="container-body">
     <h4>MyPage</h4>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{user1.user_id}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{user1.name}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{user1.gender}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">생년월일 : {{user1.birthdate}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">주소 : {{user1.address}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">연락처 번호 : {{user1.phone}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">e-mail : {{user1.email}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.user_id}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.name}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{currentUser.gender}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">생년월일 : {{currentUser.birthdate}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">주소 : {{currentUser.address}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">연락처 번호 : {{currentUser.phone}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">e-mail : {{currentUser.email}}</div>
     <div>
       <button type="button" class="btn btn-outline-primary m-5">회원정보 수정</button>
       <button type="button" class="btn btn-outline-warning">회원탈퇴</button>
@@ -20,10 +20,19 @@
 import { mapState } from 'vuex'
 
 export default {
-
+data(){
+    return{
+    }
+  },
   computed: {
-    ...mapState(['user1']),
-  }
+    ...mapState(['currentUser']),
+  },
+  created() {
+    let userId = localStorage.getItem('userId');
+    let token = localStorage.getItem('token');
+    console.log(userId)
+    this.$store.dispatch('getCurrentUserInfo', userId, token);
+  },
 }
 </script>
 
