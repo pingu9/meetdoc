@@ -41,10 +41,10 @@ data(){
     if (this.departmentCode !== null && this.departmentCode !== undefined) {
       this.setDepartmentCode(this.departmentCode);
     }
-    this.$store.dispatch('getDoctorList', this.getDepartmentCode).then((a) => {
-      console.log(a.data.result);
-      if (a.data.result.length !== 0) this.doctorList = true;
-      this.setDoctorList(a.data.result);
+    this.$store.dispatch('getDoctorList', this.getDepartmentCode).then((res) => {
+      console.log(res.data.result);
+      if (res.data.result.length !== 0) this.doctorList = true;
+      this.setDoctorList(res.data.result);
     }).catch(error => {
       console.log(error);
     })

@@ -69,12 +69,12 @@ export default {
         selectedDate: this.date,
       };
       console.log(param);
-      this.$store.dispatch('setAvailTime', param).then((a) => {
-        console.log(a.data.result);
+      this.$store.dispatch('setAvailTime', param).then((res) => {
+        console.log(res.data.result);
         //받아온 timeList 시간 추출
         let hour = '';
         let minuates = '';
-        a.data.result.forEach(element => {
+        res.data.result.forEach(element => {
           hour = new Date(element).getHours();
           minuates = new Date(element).getMinutes();
           if (minuates === 0) {
@@ -132,8 +132,8 @@ export default {
         "charge": 0
       };
       console.log(bookReqInfo);
-      this.$store.dispatch('setBookReq', bookReqInfo).then((a) => {
-        console.log(a.data);
+      this.$store.dispatch('setBookReq', bookReqInfo).then((res) => {
+        console.log(res.data);
         this.$router.push({
           name: 'bookConfirm',
             params: {
@@ -159,8 +159,8 @@ export default {
     this.doctorName = this.$route.params.doctorName;
     this.setDoctorId(this.doctorId);
     //의사 상세정보 api
-    this.$store.dispatch('getDoctorDetail', this.doctorId).then((a) => {
-      console.log(a.data);
+    this.$store.dispatch('getDoctorDetail', this.doctorId).then((res) => {
+      console.log(res.data);
     });
     //오늘 날짜 설정
     let todayDate = new Date();
