@@ -153,9 +153,11 @@ export default {
   created() {
     //파라미터 값들 저장
     this.doctorId = this.$route.params.doctorId;
+    this.$store.state.doctorId = this.doctorId;
+    console.log(this.$store.state.doctorId);
     this.departmentName = this.$route.params.departmentName;
     this.doctorName = this.$route.params.doctorName;
-    this.setDoctorId(this.$route.params.doctorId);
+    this.setDoctorId(this.doctorId);
     //의사 상세정보 api
     this.$store.dispatch('getDoctorDetail', this.doctorId).then((a) => {
       console.log(a.data);
