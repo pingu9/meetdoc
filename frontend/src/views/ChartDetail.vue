@@ -68,9 +68,9 @@ export default {
     ...mapMutations(['setChartDetail',]),
     },
     created(){
-        this.$store.dispatch('getChartDetail', this.$route.params.appointmentId).then((a) => {
-            console.log(a.data);
-            this.setChartDetail(a.data);
+        this.$store.dispatch('getChartDetail', this.$route.params.appointmentId).then((res) => {
+            console.log(res.data);
+            this.setChartDetail(res.data);
         })
     },
 
