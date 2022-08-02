@@ -6,6 +6,7 @@ import com.meetdoc.api.response.DoctorDetailGetRes;
 import com.meetdoc.api.response.DoctorListGetRes;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.DoctorService;
+import com.meetdoc.api.service.S3Service;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.db.entity.Doctor;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class DoctorController {
     UserService userService;
     @Autowired
     AppointmentService appointmentService;
+    @Autowired
+    S3Service s3Service;
 
     @PostMapping("/regist")
     @ApiOperation(value = "의사 회원가입", notes = "의사 회원의 경우 필요한 항목들을 추가 입력한다.")
@@ -38,8 +42,13 @@ public class DoctorController {
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
     public ResponseEntity<? extends BaseResponseBody> doctorRegister(
-            @RequestBody @ApiParam(value = "회원가입", required = true) DoctorPostReq registerInfo) {
-        Doctor doctor = doctorService.createDoctor(registerInfo);
+            @RequestPart @ApiParam(value = "registerInfo", required = true) DoctorPostReq registerInfo
+            , @RequestPart(required = false) MultipartFile image) {
+        if(image != null) {
+            String fileName = s3Service.uploadFile(image);
+            registerInfo.setPhotoUrl(fileName);
+        }
+        doctorService.createDoctor(registerInfo);
 
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, "Success"));
     }

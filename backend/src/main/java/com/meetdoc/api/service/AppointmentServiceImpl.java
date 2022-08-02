@@ -26,9 +26,10 @@ public class AppointmentServiceImpl implements AppointmentService{
     DoctorRepositorySupport doctorRepositorySupport;
     @Autowired
     UserRepositorySupport userRepositorySupport;
-
     @Autowired
     AppointmentRepositorySupport appointmentRepositorySupport;
+    @Autowired
+    SymptomImageRepository symptomImageRepository;
 
     @Override
     public List<MedicDepartment> getAllDepartment() {
@@ -59,6 +60,14 @@ public class AppointmentServiceImpl implements AppointmentService{
 
         appointment.setStatus("Before");
         return appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public SymptomImage createSymptomImage(String photoUrl, Appointment appointment) {
+        SymptomImage symptomImage = new SymptomImage();
+        symptomImage.setPhotoUrl(photoUrl);
+        symptomImage.setAppointment(appointment);
+        return symptomImageRepository.save(symptomImage);
     }
 
     @Override

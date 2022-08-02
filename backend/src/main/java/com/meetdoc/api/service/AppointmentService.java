@@ -3,10 +3,7 @@ package com.meetdoc.api.service;
 import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.AppointmentGetRes;
-import com.meetdoc.db.entity.Appointment;
-import com.meetdoc.db.entity.Doctor;
-import com.meetdoc.db.entity.MedicDepartment;
-import com.meetdoc.db.entity.OpeningHours;
+import com.meetdoc.db.entity.*;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.NoSuchElementException;
 public interface AppointmentService {
     List<MedicDepartment> getAllDepartment();
     Appointment createAppointment(AppointmentPostReq appointmentInfo);
+    SymptomImage createSymptomImage(String photoUrl, Appointment appointment);
     Appointment getAppointmentById(int appointmentId);
     List<Doctor> searchDoctors(int departmentCode, String name, Pageable pageable);
     String getDepartmentNameById(int departmentId);
