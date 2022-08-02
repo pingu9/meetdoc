@@ -23,8 +23,8 @@ export const actions = {
         return axios.get('/appointment/info/list/' + patientId);
     },
 
-    getCurrentUserInfo(context, param, token) {
-        console.log(param)
+    getCurrentUserInfo(context, param) {
+        const token = localStorage.getItem('token')
         return axios.get('/user/info/' + param,{
             headers: {
                 Authorization: 'Bearer ' + token
@@ -32,8 +32,7 @@ export const actions = {
         })
         .then((a) => {
             console.log('현재유저요청')
-            console.log(a.data.result);
-            context.commit('setCurrentUser', a.data.result);
+            context.commit('setCurrentUser', a.data);
       })
     },
     signUp(context, payload) {
