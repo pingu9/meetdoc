@@ -19,24 +19,29 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
 data(){
     return {
       department: this.$route.params.departmentName,
-      doctorList : false,
+      doctorList: false,
+      departmentCode: this.$route.params.departmentCode,
     }
   },
   components: {
   },
   computed: {
-  ...mapState(['doctors']),
+    ...mapState(['doctors']),
+    ...mapGetters(['getDepartmentCode']),
   },
   methods: {
-    ...mapMutations(['setDoctorList',]),
+    ...mapMutations(['setDoctorList', 'setDepartmentCode']),
   },
   created() {
-    this.$store.dispatch('getDoctorList', this.$route.params.departmentCode).then((a) => {
+    if (this.departmentCode !== null && this.departmentCode !== undefined) {
+      this.setDepartmentCode(this.departmentCode);
+    }
+    this.$store.dispatch('getDoctorList', this.getDepartmentCode).then((a) => {
       console.log(a.data.result);
       if (a.data.result.length !== 0) this.doctorList = true;
       this.setDoctorList(a.data.result);
