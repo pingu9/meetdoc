@@ -1,8 +1,8 @@
 <template>
   <div class="container-body">
     <h4>MyPage</h4>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.user_id}}</div>
-    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.name}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.userId}}</div>
+    <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.userName}}</div>
     <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{currentUser.gender}}</div>
     <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">생년월일 : {{currentUser.birthdate}}</div>
     <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">주소 : {{currentUser.address}}</div>
@@ -29,9 +29,9 @@ data(){
   },
   created() {
     let userId = localStorage.getItem('userId');
-    let token = localStorage.getItem('token');
+    // let token = localStorage.getItem('token');
     console.log(userId)
-    this.$store.dispatch('getCurrentUserInfo', userId, token);
+    this.$store.dispatch('getCurrentUserInfo', userId);
   },
 }
 </script>
