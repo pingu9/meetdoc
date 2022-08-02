@@ -15,7 +15,7 @@ export const state = {
         department: '가정의학과',
     },
     currentUser: {
-        
+
     },
 
     chartList: [
