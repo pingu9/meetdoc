@@ -63,7 +63,8 @@ export default {
             if (this.status !== 'Done') {
                 if (confirm('예약을 취소하시겠습니까?')) {
                     this.$store.dispatch('cancelAppt', appointmentId).then((a) => {
-                    console.log(a.data);
+                        console.log(a.data);
+                        this.$router.go();
                     });
                 }
             } else {
