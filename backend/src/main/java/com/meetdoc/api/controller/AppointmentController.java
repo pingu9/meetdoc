@@ -4,6 +4,7 @@ import com.meetdoc.api.request.AppointmentPostReq;
 import com.meetdoc.api.request.PrescriptionPatchReq;
 import com.meetdoc.api.response.*;
 import com.meetdoc.api.service.AppointmentService;
+import com.meetdoc.api.service.S3Service;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.LocalDate;
@@ -40,9 +42,10 @@ public class AppointmentController {
 
     @Autowired
     AppointmentService appointmentService;
-
     @Autowired
     UserService userService;
+    @Autowired
+    S3Service s3Service;
 
     @GetMapping("/departments")
     @ApiOperation(value = "진료과 리스트")
@@ -64,10 +67,18 @@ public class AppointmentController {
             @ApiResponse(code = 409, message = "중복 진료 내역"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> reserveAppointment(@RequestBody AppointmentPostReq req) {
+    public ResponseEntity<?> reserveAppointment(@RequestPart AppointmentPostReq req,
+                                                @RequestPart(required = false) List<MultipartFile> images) {
         try {
             Appointment ap = appointmentService.createAppointment(req);
             if(ap == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400,"잘못된 요청"));
+            if(images != null){
+                List<String> fileName = s3Service.uploadFile(images);
+                List<SymptomImage> list = ap.getSymptomImages();
+                fileName.forEach(name -> {
+                    list.add(appointmentService.createSymptomImage(name, ap));
+                });
+            }
             return ResponseEntity.status(201).body(AppointmentGetRes.of(201, "Success", ap));
         } catch (EntityExistsException e) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 진료 아이디입니다."));

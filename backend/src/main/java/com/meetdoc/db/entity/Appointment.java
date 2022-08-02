@@ -7,6 +7,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.*;
 
 @Entity
 @Getter
@@ -46,4 +50,8 @@ public class Appointment {
     String prescriptionDescription;
 
     LocalDateTime settlementDate;
+
+    @OneToMany(mappedBy = "appointment", cascade = ALL, orphanRemoval = true)
+    List<SymptomImage> symptomImages = new ArrayList<>();
+
 }

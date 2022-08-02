@@ -35,4 +35,6 @@ public class DoctorPostReq {
     ArrayList<MedicDepartment> departments;
     @ApiModelProperty(name="진료비", example="5000")
     BigDecimal charge;
+    @ApiModelProperty(name = "의사 사진 URL")
+    String photoUrl;
 }
