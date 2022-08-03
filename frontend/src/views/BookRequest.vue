@@ -98,7 +98,7 @@ export default {
 
         //선택한 예약시간이 없을 경우(날짜 선택만 된 초기) 기본 default값 가장 첫번째 예약 가능시간으로 설정
         if (this.appointmentTime === '') {
-          this.appointmentTime = a.data.result[0];
+          this.appointmentTime = res.data.result[0];
         }
         console.log(this.appointmentTime);
       });
@@ -137,11 +137,11 @@ export default {
         this.$router.push({
           name: 'bookConfirm',
             params: {
-            patientName: a.data.patientName,
-            doctorName: a.data.doctorName,
-            departmentName: a.data.departmentName,
-            charge: a.data.charge,
-            appointmentTime: a.data.appointmentTime,
+            patientName: res.data.patientName,
+            doctorName: res.data.doctorName,
+            departmentName: res.data.departmentName,
+            charge: res.data.charge,
+            appointmentTime: res.data.appointmentTime,
           }
         });
       }).catch(error => {

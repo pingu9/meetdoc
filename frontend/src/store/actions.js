@@ -46,8 +46,9 @@ export const actions = {
                 console.log(res.data.accessToken);
                 localStorage.setItem('token', res.data.accessToken);
                 localStorage.setItem('userId', res.data.userId);
+                localStorage.setItem('userType', res.data.userType);
                 router.push({ name: 'home' });
-
+                router.go()
             })
             .catch(error => {
                 console.log('------------');
@@ -90,5 +91,5 @@ export const actions = {
     },
     getDoctorDetail(context, doctorId) {
         return axios.get('/api/doctor/detail/' + doctorId);
-    }
+    },
 };
