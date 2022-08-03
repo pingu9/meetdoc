@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long updateUserByUserId(String userId, UserPatchReq patchUserReq) {
+        patchUserReq.setPassword((passwordEncoder.encode(patchUserReq.getPassword())));
         Long affectedRow = userRepositorySupport.updateUserByUserId(userId, patchUserReq);
         return affectedRow;
     }
