@@ -42,6 +42,7 @@ public class DoctorServiceImpl implements DoctorService{
         }
 
         doctor.setUser(userRepository.findByUserId(doctorInfo.getDoctorId()).get());
+        doctor.getUser().setUserType("D");
         return doctorRepository.save(doctor);
     }
 
