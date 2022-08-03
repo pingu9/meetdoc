@@ -17,7 +17,7 @@ export const state = {
     currentUser: {
 
     },
-
+        
     chartList: [
 
     ],
