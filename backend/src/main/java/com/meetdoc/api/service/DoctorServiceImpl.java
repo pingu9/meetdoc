@@ -32,6 +32,7 @@ public class DoctorServiceImpl implements DoctorService{
         doctor.setHospitalAddress(doctorInfo.getHospitalAddress());
         doctor.setHospitalDescription(doctorInfo.getHospitalDescription());
         doctor.setCharge(doctorInfo.getCharge());
+        doctor.setPhotoUrl(doctorInfo.getPhotoUrl());
 
         List<DoctorMedicDepartment> list = (List<DoctorMedicDepartment>) doctor.getDoctorMedicDepartments();
         for(MedicDepartment md : doctorInfo.getDepartments()){
