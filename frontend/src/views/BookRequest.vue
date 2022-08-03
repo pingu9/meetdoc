@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
-          <p class="card-title">{{doctorName}}</p>
+          <p class="card-title">{{this.getDoctorName}}</p>
           <div id="date-select">
             <label class="date-picker-label">예약 날짜</label>
             <div class="col-auto">
@@ -37,7 +37,7 @@
 
 <script>
 
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -57,15 +57,17 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getDoctorIdKept', 'getDoctorName', 'getDepartmentName']),
+    ...mapState(['doctorDetail']),
   },
   methods: {
-    ...mapMutations(['setBookInfo', 'setDoctorId']),
+    ...mapMutations(['setBookInfo', 'setDoctorDetail', 'setDoctorIdKept', 'setDoctorName', 'setDepartmentName']),
     datePicked() {
       this.timeList = [];
       this.timeCheckList = [];
       //날짜 선택하면 기능
       const param = {
-        doctorId: this.doctorId,
+        doctorId: this.getDoctorIdKept,
         selectedDate: this.date,
       };
       console.log(param);
@@ -125,10 +127,10 @@ export default {
       }
       let bookReqInfo = {
         "patientId": localStorage.getItem('userId'),
-        "doctorId": this.doctorId,
+        "doctorId": this.getDoctorIdKept,
         "appointmentTime": this.apptDateTime,
         "symptom": this.symptom,
-        "departmentName": this.departmentName,
+        "departmentName": this.getDepartmentName,
         "charge": 0
       };
       console.log(bookReqInfo);
@@ -152,15 +154,19 @@ export default {
   },
   created() {
     //파라미터 값들 저장
-    this.doctorId = this.$route.params.doctorId;
-    this.$store.state.doctorId = this.doctorId;
-    console.log(this.$store.state.doctorId);
-    this.departmentName = this.$route.params.departmentName;
-    this.doctorName = this.$route.params.doctorName;
-    this.setDoctorId(this.doctorId);
+    if(this.getDoctorIdKept === ''){
+      this.setDoctorIdKept(this.$route.params.doctorId);
+    }
+    if(this.getDoctorName === ''){
+      this.setDoctorName(this.$route.params.departmentName);
+    }
+    if(this.getDepartmentName === ''){
+      this.setDepartmentName(this.$route.params.doctorName);
+    }
     //의사 상세정보 api
-    this.$store.dispatch('getDoctorDetail', this.doctorId).then((res) => {
+    this.$store.dispatch('getDoctorDetail', this.getDoctorIdKept).then((res) => {
       console.log(res.data);
+      this.setDoctorDetail(res.data);
     });
     //오늘 날짜 설정
     let todayDate = new Date();
