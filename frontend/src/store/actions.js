@@ -39,6 +39,27 @@ export const actions = {
                 console.log(error.response.data.message);
             });
     },
+    update(context, payload) {
+        console.log(payload)
+        axios.patch('/api/user/', payload)
+        .then(() => {
+            router.go()
+        })
+        .catch(error => {
+            console.log('------------');
+            console.log(error.response.data.message);
+        });
+    },
+    userDelete() {
+        axios.delete('/api/user/')
+        .then(() => {
+            router.go()
+        })
+        .catch(error => {
+            console.log('------------');
+            console.log(error.response.data.message);
+        });
+    },    
     login(context, idpw) {
         console.log(idpw)
         axios.post('/api/user/login', idpw)

@@ -85,6 +85,7 @@ export default {
 
 #navbarNav{
   justify-content: center;
+  margin-left: -82.43px;
 }
 
 #navbarNav li{
