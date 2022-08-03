@@ -83,4 +83,11 @@ export default {
 
 <style>
 
+#navbarNav{
+  justify-content: center;
+}
+
+#navbarNav li{
+  margin: 0 20px;
+}
 </style>
