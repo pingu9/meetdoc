@@ -38,5 +38,6 @@ export const mutations = {
     },
     setDoctorId(state, data) {
         state.doctorId = data;
-    }
+    },
+
 };
