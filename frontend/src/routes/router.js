@@ -10,7 +10,7 @@ import ChartDetail from '../views/ChartDetail.vue';
 import BookRequest from '../views/BookRequest.vue';
 import BookPayment from '../views/BookPayment.vue';
 import BookConfirm from '../views/BookConfirm.vue';
-
+import MyPageUpdate from '../views/MyPageUpdate.vue';
 
 const routes = [
     {
@@ -21,7 +21,13 @@ const routes = [
     {
         path: "/mypage",
         component: MyPage,
+    },    
+    {
+        path: "/mypage/update",
+        name: 'mypageUpdate',
+        component: MyPageUpdate,
     },
+
     {
         path: "/doctors/:departmentCode",
         component: DoctorList,
