@@ -1,15 +1,13 @@
 <template>
   <div class="container-body">
-    <h4>Signup</h4>
+    <h4>회원 정보 수정</h4>
     <form @submit.prevent="submitForm">
       <div class="input-group mt-3 mb-3">
         <span class="input-group-text" id="basic-addon1">Username</span>
-        <input type="text" class="form-control" v-model="userId"  placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-        <button class="btn btn-outline-secondary" type="button" @click="checkId()" id="button-addon2">중복확인</button>
-        <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
+        <span class="form-control" aria-label="UserId" aria-describedby="basic-addon1">{{currentUser.userId}}</span>
       </div>
       <div class="form-group mb-3">
-        <label class="form-label" for="inputPass">비밀번호</label>
+        <label class="form-label" for="inputPass">새 비밀번호</label>
         <input type="password" v-model="password" class="form-control" id="inputPass">
         <div class="valid-feedback"></div>
         <p v-show="valid.password" class="">
@@ -19,11 +17,11 @@
      
       <div class="input-group mb-3">
         <span class="input-group-text" id="inputGroup-sizing-default">이름</span>
-        <input type="text" v-model="userName" class="form-control" placeholder="이름" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        <span class="form-control"   aria-label="Username" aria-describedby="basic-addon1">{{currentUser.userName}}</span>
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text" id="inputGroup-sizing-default">주민등록번호</span>
-        <input type="text" v-model="rrn" class="form-control" placeholder="123456-1234567" aria-label="Username">
+        <span class="form-control"  placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">{{currentUser.rrn}}</span>
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text" id="inputGroup-sizing-default">주소</span>
@@ -42,15 +40,17 @@
           class="input-error">
           이메일 주소를 정확히 입력해주세요.
         </p>
-      <button class="btn btn-primary btn-lg btn-block" type="submit">가입 완료</button>
+      <button class="btn btn-primary btn-lg btn-block" type="submit">수정</button>
     </form>
   </div>
+  
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 export default {
-  data() {
+
+data() {
     return {
       userId: '',
       password: '',
@@ -62,17 +62,14 @@ export default {
       email: '',
       birthdate: '',
       gender: '',
-      // email valid에 추가해야함
+      userType: '',
       valid: {
         password: false,
       },
       passwordHasError: false,
     }
   },
-  computed: {
-    ...mapState(['errorMessages'])
-  },
-  watch: {
+watch: {
     'password': function () {
       this.checkPass()
     },
@@ -80,14 +77,14 @@ export default {
       this.checkEmail()
     },
   },
-
-  methods: {
-    checkId () {
-      if (this.userId) {
-        console.log(this.userId)
-        this.$store.dispatch('checkId', this.userId)
-      }
-    },
+computed: {
+    ...mapState(['currentUser','errorMessages']),
+  },
+created() {
+    let userId = localStorage.getItem('userId');
+    this.$store.dispatch('getCurrentUserInfo', userId);
+  },
+methods: {
     checkPass () {
       const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!validatePassword.test(this.password)|| !this.password) {
@@ -108,16 +105,16 @@ export default {
       } this.valid.email = false
         this.emailHasError = false
     },
-
     submitForm () {
       console.log('submit')
       console.log(this.userType)
-      this.$store.dispatch('signUp', {userId : this.userId, password: this.password,
+      this.$store.dispatch('update', {userId : this.userId, password: this.password,
       rrn: this.rrn, userName: this.userName, phone: this.phone, zipcode: this.zipcode,
       address: this.address, email: this.email, birthdate: this.birthdate,
-      gender: this.gender,})
+      gender: this.gender, userType: this.userType})
     }
-  }
+}
+
 }
 </script>
 
