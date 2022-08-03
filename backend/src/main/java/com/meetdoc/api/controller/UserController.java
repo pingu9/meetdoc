@@ -111,7 +111,8 @@ public class UserController {
     })
 
     public ResponseEntity<? extends BaseResponseBody> updateUser(@ApiIgnore Authentication authentication,
-            @RequestBody @ApiParam(value = "회원 정보 수정", required = true) UserPatchReq patchUserReq) {
+                                                                 @RequestBody @ApiParam(value = "회원 정보 수정", required = true) UserPatchReq patchUserReq) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
         User user = userService.getUserByUserId(getUserId);
@@ -138,6 +139,7 @@ public class UserController {
     })
 
     public ResponseEntity<? extends BaseResponseBody> deleteUser(@ApiIgnore Authentication authentication) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
         User user = userService.getUserByUserId(getUserId);
@@ -161,6 +163,7 @@ public class UserController {
     })
 
     public ResponseEntity<? extends BaseResponseBody> getUserInfo(@ApiIgnore Authentication authentication, @PathVariable String userId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
         //요청한 회원에 대한 권한이 없는 경우
