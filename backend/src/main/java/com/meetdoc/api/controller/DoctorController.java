@@ -66,6 +66,7 @@ public class DoctorController {
     })
     public  ResponseEntity<? extends  BaseResponseBody> setOpeningHours(@ApiIgnore Authentication authentication,
                                                                         @RequestBody OpeningHourPostReq req) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
         if (!userId.equals(req.getDoctorId())) {
