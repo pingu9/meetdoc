@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="container-card" v-for="(list, idx) in bookList" :key="idx">
-      <AppointmentCard :data=list />
+      <AppointmentCard :data=list :index=idx @deleteList="deleteList"/>
     </div>
   </div>
 </template>
@@ -43,7 +43,11 @@ export default {
     }
   },
   methods: {
-    
+    deleteList(index){
+      console.log('옴');
+      console.log(index);
+      this.bookList.splice(index, 1);
+    }
   }
 }
 </script>

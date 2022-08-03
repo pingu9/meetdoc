@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <p class="badge rounded-pill bg-secondary text-white" id="cancel" @click="badgeFunction(data.appointmentId)">{{ badgeText }}</p> 
+            <p class="badge rounded-pill bg-secondary text-white" id="cancel" @click="badgeFunction(data.appointmentId, index)">{{ badgeText }}</p> 
             <p class="card-title">{{ title }}</p>
             <div class="info-box">
             <div class="half-box">
@@ -37,6 +37,7 @@ export default {
     },
     props: {
         data: Object,
+        index: Number,
     },
     created() {
         const { status } = this.data;
@@ -59,12 +60,13 @@ export default {
         }
     },
     methods: {
-        badgeFunction(appointmentId) {
+        badgeFunction(appointmentId, index) {
+            console.log(index);
             if (this.status !== 'Done') {
                 if (confirm('예약을 취소하시겠습니까?')) {
                     this.$store.dispatch('cancelAppt', appointmentId).then((res) => {
                         console.log(res.data);
-                        this.$router.go();
+                        this.$emit('deleteList', index);
                     });
                 }
             } else {
