@@ -73,6 +73,7 @@ public class AppointmentController {
     public ResponseEntity<?> reserveAppointment(@ApiIgnore Authentication authentication,
                                                 @RequestPart AppointmentPostReq req,
                                                 @RequestPart(required = false) List<MultipartFile> images) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
@@ -106,6 +107,7 @@ public class AppointmentController {
     })
     public ResponseEntity<?> getAppointmentList(@ApiIgnore Authentication authentication,
                                                 @PathVariable String patientId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
@@ -129,6 +131,7 @@ public class AppointmentController {
     })
     public ResponseEntity<?> getDoctorAppointmentList(@ApiIgnore Authentication authentication,
                                                       @PathVariable String doctorId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
@@ -147,13 +150,25 @@ public class AppointmentController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 401, message = "권한 에러"),
+            @ApiResponse(code = 403, message = "로그인한 회원의 진료가 아님"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getAppointmentDetail(@PathVariable int appointmentId) {
+    public ResponseEntity<?> getAppointmentDetail(@ApiIgnore Authentication authentication, @PathVariable int appointmentId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+
+        if (userId == null) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러."));
+        }
+
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
         if(appointment == null)
             return ResponseEntity.status(200).body(BaseResponseBody.of(200,"no data"));
-        return ResponseEntity.status(200).body(AppointmentDetailGetRes.of(200,"Success",appointment));
+        else if(appointment.getUser().getUserId().equals(userId) || appointment.getDoctor().getUserId().equals(userId))
+            return ResponseEntity.status(200).body(AppointmentDetailGetRes.of(200,"Success",appointment));
+        else return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인한 회원의 진료가 아님"));
     }
 
 
@@ -170,7 +185,7 @@ public class AppointmentController {
     public ResponseEntity<?> writePrescription(@ApiIgnore Authentication authentication,
                                                @PathVariable int appointmentId,
                                                @RequestBody PrescriptionPatchReq req) {
-
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
@@ -252,6 +267,7 @@ public class AppointmentController {
     public ResponseEntity<?> cancelAppointment(@ApiIgnore Authentication authentication,
                                                @ApiParam(value = "예약 번호", required = true)
                                                @PathVariable int appointmentId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
         User user = userService.getUserByUserId(getUserId);
