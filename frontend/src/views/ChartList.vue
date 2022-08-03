@@ -25,7 +25,6 @@ export default {
     ...mapState(['chartList'])
   },
   created() {
-    //doctorId가 보내져야하는데 user8은 환자여서 user1 하드코딩
     const doctorId = localStorage.getItem('userId');
     this.$store.dispatch('getChartList', doctorId);
 

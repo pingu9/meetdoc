@@ -12,6 +12,7 @@ export const mutations = {
         state.doctors = data;
     },
     setCurrentUser(state, data) {
+        console.log(data)
         state.currentUser = data;
     },
     setIdErrorMessage(state, data) {
@@ -37,5 +38,6 @@ export const mutations = {
     },
     setDoctorId(state, data) {
         state.doctorId = data;
-    }
+    },
+
 };

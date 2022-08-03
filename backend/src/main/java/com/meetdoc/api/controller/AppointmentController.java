@@ -31,6 +31,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -64,11 +65,20 @@ public class AppointmentController {
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공"),
             @ApiResponse(code = 400, message = "잘못된 요청"),
+            @ApiResponse(code = 401, message = "권한 에러"),
             @ApiResponse(code = 409, message = "중복 진료 내역"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> reserveAppointment(@RequestPart AppointmentPostReq req,
+
+    public ResponseEntity<?> reserveAppointment(@ApiIgnore Authentication authentication,
+                                                @RequestPart AppointmentPostReq req,
                                                 @RequestPart(required = false) List<MultipartFile> images) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+
+        if (!userId.equals(req.getPatientId())) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러."));
+        }
         try {
             Appointment ap = appointmentService.createAppointment(req);
             if(ap == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400,"잘못된 요청"));
@@ -90,10 +100,18 @@ public class AppointmentController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 200, message = "진료 내역이 없습니다"),
+            @ApiResponse(code = 401, message = "권한 에러"),
             @ApiResponse(code = 403, message = "환자가 아닌 회원"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getAppointmentList(@PathVariable String patientId) {
+    public ResponseEntity<?> getAppointmentList(@ApiIgnore Authentication authentication,
+                                                @PathVariable String patientId) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+
+        if (!userId.equals(patientId)) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러."));
+        }
         List<AppointmentGetRes> list = appointmentService.getAppointments(patientId);
         if(list == null) return ResponseEntity.status(403).body(BaseResponseBody.of(403, "환자가 아닌 회원입니다."));
         if(list.size() > 0) return ResponseEntity.status(200).body(list);
@@ -105,10 +123,19 @@ public class AppointmentController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 200, message = "존재하지 않는 아이디"),
+            @ApiResponse(code = 401, message = "존재하지 않는 아이디"),
             @ApiResponse(code = 403, message = "의사가 아닌 회원"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getDoctorAppointmentList(@PathVariable String doctorId) {
+    public ResponseEntity<?> getDoctorAppointmentList(@ApiIgnore Authentication authentication,
+                                                      @PathVariable String doctorId) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+
+        if (!userId.equals(doctorId)) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러."));
+        }
+
         List<AppointmentGetRes> list = appointmentService.getDoctorAppointments(doctorId);
         if(list == null) return ResponseEntity.status(403).body(BaseResponseBody.of(403,"의사가 아닌 회원입니다."));
         if(list.size() > 0) return ResponseEntity.status(200).body(list);
@@ -130,21 +157,37 @@ public class AppointmentController {
     }
 
 
-    /* TODO: 403 에러 처리 */
     @PatchMapping("/prescription/{appointmentId}")
     @ApiOperation(value = "처방 입력")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 200, message = "진료 내역 없음"),
             @ApiResponse(code = 401, message = "권한 없음"),
+            @ApiResponse(code = 403, message = "의사가 아닌 회원"),
             @ApiResponse(code = 409, message = "처방이 이미 있음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> writePrescription(@PathVariable int appointmentId, @RequestBody PrescriptionPatchReq req) {
-        //유저 로그인을 통해 토큰을 확인하는 과정과 그 유저가 의사가 맞는지를 확인하는 코드 필요
-        Appointment ap = appointmentService.getAppointmentById(appointmentId);
-        if(ap == null)
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+    public ResponseEntity<?> writePrescription(@ApiIgnore Authentication authentication,
+                                               @PathVariable int appointmentId,
+                                               @RequestBody PrescriptionPatchReq req) {
+
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+
+        Appointment ap;
+        try {
+            ap = appointmentService.getAppointmentById(appointmentId);
+        } catch(EntityNotFoundException e) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "잘못된 요청"));
+        }
+
+        if (!userId.equals(ap.getUser().getUserId())) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러"));
+        }
+        User user = userService.getUserByUserId(userId);
+        if (!user.getUserType().equals("D")) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(401, "의사가 아닌 회원입니다"));
+        }
 
         if(ap.getPrescriptionDescription() != null)
             return ResponseEntity.status(409).body(BaseResponseBody.of(409,"처방 내역이 이미 있습니다."));
