@@ -6,7 +6,7 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse" id="navbarNav" style="width:calc(100%- 82.43px)">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -52,7 +52,8 @@ export default {
     //아래 부분 watcher로 수정해야함(중요)
     confirm() {
       if (confirm("로그아웃 하시겠습니까?")) {
-        localStorage.setItem('token', '')
+        localStorage.setItem('token', '');
+        localStorage.setItem('userType', '');
         // localStorage.setItem()
           alert("로그아웃 되었습니다.");
           this.$router.go();
@@ -85,7 +86,8 @@ export default {
 
 #navbarNav{
   justify-content: center;
-  margin-left: -82.43px;
+  /* margin-left: 82.43px; */
+  width: calc(100% - 82.43px);
 }
 
 #navbarNav li{
