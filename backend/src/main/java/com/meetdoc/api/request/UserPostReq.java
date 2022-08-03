@@ -20,7 +20,7 @@ public class UserPostReq {
     String password;
 
     @ApiModelProperty(name="유저 type", example="doctor일때 D, 일반 유저일때 U")
-    String userType;
+    String userType = "U";
     @ApiModelProperty(name="유저 name", example="XXX")
     String userName;
     @ApiModelProperty(name="주민등록번호", example="200101-1111111")
