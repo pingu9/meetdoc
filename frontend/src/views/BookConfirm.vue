@@ -5,7 +5,7 @@
      <div class="card">
         <div class="card-body">
           <img src="../assets/images/check.png" alt="confirmed" class="confirmed"/>
-          <p class="card-title" id="confirmBold">{{patientName}} 님의 예약이 완료되었습니다.</p>
+          <p class="card-title" id="confirmBold">{{this.getBookConfirm.patientName}} 님의 예약이 완료되었습니다.</p>
           <div class="info-box">
             <div class="half-box">
               <p class="title-box">의사명</p>
@@ -13,13 +13,13 @@
               <p class="title-box">결제금액</p>
             </div>
             <div class="half-box">
-              <p class="content-box">{{doctorName}}</p>
-              <p class="content-box">{{departmentName}}</p>
-              <p class="content-box">{{charge}}원</p>
+              <p class="content-box">{{this.getBookConfirm.doctorName}}</p>
+              <p class="content-box">{{this.getBookConfirm.departmentName}}</p>
+              <p class="content-box">{{this.getBookConfirm.charge}}원</p>
             </div>
           </div>
           <hr>
-          <p class="card-title" style="margin:20px 0">{{appointment}}</p>
+          <p class="card-title" style="margin:20px 0">{{this.getBookConfirm.appointment}}</p>
           <div class="d-grid gap-2">
             <a href="/" class="btn btn-primary" style="margin:10px">닫기</a>
           </div>
@@ -30,23 +30,27 @@
 </template>
 
 <script>
+import  {mapGetters, mapMutations, mapState } from 'vuex';
 export default {
   data() {
     return {
-      patientName: this.$route.params.patientName,
-      doctorName: this.$route.params.doctorName,
-      departmentName: this.$route.params.departmentName,
-      charge: this.$route.params.charge,
-      appointmentTime: this.$route.params.appointmentTime,
-      appointment: '',
     }
+  },
+  computed:{
+    ...mapState(['bookConfirm']),
+    ...mapGetters(['getBookConfirm']),
+  },
+  methods:{
+    ...mapMutations(['setBookConfirm']),
   },
   created() {
     //2022-08-01 09:00 => 2022년 8월 01일 월요일 09:00
-    const year = new Date(this.appointmentTime).getFullYear();
-    const month = new Date(this.appointmentTime).getMonth() + 1;
-    const date = new Date(this.appointmentTime).getDate();
-    const daybefore = new Date(this.appointmentTime).getDay();
+    let appointmentTime = this.$route.params.appointmentTime;
+    if(appointmentTime !== '' && appointmentTime !== undefined){
+      const year = new Date(appointmentTime).getFullYear();
+    const month = new Date(appointmentTime).getMonth() + 1;
+    const date = new Date(appointmentTime).getDate();
+    const daybefore = new Date(appointmentTime).getDay();
     let day = '';
     switch (daybefore) {
       case 1:
@@ -65,13 +69,24 @@ export default {
         day = '금요일 ';
         break;
     }
-    const hour = new Date(this.appointmentTime).getHours();
-    let minuates = new Date(this.appointmentTime).getMinutes();
+    const hour = new Date(appointmentTime).getHours();
+    let minuates = new Date(appointmentTime).getMinutes();
     if (minuates === 0) {
       minuates = '00';
     }
     //console.log(year + '년 ' + month + '월 ' + date + '일 ' + day + hour + ':' + minuates);
-    this.appointment = year + '년 ' + month + '월 ' + date + '일 ' + day + hour + ':' + minuates;
+    let appointment = year + '년 ' + month + '월 ' + date + '일 ' + day + hour + ':' + minuates;
+    let confirmInfo = {
+      doctorName: this.$route.params.doctorName,
+      patientName: this.$route.params.patientName,
+      departmentName: this.$route.params.departmentName,
+      charge: this.$route.params.charge,
+      appointmentTime: this.$route.params.appointmentTime,
+      appointment: appointment,
+    }
+    console.log(confirmInfo)
+    this.setBookConfirm(confirmInfo);
+    }
   },
 }
 </script>

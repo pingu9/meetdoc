@@ -5,15 +5,17 @@ import { actions } from './actions'
 import { getters } from './getters'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate';
-import doctorInfo from './doctorInfo.js';
+import doctorInfo from './doctorInfo';
+import bookInfo from './bookInfo'
 
 const store = createStore({
     modules: {
         doctorInfo: doctorInfo,
+        bookInfo: bookInfo,
     },
     plugins: [
         createPersistedState({
-            paths: ['doctorInfo'],
+            paths: ['doctorInfo', 'bookInfo'],
         })
     ],
     state() {
