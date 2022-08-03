@@ -158,10 +158,10 @@ export default {
       this.setDoctorIdKept(this.$route.params.doctorId);
     }
     if(this.getDoctorName === ''){
-      this.setDoctorName(this.$route.params.departmentName);
+      this.setDoctorName(this.$route.params.doctorName);
     }
     if(this.getDepartmentName === ''){
-      this.setDepartmentName(this.$route.params.doctorName);
+      this.setDepartmentName(this.$route.params.departmentName);
     }
     //의사 상세정보 api
     this.$store.dispatch('getDoctorDetail', this.getDoctorIdKept).then((res) => {
