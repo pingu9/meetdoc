@@ -3,42 +3,34 @@ import axios from 'axios';
 
 
 export const actions = {
-    getData(context) {
-        axios.get('https://jsonplaceholder.typicode.com/users').then((a) => {//test url 입력되있습니다
-            console.log(a.data);
-            context.commit('setData', a.data);
-        });
-    },
     getDepartments(context) {
-        axios.get('/appointment/departments').then((a) => {
-            console.log(a.data);
-            context.commit('setDepartments', a.data);
+        axios.get('/api/appointment/departments').then((res) => {
+            console.log(res.data);
+            context.commit('setDepartments', res.data);
         });
     },
     getDoctorList(context, departmentCode) {
-        return axios.get('/doctor/list/' + departmentCode);
+        return axios.get('/api/doctor/list/' + departmentCode);
     },
     getBookList() {
         const patientId = localStorage.getItem('userId');
-        return axios.get('/appointment/info/list/' + patientId);
+        return axios.get('/api/appointment/info/list/' + patientId);
     },
-
-    getCurrentUserInfo(context, param, token) {
-        console.log(param)
-        return axios.get('/user/info/' + param,{
+    getCurrentUserInfo(context, param) {
+        const token = localStorage.getItem('token')
+        return axios.get('/api/user/info/' + param, {
             headers: {
                 Authorization: 'Bearer ' + token
             }
         })
-        .then((a) => {
-            console.log('현재유저요청')
-            console.log(a.data.result);
-            context.commit('setCurrentUser', a.data.result);
-      })
+            .then((res) => {
+                console.log('현재유저요청')
+                context.commit('setCurrentUser', res.data);
+            })
     },
     signUp(context, payload) {
         console.log(payload)
-        axios.post('/user/', payload)
+        axios.post('/api/user/', payload)
             .then(() => {
                 router.push({ name: 'home' });
             })
@@ -49,13 +41,14 @@ export const actions = {
     },
     login(context, idpw) {
         console.log(idpw)
-        axios.post('/user/login', idpw)
-            .then((a) => {
-                console.log(a.data.accessToken);
-                localStorage.setItem('token', a.data.accessToken);
-                localStorage.setItem('userId', a.data.userId);
+        axios.post('/api/user/login', idpw)
+            .then((res) => {
+                console.log(res.data.accessToken);
+                localStorage.setItem('token', res.data.accessToken);
+                localStorage.setItem('userId', res.data.userId);
+                localStorage.setItem('userType', res.data.userType);
                 router.push({ name: 'home' });
-
+                router.go()
             })
             .catch(error => {
                 console.log('------------');
@@ -64,11 +57,11 @@ export const actions = {
             });
     },
     checkId(context, userId) {
-        axios.get('/user/' + userId)
-            .then((a) => {
+        axios.get('/api/user/' + userId)
+            .then((res) => {
                 console.log(userId);
-                console.log(a.data);
-                context.commit('setIdErrorMessage', a.data.message);
+                console.log(res.data);
+                context.commit('setIdErrorMessage', res.data.message);
             })
             .catch(error => {
                 console.log('------------');
@@ -77,27 +70,26 @@ export const actions = {
             });
     },
     getChartList(context, doctorId) {
-        axios.get('/appointment/info/list/doctor/' + doctorId).then((a) => {
-            console.log(a.data);
-            context.commit('setChartList', a.data);
+        axios.get('/api/appointment/info/list/doctor/' + doctorId).then((res) => {
+            console.log(res.data);
+            context.commit('setChartList', res.data);
         });
     },
     getChartDetail(context, appointmentId) {
-        return axios.get('/appointment/info/detail/' + appointmentId);
+        return axios.get('/api/appointment/info/detail/' + appointmentId);
     },
     setBookReq(context, bookReqInfo) {
-        return axios.post('/appointment/reserve', bookReqInfo);
+        return axios.post('/api/appointment/reserve', bookReqInfo);
     },
     cancelAppt(context, appointmentId) {
-        return axios.delete('/appointment/cancel/' + appointmentId);
+        return axios.delete('/api/appointment/cancel/' + appointmentId);
     },
     setAvailTime(context, param) {
         const doctorId = param.doctorId;
         const selectedDate = param.selectedDate;
-        console.log('/appointment/available-time/' + doctorId + '/' + selectedDate);
-        return axios.get('/appointment/available-time/' + doctorId + '/' + selectedDate);
+        return axios.get('/api/appointment/available-time/' + doctorId + '/' + selectedDate);
     },
     getDoctorDetail(context, doctorId) {
-        return axios.get('/doctor/detail/' + doctorId);
-    }
+        return axios.get('/api/doctor/detail/' + doctorId);
+    },
 };

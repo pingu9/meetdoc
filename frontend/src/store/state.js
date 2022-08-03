@@ -14,8 +14,10 @@ export const state = {
         description: '마블병원 가정의학과 전문의 닥터 스트레인지입니다.',
         department: '가정의학과',
     },
-    currentUser: '',
+    currentUser: {
 
+    },
+        
     chartList: [
 
     ],

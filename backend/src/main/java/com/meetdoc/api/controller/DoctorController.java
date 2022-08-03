@@ -8,6 +8,7 @@ import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.DoctorService;
 import com.meetdoc.api.service.S3Service;
 import com.meetdoc.api.service.UserService;
+import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.db.entity.Doctor;
 import com.meetdoc.db.entity.User;
@@ -15,9 +16,12 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Api(value = "의사 API", tags = {"Doctor"})
@@ -57,11 +61,22 @@ public class DoctorController {
     @ApiOperation(value = "의사 진료 가능 시간 등록")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공"),
-            @ApiResponse(code = 406, message = "입력 형식 에러"),
+            @ApiResponse(code= 403, message = "의사가 아닌 회원"),
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
-    public  ResponseEntity<? extends  BaseResponseBody> setOpeningHours(@RequestBody OpeningHourPostReq req) {
-        doctorService.setOpeningHours(req.getDoctorId(),req.getOpeningHours());
+    public  ResponseEntity<? extends  BaseResponseBody> setOpeningHours(@ApiIgnore Authentication authentication,
+                                                                        @RequestBody OpeningHourPostReq req) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+        if (!userId.equals(req.getDoctorId())) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러."));
+        }
+        try {
+            doctorService.setOpeningHours(req.getDoctorId(),req.getOpeningHours());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "의사 회원이 아닙니다."));
+        }
+
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, "Success"));
     }
 

@@ -41,6 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         Appointment appointment = new Appointment();
         User user = userRepositorySupport.findUserByUserId(req.getPatientId()).get();
         if(user == null) return null;
+        if (!user.getUserType().equals("U")) return null;
         Doctor doctor = userRepositorySupport.findUserByUserId(req.getDoctorId()).get().getDoctor();
         if(doctor == null) return null;
         appointment.setUser(user);

@@ -11,10 +11,10 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="userType ==='D'">
           <a class="nav-link" href="/chart/list">진료 내역</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="userType ==='U'">
           <a class="nav-link" href="/book/list">예약 내역</a>
         </li>
         <li class="nav-item" v-if="token !== ''">
@@ -23,7 +23,10 @@
         <li class="nav-item" v-if="token === ''">
           <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">login</a>
         </li>
-        <li class="nav-item" v-else>
+        <!-- <li class="nav-item" v-if="!isLoggedIn">
+          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">login33</a>
+        </li>    -->
+        <li class="nav-item" v-if="token !== ''">
           <a class="nav-link" @click="confirm()">Logout</a>
         </li>
         <li class="nav-item">
@@ -38,11 +41,11 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       token: '',
+      userType: '',
     }
   },
   methods: {
@@ -50,13 +53,16 @@ export default {
     confirm() {
       if (confirm("로그아웃 하시겠습니까?")) {
         localStorage.setItem('token', '')
+        // localStorage.setItem()
           alert("로그아웃 되었습니다.");
+          this.$router.go();
           this.$router.push('/');
         } else {
         this.$router.push('/');
         }
     }
   },
+
   created() {
     let token = localStorage.getItem('token');
     if (token != '') {
@@ -65,6 +71,11 @@ export default {
       console.log(this.token);
     } else {
       console.log('no token created')
+    }
+    let userType = localStorage.getItem('userType');
+    if (userType != '') {
+      console.log(userType);
+      this.userType = userType;
     }
   },
 }
