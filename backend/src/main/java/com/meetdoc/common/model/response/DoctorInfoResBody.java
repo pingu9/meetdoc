@@ -19,4 +19,6 @@ public class DoctorInfoResBody {
     String hospitalName;
     @ApiModelProperty(name="진료과", example="소아과")
     String departmentName;
+    @ApiModelProperty(name = "사진 URL")
+    String photoUrl;
 }
