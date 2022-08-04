@@ -12,7 +12,9 @@ export const state = {
     currentUser: {
 
     },
-        
+
+    loginToken: localStorage.getItem('token') || '',
+
     chartList: [
 
     ],
