@@ -23,6 +23,7 @@ public class DoctorListGetRes extends BaseResponseBody {
                     .doctorName(doctor.getUser().getName())
                     .hospitalName(doctor.getHospitalName())
                     .departmentName(departmentName)
+                    .photoUrl(doctor.getPhotoUrl())
                     .build());
         }
     }

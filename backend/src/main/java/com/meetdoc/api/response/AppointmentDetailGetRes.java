@@ -3,6 +3,7 @@ package com.meetdoc.api.response;
 import com.meetdoc.common.model.response.BaseResponseBody;
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.Doctor;
+import com.meetdoc.db.entity.SymptomImage;
 import com.meetdoc.db.entity.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -60,8 +62,8 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
     String prescriptionDate;
     @ApiModelProperty(name = "처방 설명")
     String prescriptionDescription;
-    @ApiModelProperty(name = "사진 URL")
-    String photoUrl;
+    @ApiModelProperty(name = "증상 사진 URL")
+    List<String> symptomPhoto;
 //    @ApiModelProperty(name = "정산 일자")
 //    LocalDateTime settlementDate;
 
@@ -90,7 +92,12 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
         res.setHospitalPhone(doctor.getHospitalPhone());
         res.setLicenseNumber(doctor.getLicenseNumber());
         res.setDepartmentName(appointment.getDepartmentName());
-        res.setPhotoUrl(doctor.getPhotoUrl());
+
+        List<String> list = res.getSymptomPhoto();
+        for(SymptomImage img : appointment.getSymptomImages()){
+            list.add(img.getPhotoUrl());
+        }
+        res.setSymptomPhoto(list);
 
         res.setIcd(appointment.getIcd() == null ? "데이터 없음" : appointment.getIcd());
         res.setPrescriptionDate(appointment.getPrescriptionDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
