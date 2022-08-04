@@ -64,7 +64,8 @@ export const actions = {
         console.log(idpw)
         axios.post('/api/user/login', idpw)
             .then((res) => {
-                console.log(res.data.accessToken);
+                console.log(res);
+                context.commit('setLoginToken', res.data.accessToken)
                 localStorage.setItem('token', res.data.accessToken);
                 localStorage.setItem('userId', res.data.userId);
                 localStorage.setItem('userType', res.data.userType);
@@ -113,4 +114,10 @@ export const actions = {
     getDoctorDetail(context, doctorId) {
         return axios.get('/api/doctor/detail/' + doctorId);
     },
+
+    // saveLoginToken({ commit }, token) {
+
+    //   commit('SET_TOKEN', token)
+    //   localStorage.setItem('token', token)
+    // },
 };

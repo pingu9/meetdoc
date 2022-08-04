@@ -39,4 +39,9 @@ export const mutations = {
     setDoctorDetail(state, data){
         state.doctorDetail = data;
     },
+    
+    setLoginToken(state, loginToken) {
+        state.loginToken = loginToken
+        console.log(state.loginToken)
+    }
 };
