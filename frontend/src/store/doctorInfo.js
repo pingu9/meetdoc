@@ -1,8 +1,9 @@
 const state = {
     departmentCode: '',
     doctorIdKept: '',
-    departmentName:'',
-    doctorName:'',
+    departmentName: '',
+    doctorName: '',
+    deptName: '',
 };
 
 const getters = {
@@ -10,6 +11,7 @@ const getters = {
     getDepartmentCode: state => state.departmentCode,
     getDepartmentName: state => state.departmentName,
     getDoctorName: state => state.doctorName,
+    getDeptName: state => state.deptName,
 };
 
 const mutations = {
@@ -19,11 +21,14 @@ const mutations = {
     setDepartmentCode(state, departmentCode) {
         state.departmentCode = departmentCode;
     },
-    setDepartmentName(state, departmentName){
+    setDepartmentName(state, departmentName) {
         state.departmentName = departmentName;
     },
-    setDoctorName(state, doctorName){
+    setDoctorName(state, doctorName) {
         state.doctorName = doctorName;
+    },
+    setDeptName(state, deptName) {
+        state.deptName = deptName;
     }
 }
 
