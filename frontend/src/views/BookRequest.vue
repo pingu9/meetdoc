@@ -4,11 +4,14 @@
   <div class="container-card">
       <div class="card">
         <div class="card-body">
-          <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/>
-          <p class="card-title">{{this.getDoctorName}}</p>
+          <!-- <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/> -->
+          <!-- <p class="card-title">{{this.getDoctorName}}</p> -->
           <div id="date-select">
-            <label class="date-picker-label">예약 날짜</label>
-            <div class="col-auto">
+            <div class="container-doctorName">
+              <p class="card-title">{{this.getDoctorName}}</p>
+            </div>
+            <div class="container-date-picker">
+              <label class="date-picker-label">예약 날짜</label>
               <input type='date' class="form-control" @change="datePicked()" v-model="date"/>
             </div>
           </div>
@@ -22,8 +25,12 @@
            휴무일이거나 예약 가능한 시간이 없습니다.
           </div>
           <div class="symptom-container">
+            <div class="container-upload">
+              <p style="text-align: left; font-weight: bold; font-size: 20px;">증상 사진 첨부</p>
+              <input multiple type="file" >
+            </div>
             <div class="form-floating">
-              <textarea placeholder="증상에 대해 자세히 입력해주세요." id="symptom-textarea" style="height: 100px" v-model="symptom"></textarea>
+              <textarea placeholder="증상에 대해 자세히 입력해주세요." id="symptom-textarea" v-model="symptom"></textarea>
             </div>
           </div>
           <div class="d-grid gap-2 btn-container">
@@ -212,8 +219,8 @@ export default {
 
 #date-select{
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  /* align-items: center; */
 }
 
 .time-container {
@@ -245,16 +252,17 @@ export default {
 
 .symptom-container{
   margin-top: 20px;
+  text-align: left;
 }
 
 #symptom-textarea{
-  height: 120px;
   width: 100%;
   resize: none;
   border: 1px solid lightgray;
   padding: 10px;
   outline: none;
   border-radius: 5px;
+  height: 100px;
 }
 
 .no-time-avail{
@@ -265,5 +273,21 @@ export default {
 
 .date-picker-label {
   margin-right: 10px;
+  width:150px;
+  line-height: 45px;
+}
+
+.container-date-picker{
+  display: flex;
+}
+
+.container-doctorName{
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+}
+
+.container-upload{
+  margin-bottom: 20px;
 }
 </style>
