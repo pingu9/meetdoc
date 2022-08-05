@@ -2,7 +2,7 @@
   <div class="container-body">
     <h1>{{$store.state.chartList[0].doctorName}} 님의 진료내역</h1>
     <div class="card w-90" v-for="(chart, idx) in $store.state.chartList" :key="idx" id="container-card">
-        <div class="card-body" style="display:flex; justifiy-content:space-between; height:100px;">
+        <div class="card-body" style="display:flex; height:100px;">
         <div class="container-status" v-if="chart.status === 'Before' || chart.status === 'accpted'">
           <div class="circle before"></div><div class="status before">진료전</div>
         </div>
@@ -15,7 +15,7 @@
         <div class="container-status" v-if="chart.status === 'Canceled' || chart.status === 'Rejected'">
           <div class="circle canceled"></div><div class="status canceled">진료취소</div>
         </div>
-          <div style="width:60%; text-align: left; margin-left: 30px; vertical-align: middle; ">
+          <div style="width:60%; text-align: left;">
             <h5 class="card-title" >{{chart.patientName}}</h5>
             <p class="card-text" >{{chart.appointmentTime}}</p>
           </div>
@@ -67,15 +67,14 @@ export default {
 }
 
 .container-status{
-  width: 15%;
-  display:flex; 
-  vertical-align: middle; 
+  width: 20%;
+  display:flex;
   line-height: 100px;
 }
 
 .before{
-  border-color: gold;
-  color: gold;
+  border-color: darkorange;
+  color: darkorange;
 }
 .open{
   border-color: green;
