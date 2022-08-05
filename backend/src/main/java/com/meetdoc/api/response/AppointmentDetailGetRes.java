@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -93,15 +94,17 @@ public class AppointmentDetailGetRes extends BaseResponseBody {
         res.setLicenseNumber(doctor.getLicenseNumber());
         res.setDepartmentName(appointment.getDepartmentName());
 
-        List<String> list = res.getSymptomPhoto();
-        for(SymptomImage img : appointment.getSymptomImages()){
-            list.add(img.getPhotoUrl());
+        List<String> list = new ArrayList<>();
+        if(appointment.getSymptomImages().size() > 0){
+            for(SymptomImage img : appointment.getSymptomImages()){
+                list.add(img.getPhotoUrl());
+            }
         }
         res.setSymptomPhoto(list);
 
-        res.setIcd(appointment.getIcd() == null ? "데이터 없음" : appointment.getIcd());
-        res.setPrescriptionDate(appointment.getPrescriptionDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        res.setPrescriptionDescription(appointment.getPrescriptionDescription() == null ? "데이터 없음" : appointment.getPrescriptionDescription());
+        res.setIcd(appointment.getIcd() == null ? null : appointment.getIcd());
+        res.setPrescriptionDate(appointment.getPrescriptionDate() == null ? null : appointment.getPrescriptionDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        res.setPrescriptionDescription(appointment.getPrescriptionDescription() == null ? null : appointment.getPrescriptionDescription());
 
         return res;
     }
