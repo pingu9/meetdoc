@@ -46,12 +46,7 @@ public class DoctorController {
             @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
     })
     public ResponseEntity<? extends BaseResponseBody> doctorRegister(
-            @RequestPart @ApiParam(value = "registerInfo", required = true) DoctorPostReq registerInfo
-            , @RequestPart(required = false) MultipartFile image) {
-        if(image != null) {
-            String fileName = s3Service.uploadFile(image);
-            registerInfo.setPhotoUrl(fileName);
-        }
+            @RequestBody @ApiParam(value = "registerInfo", required = true) DoctorPostReq registerInfo) {
         doctorService.createDoctor(registerInfo);
 
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, "Success"));

@@ -45,8 +45,6 @@ public class AppointmentController {
     AppointmentService appointmentService;
     @Autowired
     UserService userService;
-    @Autowired
-    S3Service s3Service;
 
     @GetMapping("/departments")
     @ApiOperation(value = "진료과 리스트")
@@ -71,8 +69,7 @@ public class AppointmentController {
     })
 
     public ResponseEntity<?> reserveAppointment(@ApiIgnore Authentication authentication,
-                                                @RequestPart AppointmentPostReq req,
-                                                @RequestPart(required = false) List<MultipartFile> images) {
+                                                @RequestBody AppointmentPostReq req) {
         if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
@@ -83,8 +80,8 @@ public class AppointmentController {
         try {
             Appointment ap = appointmentService.createAppointment(req);
             if(ap == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400,"잘못된 요청"));
-            if(images != null){
-                List<String> fileName = s3Service.uploadFile(images);
+            if(req.getSymptomImages() != null){
+                List<String> fileName = req.getSymptomImages();
                 List<SymptomImage> list = ap.getSymptomImages();
                 fileName.forEach(name -> {
                     list.add(appointmentService.createSymptomImage(name, ap));
