@@ -1,6 +1,6 @@
 <template>
   <div class="container-body">
-    <h1>{{department}} 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
+    <h1>{{this.getDeptName}} 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
     <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card">
         <div class="card-body">
         <h5 class="card-title">{{list.doctorName}}</h5>
@@ -23,21 +23,22 @@ import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
 data(){
     return {
-      department: this.$route.params.departmentName,
       doctorList: false,
-      departmentCode: this.$route.params.departmentCode,
     }
   },
   components: {
   },
   computed: {
     ...mapState(['doctors']),
-    ...mapGetters(['getDepartmentCode']),
+    ...mapGetters(['getDepartmentCode', 'getDoctorList', 'getDeptName']),
   },
   methods: {
-    ...mapMutations(['setDoctorList', 'setDepartmentCode']),
+    ...mapMutations(['setDoctorList', 'setDepartmentCode', 'setDeptName']),
   },
   created() {
+    if (this.$route.params.departmentName !== null && this.$route.params.departmentName !== undefined && this.$route.params.departmentName !== '') {
+      this.setDeptName(this.$route.params.departmentName);
+    }
     if (this.departmentCode !== null && this.departmentCode !== undefined) {
       this.setDepartmentCode(this.departmentCode);
     }
