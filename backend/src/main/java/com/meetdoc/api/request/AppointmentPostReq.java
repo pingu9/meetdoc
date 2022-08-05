@@ -22,7 +22,7 @@ public class AppointmentPostReq {
     String appointmentTime;
     @ApiModelProperty(name = "진료비")
     BigDecimal charge;
-    @ApiModelProperty(name = "진료비")
+    @ApiModelProperty(name = "증상 사진들")
     List<String> symptomImages;
 
 }
