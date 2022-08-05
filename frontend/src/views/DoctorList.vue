@@ -2,12 +2,21 @@
   <div class="container-body">
     <h1>{{this.getDeptName}} 의사 리스트</h1><!--진료과 선택시 해당 진료과가 '소아청소년과' 자리에 오도록! -->
     <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card">
-        <div class="card-body">
-        <h5 class="card-title">{{list.doctorName}}</h5>
-        <p class="card-text">{{list.departmentName}}</p>
-        <p class="card-text">{{list.hospitalName}}</p>
-        <button @click="this.$router.push({name: 'bookRequest', params:{doctorId: list.doctorId, departmentName: list.departmentName, doctorName: list.doctorName}})" class="btn btn-primary">예약하기</button>
-        <!-- <a :href="`/book/request?doctorName=${list.name}`" class="btn btn-primary">예약하기</a> -->
+        <div class="card-body" style="display: flex;">
+        <div style="width:170px;">
+          <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" style="width:150px; height:150px"/>
+        </div>
+        <div style="width: 50%; display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px;">
+          <h5 class="card-title">{{list.doctorName}}</h5>
+          <p class="card-text" style="margin-bottom:8px">{{list.departmentName}}</p>
+          <p class="card-text">{{list.hospitalName}}</p>
+        </div>
+        <div style="width:20%; display: flex; flex-direction: column; justify-content: center;">
+          <button class="btn btn-primary bookBtn"  
+          @click="this.$router.push({name: 'bookRequest', params:{doctorId: list.doctorId, departmentName: list.departmentName, doctorName: list.doctorName}})">
+          예약하기
+          </button>
+        </div>
         </div>
     </div>
     <div class="card w-90" id="noDoctorList" v-if="doctorList === false">
@@ -15,7 +24,7 @@
         <h5 class="card-title">해당 진료과의 의사리스트가 없습니다.</h5>
         </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -58,4 +67,5 @@ data(){
   margin-top: 10%;
   margin-bottom: 70%;
 }
+
 </style>
