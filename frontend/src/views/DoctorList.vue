@@ -39,8 +39,8 @@ data(){
     if (this.$route.params.departmentName !== null && this.$route.params.departmentName !== undefined && this.$route.params.departmentName !== '') {
       this.setDeptName(this.$route.params.departmentName);
     }
-    if (this.departmentCode !== null && this.departmentCode !== undefined) {
-      this.setDepartmentCode(this.departmentCode);
+    if (this.$route.params.departmentCode !== null && this.$route.params.departmentCode !== undefined && this.$route.params.departmentCode !== '') {
+      this.setDepartmentCode(this.$route.params.departmentCode);
     }
     this.$store.dispatch('getDoctorList', this.getDepartmentCode).then((res) => {
       console.log(res.data.result);
