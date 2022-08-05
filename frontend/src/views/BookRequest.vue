@@ -138,7 +138,8 @@ export default {
         "appointmentTime": this.apptDateTime,
         "symptom": this.symptom,
         "departmentName": this.getDepartmentName,
-        "charge": 0
+        "charge": 0,
+        "symptomImages": [],
       };
       console.log(bookReqInfo);
       this.$store.dispatch('setBookReq', bookReqInfo).then((res) => {
