@@ -26,6 +26,8 @@ public class DoctorDetailGetRes extends BaseResponseBody {
     String hospitalDescription;
     @ApiModelProperty(name = "진료비")
     BigDecimal charge;
+    @ApiModelProperty(name = "사진 URL")
+    String photoUrl;
 
     public static DoctorDetailGetRes of(Integer statusCode, String message, Doctor doctor) {
         DoctorDetailGetRes res = new DoctorDetailGetRes();
@@ -40,6 +42,7 @@ public class DoctorDetailGetRes extends BaseResponseBody {
         res.setHospitalPhone(doctor.getHospitalPhone());
         res.setHospitalDescription(doctor.getHospitalDescription());
         res.setCharge(doctor.getCharge());
+        res.setPhotoUrl(doctor.getPhotoUrl());
         return res;
     }
 }
