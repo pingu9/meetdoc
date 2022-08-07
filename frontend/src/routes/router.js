@@ -11,6 +11,7 @@ import BookRequest from '../views/BookRequest.vue';
 import BookPayment from '../views/BookPayment.vue';
 import BookConfirm from '../views/BookConfirm.vue';
 import MyPageUpdate from '../views/MyPageUpdate.vue';
+import MeetingRoom from '../views/MeetingRoom.vue';
 
 const routes = [
     {
@@ -62,6 +63,10 @@ const routes = [
     {
         path: "/signup",
         component: SignUp,
+    },
+    {
+        path: "/meetingroom",
+        component: MeetingRoom,
     },
 ];
 
