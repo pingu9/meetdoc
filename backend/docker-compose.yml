@@ -53,7 +53,7 @@ services:
       - ./certbot-etc:/etc/letsencrypt
       - ./dist:/var/www/html
     depends_on:
-      - nginx
+      - meetdoc
     command: renew
 
 volumes:
