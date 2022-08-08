@@ -60,11 +60,14 @@ export default {
 			publisher: undefined,
 			subscribers: [],
 
+			appointmentId: this.$route.params.appointmentId,
+			userType: this.$route.params.userType,
 			mySessionId: 'SessionA',
-			myUserName: 'Participant' + Math.floor(Math.random() * 100),
+			myUserName: this.$route.params.myUserName,
 		}
 	},
-
+	created(){
+	},
 	methods: {
 		joinSession () {
 			// --- Get an OpenVidu object ---
