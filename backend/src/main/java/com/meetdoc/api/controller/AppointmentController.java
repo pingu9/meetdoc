@@ -318,4 +318,70 @@ public class AppointmentController {
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @PatchMapping("/cancel/doctor/{appointmentId}")
+    @ApiOperation(value = "예약 취소(의사)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 400, message = "상태에 안맞는 요청"),
+            @ApiResponse(code = 403, message = "권한이 없는 요청"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> cancelAppointmentByDoctor(@ApiIgnore Authentication authentication,
+                                                        @ApiParam(value = "예약 번호", required = true)
+                                                        @PathVariable int appointmentId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+        if(user == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
+
+        try {
+            Appointment appointment = appointmentService.findAppointmentByAppointmentId(appointmentId);
+            if (!appointment.getDoctor().getUserId().equals(user.getUserId()))
+                return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+            if(!appointment.getStatus().equals("WAITING"))
+                return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Bad Request"));
+            appointmentService.changeStatus(appointment, "PENDING_CANCEL_DOCTOR");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PatchMapping("/approve/patient/{appointmentId}")
+    @ApiOperation(value = "예약 취소 확인(환자)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 400, message = "상태에 안맞는 요청"),
+            @ApiResponse(code = 403, message = "권한이 없는 요청"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> cancelApproveByPatient(@ApiIgnore Authentication authentication,
+                                                   @ApiParam(value = "예약 번호", required = true)
+                                                   @PathVariable int appointmentId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+        if(user == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
+
+        try {
+            Appointment appointment = appointmentService.findAppointmentByAppointmentId(appointmentId);
+            if (!appointment.getUser().getUserId().equals(user.getUserId()))
+                return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+            if(!appointment.getStatus().equals("PENDING_CANCEL_DOCTOR"))
+                return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Bad Request"));
+            appointmentService.changeStatus(appointment, "CANCELED");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
 }
