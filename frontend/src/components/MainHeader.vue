@@ -8,7 +8,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav" style="width:calc(100%- 82.43px)">
           <ul class="navbar-nav">
-            <li class="nav-item">
+            <li class="nav-item" v-if="userType !=='D'">
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item" v-if="isLoggedIn && userType ==='D'">

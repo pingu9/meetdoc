@@ -50,6 +50,7 @@ const routes = [
     },
     {
         path: "/chart/list",
+        name: 'chartList',
         component: ChartList,
     },
     {
