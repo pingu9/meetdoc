@@ -26,8 +26,8 @@
             <li class="nav-item" v-if="isLoggedIn">
               <a class="nav-link" @click="confirm()">Logout</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/signup" v-if="token === ''">회원가입</a>
+            <li class="nav-item" v-if="!isLoggedIn">
+              <a class="nav-link" href="/signup">회원가입</a>
             </li>
           </ul>
         </div>
