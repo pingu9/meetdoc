@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export const actions = {
     getDepartments(context) {
+        console.log('액션까지는 옴')
         axios.get('/api/appointment/departments').then((res) => {
             console.log(res.data);
             context.commit('setDepartments', res.data);
