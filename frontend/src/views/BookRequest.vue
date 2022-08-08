@@ -27,7 +27,7 @@
           <div class="symptom-container">
             <div class="container-upload">
               <p style="text-align: left; font-weight: bold; font-size: 20px;">증상 사진 첨부</p>
-              <input multiple type="file" >
+              <input @change="upload" multiple type="file" >
             </div>
             <div class="form-floating">
               <textarea placeholder="증상에 대해 자세히 입력해주세요." id="symptom-textarea" v-model="symptom"></textarea>
@@ -65,10 +65,21 @@ export default {
   },
   computed: {
     ...mapGetters(['getDoctorIdKept', 'getDoctorName', 'getDepartmentName']),
-    ...mapState(['doctorDetail']),
+    ...mapState(['doctorDetail', 'photoUrl']),
   },
   methods: {
-    ...mapMutations(['setBookInfo', 'setDoctorDetail', 'setDoctorIdKept', 'setDoctorName', 'setDepartmentName']),
+    upload(e){
+      const formData = new FormData();
+      var files = e.target.files;
+      for (let i = 0; i < files.length; i++) {
+        formData.append("images", files[i]);
+      }
+      this.$store.dispatch('upload', formData).then((res) => {
+      console.log(res.data);
+      this.setphotoUrl(res.data);
+    });
+    },
+    ...mapMutations(['setBookInfo', 'setDoctorDetail', 'setDoctorIdKept', 'setDoctorName', 'setDepartmentName', 'setphotoUrl']),
     datePicked() {
       this.timeList = [];
       this.timeCheckList = [];
@@ -139,7 +150,7 @@ export default {
         "symptom": this.symptom,
         "departmentName": this.getDepartmentName,
         "charge": 0,
-        "symptomImages": [],
+        "symptomImages": this.photoUrl,
       };
       console.log(bookReqInfo);
       this.$store.dispatch('setBookReq', bookReqInfo).then((res) => {
