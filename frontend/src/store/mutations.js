@@ -43,5 +43,14 @@ export const mutations = {
     setLoginToken(state, loginToken) {
         state.loginToken = loginToken
         console.log(state.loginToken)
+<<<<<<< Updated upstream
     }
+=======
+    },
+    setphotoUrl(state, photoUrl){
+        state.photoUrl = photoUrl;
+    },
+    setToken: (state, token) => state.loginToken = token
+
+>>>>>>> Stashed changes
 };
