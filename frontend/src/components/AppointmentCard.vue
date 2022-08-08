@@ -17,7 +17,7 @@
             </div>
             </div>
             <div class="d-grid gap-2">
-                <button :class="`btn ${btnClass}`" type="button" a href="#">{{ btnText }}</button>
+                <button :class="`btn ${btnClass}`" type="button" @click="test()">{{ btnText }}</button>
             </div>
         </div>
     </div>
@@ -33,6 +33,7 @@ export default {
             btnText: '',
             btnClass: '',
             badgeText: '',
+            url:'',
         };
     },
     props: {
@@ -60,6 +61,17 @@ export default {
         }
     },
     methods: {
+        test(){
+            var userType = localStorage.getItem('userType');
+            var appointmentId = this.data.appointmentId;
+            var myUserName = '';
+            if(userType === 'D'){
+                myUserName = this.data.doctorName;
+            }else{
+                myUserName = this.data.patientName;
+            }
+            this.$router.push({name: 'meetingRoom', params:{appointmentId: appointmentId, userType: userType, myUserName: myUserName}});
+        },
         badgeFunction(appointmentId, index) {
             console.log(index);
             if (this.status !== 'Done') {
