@@ -127,6 +127,7 @@ export const actions = {
     //   commit('SET_TOKEN', token)
     //   localStorage.setItem('token', token)
     // },
+
     upload(context, formData){
         return axios({
             headers: {
@@ -137,5 +138,23 @@ export const actions = {
             method: "POST",
             data: formData,
           });
+    },
+
+    logout({ dispatch }) {
+        if (confirm("로그아웃 하시겠습니까?")) {
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userType', '');
+            dispatch('removeToken')
+            // localStorage.setItem()
+              alert("로그아웃 되었습니다.");
+              
+              router.push('/');
+            } else {
+            router.push('/');
+            }
+        },
+    removeToken({ commit }) {
+        commit('setToken','')
     }
 };

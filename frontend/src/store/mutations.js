@@ -46,5 +46,7 @@ export const mutations = {
     },
     setphotoUrl(state, photoUrl){
         state.photoUrl = photoUrl;
-    }
+    },
+    setToken: (state, token) => state.loginToken = token
+
 };
