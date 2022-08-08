@@ -127,8 +127,7 @@ export const actions = {
     //   commit('SET_TOKEN', token)
     //   localStorage.setItem('token', token)
     // },
-<<<<<<< Updated upstream
-=======
+
     upload(context, formData){
         return axios({
             headers: {
@@ -158,5 +157,4 @@ export const actions = {
     removeToken({ commit }) {
         commit('setToken','')
     }
->>>>>>> Stashed changes
 };
