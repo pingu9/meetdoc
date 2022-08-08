@@ -21,10 +21,8 @@ public interface AppointmentService {
     List<AppointmentGetRes> getDoctorAppointments(String userId);
     List<Appointment> findAvailableTime(String doctorId, LocalDateTime time);
     void writePrescription(int appointmentId, PrescriptionPatchReq req);
-
     Appointment findAppointmentByAppointmentId(int appointmentId) throws NoSuchElementException;
-
     void deleteAppointment(Appointment appointment);
-
+    void changeStatus(Appointment appointment, String status);
     List<LocalDateTime> getAvailableTimeList(String doctorId, LocalDateTime time, OpeningHours openingHour);
 }
