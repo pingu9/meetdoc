@@ -27,12 +27,16 @@ const store = createStore({
 });
 
 axios.interceptors.request.use(function (config) {
-    const token = 'Bearer ' + localStorage.getItem('token')
+    if (localStorage.getItem('token')) {
+        const token = 'Bearer ' + localStorage.getItem('token')
+        config.headers.Authorization = token
+    } else {
+        console.log('토큰없음')
+    }
     // headers: {
     //     Authorization: 'Bearer ' + token
     // }
     // })
-    config.headers.Authorization = token
     return config;
 }, function (error) {
     // Do something with request error
