@@ -127,4 +127,36 @@ export const actions = {
     //   commit('SET_TOKEN', token)
     //   localStorage.setItem('token', token)
     // },
+<<<<<<< Updated upstream
+=======
+    upload(context, formData){
+        return axios({
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origin": "*",
+            },
+            url: '/api/s3/upload/images', // 파일 업로드 요청 URL
+            method: "POST",
+            data: formData,
+          });
+    },
+
+    logout({ dispatch }) {
+        if (confirm("로그아웃 하시겠습니까?")) {
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userType', '');
+            dispatch('removeToken')
+            // localStorage.setItem()
+              alert("로그아웃 되었습니다.");
+              
+              router.push('/');
+            } else {
+            router.push('/');
+            }
+        },
+    removeToken({ commit }) {
+        commit('setToken','')
+    }
+>>>>>>> Stashed changes
 };
