@@ -1,5 +1,5 @@
 <template>
-<div class="container-body">
+  <div class="container-body">
     <h1>진료 내역 상세</h1>
     <div class="container-card">
       <div class="card">
