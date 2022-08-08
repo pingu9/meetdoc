@@ -27,7 +27,7 @@
           <div class="symptom-container">
             <div class="container-upload">
               <p style="text-align: left; font-weight: bold; font-size: 20px;">증상 사진 첨부</p>
-              <input @change="upload" multiple type="file" >
+              <input @change="upload" multiple type="file" accept="image/*">
             </div>
             <div class="form-floating">
               <textarea placeholder="증상에 대해 자세히 입력해주세요." id="symptom-textarea" v-model="symptom"></textarea>
@@ -71,13 +71,32 @@ export default {
     upload(e){
       const formData = new FormData();
       var files = e.target.files;
+      const maxSize = 10* 1024* 1024;//최대 용량 10MB
+      var fileSize = 0;
+      var type = '';
+      //파일 타입체크 및 용량 계산
       for (let i = 0; i < files.length; i++) {
-        formData.append("images", files[i]);
+        type = files[i].type;
+        fileSize += files[i].size;
+        if(type === 'image/png' || type === 'img/jpg' || type === 'img/jpeg' || type === 'img/gif'){
+          formData.append("images", files[i]);
+        }else{
+          alert('이미지 첨부는 jpg, jpeg, png, gif 파일만 가능합니다!');
+          e.target.value = '';//첨부파일이 없습니다 세팅
+          return;   
+        }
       }
-      this.$store.dispatch('upload', formData).then((res) => {
-      console.log(res.data);
-      this.setphotoUrl(res.data);
-    });
+      //용량 체크
+      if(fileSize > maxSize){
+        alert('파일 첨부는 10MB 까지만 가능합니다!');
+        return;
+      }
+      if(e.target.value !== ''){
+        this.$store.dispatch('upload', formData).then((res) => {
+        console.log(res.data);
+        this.setphotoUrl(res.data);
+        });
+      }
     },
     ...mapMutations(['setBookInfo', 'setDoctorDetail', 'setDoctorIdKept', 'setDoctorName', 'setDepartmentName', 'setphotoUrl']),
     datePicked() {
