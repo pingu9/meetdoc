@@ -121,4 +121,15 @@ export const actions = {
     //   commit('SET_TOKEN', token)
     //   localStorage.setItem('token', token)
     // },
+    upload(context, formData){
+        return axios({
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origin": "*",
+            },
+            url: '/api/s3/upload/images', // 파일 업로드 요청 URL
+            method: "POST",
+            data: formData,
+          });
+    }
 };
