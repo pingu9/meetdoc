@@ -70,8 +70,14 @@ export const actions = {
                 localStorage.setItem('token', res.data.accessToken);
                 localStorage.setItem('userId', res.data.userId);
                 localStorage.setItem('userType', res.data.userType);
-                router.push({ name: 'home' });
-                router.go()
+                if (localStorage.getItem('userType') ==='D') {
+                    console.log('의사는 차트리스트로!')
+                    router.push({ name: 'chartList'})
+                    router.go()
+                } else {
+                    router.push({ name: 'home' });
+                    router.go()
+                }
             })
             .catch(error => {
                 console.log('------------');
