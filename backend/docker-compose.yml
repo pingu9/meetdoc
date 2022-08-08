@@ -19,23 +19,9 @@ services:
       MYSQL_ROOT_PASSWORD: meetdoc
       TZ: "Asia/Seoul"
     privileged: true
-  kurento:
-    image: kurento/kurento-media-server:latest
-    container_name: kurento
-    restart: always
-    ports:
-      - "8888:8888"
-    environment:
-      TZ: "Asia/Seoul"
-      KMS_STUN_IP: "3.38.166.81"
-      KMS_STUN_PORT: "3478"
-      KMS_STUN_PORT: "myuser:mypassword@3.38.166.81:3478?transport=udp"
-    networks:
-      - app-network
   meetdoc:
     image: ramtk6726/meetdoc
     container_name: meetdoc
-    #     dockerfile: ./dockerfile
     restart: always
     ports:
       - "8081:8081"
@@ -43,20 +29,16 @@ services:
       TZ: "Asia/Seoul"
       # Spring application.properties DB
       SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/meetdoc?userUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true"
-      # Kurent Media Server URL
-      JAVA_TOOL_OPTIONS: "-Dkms.url=ws://kurento:8888/kurento"
       server.address: 0.0.0.0
     networks:
       - app-network
     depends_on:
       - db
-      - kurento
   nginx:
     container_name: nginx
     image: nginx:alpine
     restart: unless-stopped
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       - ./dist:/var/www/html
@@ -71,7 +53,7 @@ services:
       - ./certbot-etc:/etc/letsencrypt
       - ./dist:/var/www/html
     depends_on:
-      - nginx
+      - meetdoc
     command: renew
 
 volumes:
