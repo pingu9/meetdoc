@@ -68,6 +68,7 @@ const routes = [
     {
         path: "/meetingroom",
         component: MeetingRoom,
+        name: 'meetingRoom'
     },
 ];
 

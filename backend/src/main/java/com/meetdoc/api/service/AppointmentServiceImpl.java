@@ -59,7 +59,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         if(req.getDepartmentName() == null) return null;
         appointment.setDepartmentName(req.getDepartmentName());
 
-        appointment.setStatus("Before");
+        appointment.setStatus("WAITING");
         return appointmentRepository.save(appointment);
     }
 
@@ -164,6 +164,13 @@ public class AppointmentServiceImpl implements AppointmentService{
     public void deleteAppointment(Appointment appointment) {
         appointmentRepository.delete(appointment);
     }
+
+    @Override
+    public void changeStatus(Appointment appointment, String status) {
+        appointment.setStatus(status);
+        appointmentRepository.save(appointment);
+    }
+
 
     @Override
     public List<LocalDateTime> getAvailableTimeList(String doctorId, LocalDateTime time, OpeningHours openingHour) {
