@@ -17,7 +17,7 @@
             </div>
             </div>
             <div class="d-grid gap-2">
-                <button :class="`btn ${btnClass}`" type="button" @click="test()">{{ btnText }}</button>
+                <button :class="`btn ${btnClass} ${prevEnter}`" type="button" @click="enter()">{{ btnText }}</button>
             </div>
         </div>
     </div>
@@ -34,6 +34,7 @@ export default {
             btnClass: '',
             badgeText: '',
             url:'',
+            prevEnter:'',
         };
     },
     props: {
@@ -53,15 +54,17 @@ export default {
             this.btnText = '진료 완료';
             this.title = '진료 완료';
             this.badgeText = '상세보기';
+            this.prevEnter = 'prevEnter';
         } else {
             this.btnClass = 'btn-danger';
             this.btnText = '진료 대기중';
             this.title = '원격진료 입장 불가';
             this.badgeText = '예약취소';
+            this.prevEnter = 'prevEnter';
         }
     },
     methods: {
-        test(){
+        enter(){
             var userType = localStorage.getItem('userType');
             var appointmentId = this.data.appointmentId;
             var myUserName = '';
@@ -98,7 +101,8 @@ export default {
 </script>
 
 <style>
-.check{
-    
+.prevEnter{
+    pointer-events: none;
 }
+
 </style>
