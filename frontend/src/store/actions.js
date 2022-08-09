@@ -110,8 +110,17 @@ export const actions = {
     setBookReq(context, bookReqInfo) {
         return axios.post('/api/appointment/reserve', bookReqInfo);
     },
-    cancelAppt(context, appointmentId) {
-        return axios.delete('/api/appointment/cancel/' + appointmentId);
+    cancelApptByPatient(context, appointmentId) {
+        return axios.patch('/api/appointment/cancel/patient/' + appointmentId);
+    },
+    cancelApptByDoctor(context, appointmentId) {
+        return axios.patch('/api/appointment/cancel/doctor/' + appointmentId);
+    },
+    approveCancelByDoctor(context, appointmentId) {
+        return axios.patch('/api/appointment/approve/doctor/' + appointmentId);
+    },
+    approveCancelByPatient(context, appointmentId) {
+        return axios.patch('/api/appointment/approve/patient/' + appointmentId);
     },
     setAvailTime(context, param) {
         const doctorId = param.doctorId;
