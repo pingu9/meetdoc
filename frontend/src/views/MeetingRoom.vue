@@ -1,27 +1,12 @@
 <template>
 	<div id="main-container" class="container">
-		<div id="join" v-if="!session">
-			<div id="join-dialog" class="jumbotron vertical-center">
-				<h1>Join a video session</h1>
-				<div class="form-group">
-					<p>
-						<label>Participant</label>
-						<input v-model="myUserName" class="form-control" type="text" required>
-					</p>
-					<p>
-						<label>Session</label>
-						<input v-model="mySessionId" class="form-control" type="text" required>
-					</p>
-					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
-					</p>
-				</div>
-			</div>
-		</div>
-
-		<div id="session" v-if="session">
+		<div id="session">
 			<div id="session-header">
-				<h1 id="session-title">{{ mySessionId }}</h1>
+				<h1 id="session-title">{{ sessionId }}</h1>
+				<input class="btn btn-large btn-success" type="button" id="buttonMuteAudio" @click="toggleMuteOption()" value="Mute Audio" v-if="isAudioActive">
+				<input class="btn btn-large btn-warning" type="button" id="buttonUnmuteAudio" @click="toggleMuteOption()" value="Unmute Audio" v-if="!isAudioActive">
+				<input class="btn btn-large btn-success" type="button" id="buttonStopVideo" @click="toggleVideoEnableOption()" value="Stop Video" v-if="isVideoActive">
+				<input class="btn btn-large btn-warning" type="button" id="buttonStartVideo" @click="toggleVideoEnableOption()" value="Start Video" v-if="!isVideoActive">
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
 			</div>
 			<div id="main-video" class="col-md-6">
@@ -60,6 +45,8 @@ export default {
 			mainStreamManager: undefined,
 			publisher: undefined,
 			subscribers: [],
+			isAudioActive: undefined,
+			isVideoActive: undefined,
 
 			appointmentId: '',
 			userType: '',
@@ -81,21 +68,14 @@ export default {
 	methods: {
 		...mapMutations(['setMeetingInfo']),
 		joinSession () {
-			// --- Get an OpenVidu object ---
 			this.OV = new OpenVidu();
-
-			// --- Init a session ---
 			this.session = this.OV.initSession();
 
-			// --- Specify the actions when events take place in the session ---
-
-			// On every new Stream received...
 			this.session.on('streamCreated', ({ stream }) => {
 				const subscriber = this.session.subscribe(stream);
 				this.subscribers.push(subscriber);
 			});
 
-			// On every Stream destroyed...
 			this.session.on('streamDestroyed', ({ stream }) => {
 				const index = this.subscribers.indexOf(stream.streamManager, 0);
 				if (index >= 0) {
@@ -103,36 +83,29 @@ export default {
 				}
 			});
 
-			// On every asynchronous exception...
 			this.session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
 
-			// --- Connect to the session with a valid user token ---
-
-			// 'getToken' method is simulating what your server-side should do.
-			// 'token' parameter should be retrieved and returned by your own backend
-			this.getToken(this.mySessionId).then(token => {
-				this.session.connect(token, { clientData: this.myUserName })
+			this.getToken(this.sessionId).then(token => {
+				this.session.connect(token, { clientData: this.userName + " ("+ (this.userType == "U" ? "환자" : "의사") +")" })
 					.then(() => {
 
-						// --- Get your own camera stream with the desired properties ---
-
 						let publisher = this.OV.initPublisher(undefined, {
-							audioSource: undefined, // The source of audio. If undefined default microphone
-							videoSource: undefined, // The source of video. If undefined default webcam
+							audioSource: undefined,
+							videoSource: undefined,
 							publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
 							publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
 							resolution: '640x480',  // The resolution of your video
 							frameRate: 30,			// The frame rate of your video
 							insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-							mirror: false       	// Whether to mirror your local video or not
+							mirror: true       	// Whether to mirror your local video or not
 						});
 
 						this.mainStreamManager = publisher;
 						this.publisher = publisher;
-
-						// --- Publish your stream ---
+						this.isAudioActive = publisher.publishAudio;
+						this.isVideoActive = publisher.publishVideo;
 
 						this.session.publish(this.publisher);
 					})
@@ -145,9 +118,10 @@ export default {
 		},
 
 		leaveSession () {
-			// --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (this.session) this.session.disconnect();
-
+			
+			this.isAudioActive = undefined;
+			this.isVideoActive = undefined;
 			this.session = undefined;
 			this.mainStreamManager = undefined;
 			this.publisher = undefined;
@@ -155,6 +129,7 @@ export default {
 			this.OV = undefined;
 
 			window.removeEventListener('beforeunload', this.leaveSession);
+			this.$router.push('/');
 		},
 
 		updateMainVideoStreamManager (stream) {
@@ -162,23 +137,20 @@ export default {
 			this.mainStreamManager = stream;
 		},
 
-		/**
-		 * --------------------------
-		 * SERVER-SIDE RESPONSIBILITY
-		 * --------------------------
-		 * These methods retrieve the mandatory user token from OpenVidu Server.
-		 * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-		 * the API REST, openvidu-java-client or openvidu-node-client):
-		 *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
-		 *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
-		 *   3) The Connection.token must be consumed in Session.connect() method
-		 */
-
-		getToken (mySessionId) {
-			return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
+		toggleMuteOption () {
+			this.isAudioActive = !this.isAudioActive;
+			this.publisher.publishAudio(this.isAudioActive);
 		},
 
-		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+		toggleVideoEnableOption () {
+			this.isVideoActive = !this.isVideoActive;
+			this.publisher.publishVideo(this.isVideoActive);
+		},
+
+		getToken (sessionId) {
+			return this.createSession(sessionId).then(sessionId => this.createToken(sessionId));
+		},
+
 		createSession (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
@@ -206,7 +178,6 @@ export default {
 			});
 		},
 
-		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
 		createToken (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
