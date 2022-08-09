@@ -36,9 +36,9 @@ export default {
     console.log(data)
     if (data) {
       this.bookExist = true;
-      const openList = data.filter(({ status }) => status === 'Open');
-      const doneList = data.filter(({ status }) => status === 'Done');
-      const others = data.filter(({ status }) => status !== 'Done' && status !== 'Open');
+      const openList = data.filter(({ status }) => status === 'OPEN');
+      const doneList = data.filter(({ status }) => status === 'FINISHED' || status === 'CANCELED');
+      const others = data.filter(({ status }) => status !== 'OPEN' && status !== 'FINISHED' && status !== 'CANCELED');
       this.bookList = [...openList, ...others, ...doneList];
     }
   },
@@ -46,7 +46,7 @@ export default {
     deleteList(index){
       console.log('옴');
       console.log(index);
-      this.bookList.splice(index, 1);
+      // this.bookList.splice(index, 1);
     }
   }
 }
@@ -70,9 +70,16 @@ export default {
     position: relative;
   }
 
-  #cancel {
+  #detail {
     position: absolute;
     right: 16px;
+    top: 20px;
+    padding:10px;
+  }
+
+  #cancel {
+    position: absolute;
+    right: 96px;
     top: 20px;
     padding:10px;
   }
