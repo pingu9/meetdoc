@@ -30,4 +30,16 @@ public class AppointmentRepositorySupport {
 
         return list == null ? Collections.emptyList() : list;
     }
+
+    public List<Appointment> findAppointmentsByTimeAndStatus(LocalDateTime time, String status) {
+        List<Appointment> list = jpaQueryFactory
+                .select(qAppointment)
+                .from(qAppointment)
+                .where(qAppointment.status.eq(status)
+                        .and(qAppointment.appointmentTime
+                                .eq(time)))
+                .fetch();
+
+        return list == null ? Collections.emptyList() : list;
+    }
 }

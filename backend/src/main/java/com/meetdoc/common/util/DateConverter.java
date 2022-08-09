@@ -36,7 +36,7 @@ public class DateConverter {
         return LocalDate.parse(dateString, formatter);
     }
 
-    public LocalDateTime findNextTimeSlot() {
+    public static LocalDateTime findNextTimeSlot() {
         LocalDateTime now = LocalDateTime.now();
         int minutes = now.getMinute();
         int minutesOffset;
@@ -49,7 +49,7 @@ public class DateConverter {
         return now.withSecond(0).withNano(0).plusMinutes(minutesOffset);
     }
 
-    public LocalDateTime findBeforeTimeSlot() {
+    public static LocalDateTime findBeforeTimeSlot() {
         LocalDateTime now = LocalDateTime.now();
         int minutes = now.getMinute();
         int minutesOffset;
