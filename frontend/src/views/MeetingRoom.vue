@@ -43,7 +43,7 @@ export default {
 
 			userType: this.$route.params.userType,
 			sessionId: this.$route.params.appointmentId,
-			myUserName: this.$route.params.myUserName,
+			userName: this.$route.params.myUserName,
 		}
 	},
 	mounted(){
@@ -71,7 +71,7 @@ export default {
 			});
 
 			this.getToken(this.sessionId).then(token => {
-				this.session.connect(token, { clientData: this.myUserName })
+				this.session.connect(token, { clientData: this.userName + "("+ (this.userType == "U" ? "환자" : "의사") +")" })
 					.then(() => {
 
 						let publisher = this.OV.initPublisher(undefined, {
@@ -108,6 +108,7 @@ export default {
 			this.OV = undefined;
 
 			window.removeEventListener('beforeunload', this.leaveSession);
+			this.$router.push('/');
 		},
 
 		updateMainVideoStreamManager (stream) {
