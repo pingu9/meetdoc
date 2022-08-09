@@ -3,6 +3,10 @@
 		<div id="session">
 			<div id="session-header">
 				<h1 id="session-title">{{ sessionId }}</h1>
+				<input class="btn btn-large btn-success" type="button" id="buttonMuteAudio" @click="toggleMuteOption()" value="Mute Audio" v-if="isAudioActive">
+				<input class="btn btn-large btn-warning" type="button" id="buttonUnmuteAudio" @click="toggleMuteOption()" value="Unmute Audio" v-if="!isAudioActive">
+				<input class="btn btn-large btn-success" type="button" id="buttonStopVideo" @click="toggleVideoEnableOption()" value="Stop Video" v-if="isVideoActive">
+				<input class="btn btn-large btn-warning" type="button" id="buttonStartVideo" @click="toggleVideoEnableOption()" value="Start Video" v-if="!isVideoActive">
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
 			</div>
 			<div id="main-video" class="col-md-6">
@@ -40,6 +44,8 @@ export default {
 			mainStreamManager: undefined,
 			publisher: undefined,
 			subscribers: [],
+			isAudioActive: undefined,
+			isVideoActive: undefined,
 
 			userType: this.$route.params.userType,
 			sessionId: this.$route.params.appointmentId,
@@ -71,7 +77,7 @@ export default {
 			});
 
 			this.getToken(this.sessionId).then(token => {
-				this.session.connect(token, { clientData: this.userName + "("+ (this.userType == "U" ? "환자" : "의사") +")" })
+				this.session.connect(token, { clientData: this.userName + " ("+ (this.userType == "U" ? "환자" : "의사") +")" })
 					.then(() => {
 
 						let publisher = this.OV.initPublisher(undefined, {
@@ -87,6 +93,8 @@ export default {
 
 						this.mainStreamManager = publisher;
 						this.publisher = publisher;
+						this.isAudioActive = publisher.publishAudio;
+						this.isVideoActive = publisher.publishVideo;
 
 						this.session.publish(this.publisher);
 					})
@@ -100,7 +108,9 @@ export default {
 
 		leaveSession () {
 			if (this.session) this.session.disconnect();
-
+			
+			this.isAudioActive = undefined;
+			this.isVideoActive = undefined;
 			this.session = undefined;
 			this.mainStreamManager = undefined;
 			this.publisher = undefined;
@@ -114,6 +124,16 @@ export default {
 		updateMainVideoStreamManager (stream) {
 			if (this.mainStreamManager === stream) return;
 			this.mainStreamManager = stream;
+		},
+
+		toggleMuteOption () {
+			this.isAudioActive = !this.isAudioActive;
+			this.publisher.publishAudio(this.isAudioActive);
+		},
+
+		toggleVideoEnableOption () {
+			this.isVideoActive = !this.isVideoActive;
+			this.publisher.publishVideo(this.isVideoActive);
 		},
 
 		getToken (sessionId) {
