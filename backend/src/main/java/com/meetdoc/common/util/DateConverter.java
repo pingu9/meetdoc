@@ -35,4 +35,30 @@ public class DateConverter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(dateString, formatter);
     }
+
+    public LocalDateTime findNextTimeSlot() {
+        LocalDateTime now = LocalDateTime.now();
+        int minutes = now.getMinute();
+        int minutesOffset;
+        if (minutes > 30) {
+            minutesOffset = 60 - minutes;
+        }
+        else {
+            minutesOffset = 30 - minutes;
+        }
+        return now.withSecond(0).withNano(0).plusMinutes(minutesOffset);
+    }
+
+    public LocalDateTime findBeforeTimeSlot() {
+        LocalDateTime now = LocalDateTime.now();
+        int minutes = now.getMinute();
+        int minutesOffset;
+        if (minutes > 30) {
+            minutesOffset = minutes - 30;
+        }
+        else {
+            minutesOffset = minutes;
+        }
+        return now.withSecond(0).withNano(0).minusMinutes(minutesOffset);
+    }
 }
