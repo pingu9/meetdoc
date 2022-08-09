@@ -20,7 +20,7 @@ services:
       TZ: "Asia/Seoul"
     privileged: true
   meetdoc:
-    image: ramtk6726/meetdoc
+    image: backend:1
     container_name: meetdoc
     restart: always
     ports:

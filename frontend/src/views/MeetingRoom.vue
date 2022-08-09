@@ -24,6 +24,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '../components/UserVideo';
+import { mapGetters, mapMutations } from 'vuex';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -47,15 +48,25 @@ export default {
 			isAudioActive: undefined,
 			isVideoActive: undefined,
 
-			userType: this.$route.params.userType,
-			sessionId: this.$route.params.appointmentId,
-			userName: this.$route.params.myUserName,
+			appointmentId: '',
+			userType: '',
+			mySessionId: 'SessionA',
+			myUserName: '',
 		}
 	},
-	mounted(){
-		this.joinSession();
+	created(){
+		if(this.$route.params.appointmentId !== '' && this.$route.params.appointmentId !==  undefined && this.$route.params.appointmentId !== null){
+			this.setMeetingInfo({appointmentId: this.$route.params.appointmentId, userType:this.$route.params.userType, myUserName: this.$route.params.myUserName});
+		}
+		this.appointmentId = this.getMeetingInfo.appointmentId;
+		this.userType = this.getMeetingInfo.userType;
+		this.myUserName = this.getMeetingInfo.myUserName;
+	},
+	computed:{
+		...mapGetters(['getMeetingInfo']),
 	},
 	methods: {
+		...mapMutations(['setMeetingInfo']),
 		joinSession () {
 			this.OV = new OpenVidu();
 			this.session = this.OV.initSession();
