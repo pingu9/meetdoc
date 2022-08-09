@@ -110,8 +110,17 @@ export const actions = {
     setBookReq(context, bookReqInfo) {
         return axios.post('/api/appointment/reserve', bookReqInfo);
     },
-    cancelAppt(context, appointmentId) {
-        return axios.delete('/api/appointment/cancel/' + appointmentId);
+    cancelApptByPatient(context, appointmentId) {
+        return axios.patch('/api/appointment/cancel/patient/' + appointmentId);
+    },
+    cancelApptByDoctor(context, appointmentId) {
+        return axios.patch('/api/appointment/cancel/doctor/' + appointmentId);
+    },
+    approveCancelByDoctor(context, appointmentId) {
+        return axios.patch('/api/appointment/approve/doctor/' + appointmentId);
+    },
+    approveCancelByPatient(context, appointmentId) {
+        return axios.patch('/api/appointment/approve/patient/' + appointmentId);
     },
     setAvailTime(context, param) {
         const doctorId = param.doctorId;
@@ -127,6 +136,7 @@ export const actions = {
     //   commit('SET_TOKEN', token)
     //   localStorage.setItem('token', token)
     // },
+
     upload(context, formData){
         return axios({
             headers: {
@@ -137,5 +147,23 @@ export const actions = {
             method: "POST",
             data: formData,
           });
+    },
+
+    logout({ dispatch }) {
+        if (confirm("로그아웃 하시겠습니까?")) {
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userType', '');
+            dispatch('removeToken')
+            // localStorage.setItem()
+              alert("로그아웃 되었습니다.");
+              
+              router.push('/');
+            } else {
+            router.push('/');
+            }
+        },
+    removeToken({ commit }) {
+        commit('setToken','')
     }
 };

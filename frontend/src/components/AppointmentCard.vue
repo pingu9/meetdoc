@@ -1,7 +1,8 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <p class="badge rounded-pill bg-secondary text-white" id="cancel" @click="badgeFunction(data.appointmentId, index)">{{ badgeText }}</p> 
+            <p class="badge rounded-pill bg-secondary text-white" id="cancel" @click="badgeFunction(data.appointmentId, index, 2)">{{ badgeText2 }}</p> 
+            <p class="badge rounded-pill bg-secondary text-white" id="detail" @click="badgeFunction(data.appointmentId, index, 1)">{{ badgeText }}</p> 
             <p class="card-title">{{ title }}</p>
             <div class="info-box">
             <div class="half-box">
@@ -17,7 +18,7 @@
             </div>
             </div>
             <div class="d-grid gap-2">
-                <button :class="`btn ${btnClass}`" type="button" @click="test()">{{ btnText }}</button>
+                <button :class="`btn ${btnClass} ${prevEnter}`" type="button" @click="enter()">{{ btnText }}</button>
             </div>
         </div>
     </div>
@@ -32,8 +33,10 @@ export default {
             title: '',
             btnText: '',
             btnClass: '',
-            badgeText: '',
+            badgeText: '상세보기',
+            badgeText2: '',
             url:'',
+            prevEnter:'',
         };
     },
     props: {
@@ -43,25 +46,50 @@ export default {
     created() {
         const { status } = this.data;
         this.status = status;
-        if (status === 'Open') {
+        if (status === 'WAITING') {
+            this.btnClass = 'btn-danger';
+            this.btnText = '진료 대기중';
+            this.title = '원격진료 입장 불가';
+            this.badgeText2 = '예약취소';
+            this.prevEnter = 'prevEnter';
+        } else if(status === 'PENDING_CANCEL_PATIENT') {
+            this.btnClass = 'btn-secondary';
+            this.btnText = '예약 취소 확인 대기중';
+            this.title = '취소중인 예약';
+            this.prevEnter = 'prevEnter';
+        } else if(status === 'PENDING_CANCEL_DOCTOR') {
+            this.btnClass = 'btn-primary';
+            this.btnText = '예약 취소 확인';
+            this.title = '취소된 예약';
+        } else if (status === 'OPEN') {
             this.btnClass = 'btn-primary';
             this.btnText = '진료실 입장하기';
             this.title = '원격진료 입장 가능';
-            this.badgeText = '예약취소';
-        } else if (status === 'Done') {
+        } else if (status === 'FINISHED') {
             this.btnClass = 'btn-secondary';
             this.btnText = '진료 완료';
             this.title = '진료 완료';
-            this.badgeText = '상세보기';
+            this.prevEnter = 'prevEnter';
+        } else if (status === 'CANCELED') {
+            this.btnClass = 'btn-secondary';
+            this.btnText = '취소 완료';
+            this.title = '취소된 예약';
+            this.prevEnter = 'prevEnter';
+        } else if (status === 'PENDING_PRESCRIPTION') {
+            this.btnClass = 'btn-secondary';
+            this.btnText = '진료 완료';
+            this.title = '처방전 작성 대기중';
+            this.prevEnter = 'prevEnter';
         } else {
             this.btnClass = 'btn-danger';
             this.btnText = '진료 대기중';
             this.title = '원격진료 입장 불가';
-            this.badgeText = '예약취소';
+            this.badgeText2 = '예약취소';
+            this.prevEnter = 'prevEnter';
         }
     },
     methods: {
-        test(){
+        enter(){
             var userType = localStorage.getItem('userType');
             var appointmentId = this.data.appointmentId;
             var myUserName = '';
@@ -70,18 +98,31 @@ export default {
             }else{
                 myUserName = this.data.patientName;
             }
-            this.$router.push({name: 'meetingRoom', params:{appointmentId: appointmentId, userType: userType, myUserName: myUserName}});
+            if(this.status === 'OPEN') this.$router.push({name: 'meetingRoom', params:{appointmentId: appointmentId, userType: userType, myUserName: myUserName}});
+            else if (this.status === 'PENDING_CANCEL_DOCTOR') this.$store.dispatch('approveCancelByPatient',appointmentId).then((res) => {
+                console.log(res.data);
+                alert("예약이 취소되었습니다.")
+                this.btnClass = 'btn-secondary';
+                this.btnText = '예약 취소 확인 대기중';
+                this.title = '취소중인 예약';
+                this.prevEnter = 'prevEnter';
+            })
         },
-        badgeFunction(appointmentId, index) {
+        badgeFunction(appointmentId, index, type) {
             console.log(index);
-            if (this.status !== 'Done') {
+            if (this.status === 'WAITING' && type == 2) {
                 if (confirm('예약을 취소하시겠습니까?')) {
-                    this.$store.dispatch('cancelAppt', appointmentId).then((res) => {
+                    this.$store.dispatch('cancelApptByPatient', appointmentId).then((res) => {
                         console.log(res.data);
-                        this.$emit('deleteList', index);
+                        alert("예약 취소 요청을 성공적으로 실행했습니다.")
+                        // this.$emit('deleteList', index);
+                        this.btnClass = 'btn-secondary';
+                        this.btnText = '취소 완료';
+                        this.title = '취소된 예약';
+                        this.prevEnter = 'prevEnter';
                     });
                 }
-            } else {
+            } else if (type == 1) {
                 // 상세보기 기능
                 this.$store.dispatch('getChartDetail', appointmentId).then((a) => {
                     console.log(a.data);
@@ -98,7 +139,8 @@ export default {
 </script>
 
 <style>
-.check{
-    
+.prevEnter{
+    pointer-events: none;
 }
+
 </style>

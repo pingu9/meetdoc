@@ -8,7 +8,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav" style="width:calc(100%- 82.43px)">
           <ul class="navbar-nav">
-            <li class="nav-item" v-if="userType !=='D'">
+            <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item" v-if="isLoggedIn && userType ==='D'">
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -85,18 +85,20 @@ export default {
 
   methods: {
     //아래 부분 watcher로 수정해야함(중요)
+    ...mapActions(['logout']),
     confirm() {
-      if (confirm("로그아웃 하시겠습니까?")) {
-        localStorage.setItem('token', '');
-        localStorage.setItem('userId', '');
-        localStorage.setItem('userType', '');
-        // localStorage.setItem()
-          alert("로그아웃 되었습니다.");
-          this.$router.go();
-          this.$router.push('/');
-        } else {
-        this.$router.push('/');
-        }
+      this.logout()
+      // if (confirm("로그아웃 하시겠습니까?")) {
+      //   localStorage.setItem('token', '');
+      //   localStorage.setItem('userId', '');
+      //   localStorage.setItem('userType', '');
+      //   // localStorage.setItem()
+      //     alert("로그아웃 되었습니다.");
+      //     this.$router.go();
+      //     this.$router.push('/');
+      //   } else {
+      //   this.$router.push('/');
+      //   }
     }
   },
   computed: {
