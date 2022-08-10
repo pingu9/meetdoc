@@ -30,7 +30,7 @@ export const mutations = {
         state.chartList = data;
     },
     setChartDetail(state, data) {
-        data.prescriptionDate = data.prescriptionDate.substr(0, 10);
+        if(data.prescriptionDate != null) data.prescriptionDate = data.prescriptionDate.substr(0, 10);
         state.chartDetail = data;
     },
     setBookInfo(state, data) {
