@@ -117,10 +117,10 @@ export default {
 
 
 			const currentAppointmentId = this.getMeetingInfo.appointmentId;
-			if (this.userType === 'U') {
+			if (this.userType === 'D') {
 				axios
 					.patch(`/meeting/enter/doctor/${currentAppointmentId}`);
-			} else if (this.userType === 'D') {
+			} else if (this.userType === 'U') {
 				axios
 					.patch(`/meeting/enter/patient${currentAppointmentId}`);
 			}	
@@ -140,10 +140,10 @@ export default {
 			this.OV = undefined;
 
 			const currentAppointmentId = this.getMeetingInfo.appointmentId;
-			if (this.userType === 'U') {
+			if (this.userType === 'D') {
 				axios
 					.patch(`/meeting/leave/doctor/${currentAppointmentId}`);
-			} else if (this.userType === 'D') {
+			} else if (this.userType === 'U') {
 				axios
 					.patch(`/meeting/leave/patient${currentAppointmentId}`);
 			}	
