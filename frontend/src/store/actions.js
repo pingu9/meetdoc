@@ -85,6 +85,14 @@ export const actions = {
         console.log(idpw)
         axios.post('/api/user/login', idpw)
             .then((res) => {
+                if (res.data.message !== "Success") {
+                    const error = {};
+                    error.response = res;
+                    return Promise.reject(error);
+                }
+                return res;
+            })
+            .then((res) => {
                 console.log(res);
                 context.commit('setLoginToken', res.data.accessToken)
                 localStorage.setItem('token', res.data.accessToken);
