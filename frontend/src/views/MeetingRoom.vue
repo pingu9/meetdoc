@@ -119,10 +119,10 @@ export default {
 			const currentAppointmentId = this.getMeetingInfo.appointmentId;
 			if (this.userType === 'D') {
 				axios
-					.patch(`/meeting/enter/doctor/${currentAppointmentId}`);
+					.patch(`/api/meeting/enter/doctor/${currentAppointmentId}`);
 			} else if (this.userType === 'U') {
 				axios
-					.patch(`/meeting/enter/patient${currentAppointmentId}`);
+					.patch(`api/meeting/enter/patient${currentAppointmentId}`);
 			}	
 			
 			window.addEventListener('beforeunload', this.leaveSession)
@@ -142,10 +142,10 @@ export default {
 			const currentAppointmentId = this.getMeetingInfo.appointmentId;
 			if (this.userType === 'D') {
 				axios
-					.patch(`/meeting/leave/doctor/${currentAppointmentId}`);
+					.patch(`/api/meeting/leave/doctor/${currentAppointmentId}`);
 			} else if (this.userType === 'U') {
 				axios
-					.patch(`/meeting/leave/patient${currentAppointmentId}`);
+					.patch(`/api/meeting/leave/patient${currentAppointmentId}`);
 			}	
 
 			window.removeEventListener('beforeunload', this.leaveSession);
