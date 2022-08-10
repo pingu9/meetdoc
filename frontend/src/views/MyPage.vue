@@ -1,10 +1,12 @@
 <template>
-   <div class="container-body" v-if="userFlag">
+  <h4>MyPage</h4>
+  <div class="container-body" v-if="userFlag">
     <div>
       <h4 style="text-align:left">{{currentUser.userName }} 환자</h4>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.userId}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.userName}}</div>
-      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{currentUser.gender}}</div>
+      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">구분 : {{currentUser.userType === 'U' ? '환자' : '의사'}}</div>
+      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{currentUser.gender === 'male' ? '남자' : '여자'}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">생년월일 : {{currentUser.birthdate}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">주소 : {{currentUser.address}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">연락처 번호 : {{currentUser.phone}}</div>
@@ -25,7 +27,8 @@
       <h4 style="text-align:left">{{currentUser.userName }} 선생님</h4>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.userId}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.userName}}</div>
-      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{currentUser.gender}}</div>
+      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">구분 : {{currentUser.userType === 'U' ? '환자' : '의사'}}</div>
+      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">성별 : {{currentUser.gender === 'male' ? '남자' : '여자'}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">생년월일 : {{currentUser.birthdate}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">주소 : {{currentUser.address}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">연락처 번호 : {{currentUser.phone}}</div>
