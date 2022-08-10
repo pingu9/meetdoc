@@ -391,16 +391,17 @@ public class AppointmentController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
-            @ApiResponse(code = 400, message = "상태에 안맞는 요청"),
+            @ApiResponse(code = 401, message = "토큰 없음"),
             @ApiResponse(code = 403, message = "권한이 없는 요청"),
-            @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getNextAppointment(@ApiIgnore Authentication authentication) {
         if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         String getUserId = userDetails.getUsername();
         User user = userService.getUserByUserId(getUserId);
-
+        if(user == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
         List<Appointment> appointments = (List<Appointment>) user.getAppointments();
         if(appointments == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         Appointment next = appointmentService.getNextAppointment(appointments);
