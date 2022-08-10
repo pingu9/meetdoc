@@ -6,14 +6,14 @@
         <span class="input-group-text" id="basic-addon1">Username</span>
         <input type="text" class="form-control" v-model="userId"  placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
         <button class="btn btn-outline-secondary" type="button" @click="checkId()" id="button-addon2">중복확인</button>
-        <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
       </div>
-      <div class="form-group mb-3">
+      <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
+      <div class="form-group mt-3 mb-3">
         <label class="form-label" for="inputPass">비밀번호</label>
         <input type="password" v-model="password" class="form-control" id="inputPass">
         <div class="valid-feedback"></div>
         <p v-show="valid.password" class="">
-          비밀번호를 정확히 입력해주세요.
+          비밀번호는 숫자, 특수문자 포함 8자~12자로 이용이 가능합니다.  
         </p>
       </div>
      
@@ -65,8 +65,12 @@ export default {
       // email valid에 추가해야함
       valid: {
         password: false,
+        email: false,
+        phone: false,
       },
       passwordHasError: false,
+      emailHasError: false,
+      phoneHasError: false,
     }
   },
   computed: {
@@ -79,6 +83,9 @@ export default {
     'email': function() {
       this.checkEmail()
     },
+    'phone': function () {
+      this.checkPhone()
+    }
   },
 
   methods: {
@@ -92,7 +99,7 @@ export default {
       const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!validatePassword.test(this.password)|| !this.password) {
         this.valid.password = true
-        this.emailHasError = true
+        this.passwordHasError = true
         return
       } this.valid.password = false
         this.passwordHasError = false
@@ -107,6 +114,18 @@ export default {
         return
       } this.valid.email = false
         this.emailHasError = false
+    },
+    checkPhone() {
+      const validatePhoneNumber = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+      if (!validatePhoneNumber.test(this.phone) || !this.phone) {
+        this.valid.phone = true;
+        this.phoneHasError = true;
+      }
+      else {
+        this.valid.phone = false;
+        this.phoneHasError = false;
+      }
     },
 
     submitForm () {

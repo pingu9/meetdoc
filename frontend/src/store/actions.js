@@ -27,7 +27,17 @@ export const actions = {
             .then((res) => {
                 console.log('현재유저요청')
                 context.commit('setCurrentUser', res.data);
-            })
+            }),
+              axios.get('/api/doctor/detail/' + param , {
+            headers: {
+                Authorization: 'Bearer ' + token
+              }
+              })
+              .then((res) => {
+                console.log('현재유저 요청에 의사정보 요청')
+                context.commit('setCurrentDoctorInfo', res.data);
+                console.log(res.data)
+              })
     },
     signUp(context, payload) {
         console.log(payload)
@@ -40,30 +50,58 @@ export const actions = {
                 console.log(error.response.data.message);
             });
     },
+    doctorRegist(context, payload) {
+      console.log(payload)
+      axios.post('/api/doctor/regist', payload)
+      .then(() => {
+          localStorage.setItem('userType', 'D')
+          router.push({ name: 'home' });
+      })
+      .catch(error => {
+          console.log('------------');
+          console.log(error.response.data.message);
+      });
+    },
+    
     update(context, payload) {
         console.log(payload)
-        axios.patch('/api/user/', payload)
-        .then(() => {
-            router.go()
-        })
-        .catch(error => {
-            console.log('------------');
-            console.log(error.response.data.message);
-        });
+        if (confirm("회원정보를 수정하시겠습니까?")) {
+          axios.patch('/api/user/', payload)
+          .then(() => {
+              router.push({ name: 'home' });
+          })
+          .catch(error => {
+              console.log('------------');
+              console.log(error.response.data.message);
+          });
+        }
     },
     userDelete() {
+      if (confirm("회원탈퇴하시겠습니까?")) {
         axios.delete('/api/user/')
         .then(() => {
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userType', '');
             router.go()
         })
         .catch(error => {
             console.log('------------');
             console.log(error.response.data.message);
         });
+      }
     },    
     login(context, idpw) {
         console.log(idpw)
         axios.post('/api/user/login', idpw)
+            .then((res) => {
+                if (res.data.message !== "Success") {
+                    const error = {};
+                    error.response = res;
+                    return Promise.reject(error);
+                }
+                return res;
+            })
             .then((res) => {
                 console.log(res);
                 context.commit('setLoginToken', res.data.accessToken)
