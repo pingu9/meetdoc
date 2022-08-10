@@ -1,8 +1,8 @@
 <template>
   <div class="container-body">
     <h1>{{$store.state.chartList[0].doctorName}} 님의 진료내역</h1>
-    <div class="card w-90" v-for="(chart, idx) in $store.state.chartList" :key="idx" id="container-card">
-        <div class="card-body" style="display:flex; height:100px;">
+    <div class="card w-100" v-for="(chart, idx) in $store.state.chartList" :key="idx" id="container-card">
+      <div class="card-body" style="display:flex; height:100px;">
         <div class="container-status" v-if="chart.status === 'WAITING'">
           <div class="circle before"></div><div class="status before">진료대기</div>
         </div>
@@ -16,20 +16,25 @@
           <div class="circle done"></div><div class="status done">취소완료</div>
         </div>
         <div class="container-status" v-if="chart.status === 'PENDING_CANCEL_PATIENT'">
-          <div class="circle canceled"></div><div class="status canceled">환자취소대기</div>
+          <div class="circle canceled"></div><div class="status canceled">환자 취소대기</div>
         </div>
         <div class="container-status" v-if="chart.status === 'PENDING_CANCEL_DOCTOR'">
-          <div class="circle canceled"></div><div class="status canceled">의사취소대기</div>
+          <div class="circle canceled"></div><div class="status canceled">의사 취소대기</div>
         </div>
         <div class="container-status" v-if="chart.status === 'PENDING_PRESCRIPTION'">
           <div class="circle pending"></div><div class="status pending">처방전 작성대기</div>
         </div>
-          <div style="width:60%; text-align: left;">
-            <h5 class="card-title" >{{chart.patientName}}</h5>
-            <p class="card-text" >{{chart.appointmentTime}}</p>
-          </div>
-          <div style="line-height: 65px; width:20%;"><a :href="`/chart/detail/${chart.appointmentId}`" class="btn btn-primary">상세보기</a></div>
+        <div style="width:50%; text-align: left;">
+          <h5 class="card-title" >{{chart.patientName}}</h5>
+          <p class="card-text" >{{chart.appointmentTime}}</p>
         </div>
+        <div style="line-height: 65px; width:15%;">
+          <button class="btn btn-secondary"  v-if="chart.status === 'PENDING_CANCEL_PATIENT'" @click="apprCancel(chart)">취소확인</button>
+          <button class="btn btn-danger" v-if="chart.status === 'WAITING'" @click="cancelAppt(chart)">진료취소</button>
+          <button class="btn btn-success" v-if="chart.status === 'OPEN'" @click="enterRoom(chart)">진료입장</button>
+        </div>
+        <div style="line-height: 65px; width:15%;"><a :href="`/chart/detail/${chart.appointmentId}`" class="btn btn-primary">상세보기</a></div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +60,33 @@ export default {
   methods:{
     sendApptId(){
 
+    },
+    apprCancel(appointment) {
+      console.log(appointment);
+      if(appointment.status === 'PENDING_CANCEL_PATIENT') {
+        this.$store.dispatch('approveCancelByDoctor', appointment.appointmentId).then((res) => {
+          console.log(res.data);
+          alert("진료가 취소되었습니다.");
+          appointment.status = 'CANCELED';
+        }).catch(e => console.log(e))
+      }
+    },
+    cancelAppt(appointment) {
+      console.log(appointment);
+      if(confirm("진료를 취소하시겠습니까?")){
+        if(appointment.status === 'WAITING') {
+          this.$store.dispatch('cancelApptByDoctor', appointment.appointmentId).then((res) => {
+            console.log(res.data);
+            alert('진료 취소 요청을 성공적으로 실행했습니다..');
+            appointment.status = 'PENDING_CANCEL_DOCTOR';
+          }).catch(e => console.log(e))
+        }
+      }
+    },
+    enterRoom(appointment) {
+      if(appointment.status === 'OPEN') {
+        this.$router.push({name: 'meetingRoom', params:{appointmentId: appointment.appointmentId, userType: 'U', myUserName: this.doctorName}});
+      }
     }
   }
 }
