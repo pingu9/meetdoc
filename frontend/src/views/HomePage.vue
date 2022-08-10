@@ -50,7 +50,13 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('getDepartments');
+    let userType = localStorage.getItem('userType')
+    console.log(userType)
+    if (userType !== 'D'){
+      this.$store.dispatch('getDepartments');
+    } else {
+      this.$router.push({name: 'chartList'})
+    }
   },
 }
 </script>
