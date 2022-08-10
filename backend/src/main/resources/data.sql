@@ -141,6 +141,15 @@ INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `do
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-16 17:30', '62.25', 'CANCELED', '증상', 'user3', 'user19', '정신과');
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-17 14:30', '60', 'WAITING', '증상', 'user3', 'user19', '정신과');
 
+INSERT INTO appointment ( `appointment_time`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-02 14:00', '60', '24', '2022-08-02', '피부 처방', 'FINISHED', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-10 16:00', '60', 'PENDING_PRESCRIPTION', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-10 14:30', '60', 'OPEN', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-12 17:00', '60', 'WAITING', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-15 09:30', '60', 'PENDING_CANCEL_DOCTOR', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-11 17:30', '60', 'PENDING_CANCEL_PATIENT', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-16 17:30', '62.25', 'CANCELED', '증상', 'user5', 'user20', '피부과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-17 14:30', '60', 'WAITING', '증상', 'user5', 'user20', '피부과');
+
 INSERT INTO doctor_medic_department (`user_id`, `department_code`) VALUES ('user1', '1');
 INSERT INTO doctor_medic_department (`user_id`, `department_code`) VALUES ('user2', '2');
 INSERT INTO doctor_medic_department (`user_id`, `department_code`) VALUES ('user3', '3');
