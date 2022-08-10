@@ -40,26 +40,46 @@ export const actions = {
                 console.log(error.response.data.message);
             });
     },
+    doctorRegist(context, payload) {
+      console.log(payload)
+      axios.post('/api/doctor/regist', payload)
+      .then(() => {
+          localStorage.setItem('userType', 'D')
+          router.push({ name: 'home' });
+      })
+      .catch(error => {
+          console.log('------------');
+          console.log(error.response.data.message);
+      });
+    },
+    
     update(context, payload) {
         console.log(payload)
-        axios.patch('/api/user/', payload)
-        .then(() => {
-            router.go()
-        })
-        .catch(error => {
-            console.log('------------');
-            console.log(error.response.data.message);
-        });
+        if (confirm("회원정보를 수정하시겠습니까?")) {
+          axios.patch('/api/user/', payload)
+          .then(() => {
+              router.push({ name: 'home' });
+          })
+          .catch(error => {
+              console.log('------------');
+              console.log(error.response.data.message);
+          });
+        }
     },
     userDelete() {
+      if (confirm("회원탈퇴하시겠습니까?")) {
         axios.delete('/api/user/')
         .then(() => {
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userType', '');
             router.go()
         })
         .catch(error => {
             console.log('------------');
             console.log(error.response.data.message);
         });
+      }
     },    
     login(context, idpw) {
         console.log(idpw)
