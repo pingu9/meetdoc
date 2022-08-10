@@ -65,8 +65,12 @@ export default {
       // email valid에 추가해야함
       valid: {
         password: false,
+        email: false,
+        phone: false,
       },
       passwordHasError: false,
+      emailHasError: false,
+      phoneHasError: false,
     }
   },
   computed: {
@@ -79,6 +83,9 @@ export default {
     'email': function() {
       this.checkEmail()
     },
+    'phone': function () {
+      this.checkPhone()
+    }
   },
 
   methods: {
@@ -92,7 +99,7 @@ export default {
       const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!validatePassword.test(this.password)|| !this.password) {
         this.valid.password = true
-        this.emailHasError = true
+        this.passwordHasError = true
         return
       } this.valid.password = false
         this.passwordHasError = false
@@ -107,6 +114,18 @@ export default {
         return
       } this.valid.email = false
         this.emailHasError = false
+    },
+    checkPhone() {
+      const validatePhoneNumber = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+      if (!validatePhoneNumber.test(this.phone) || !this.phone) {
+        this.valid.phone = true;
+        this.phoneHasError = true;
+      }
+      else {
+        this.valid.phone = false;
+        this.phoneHasError = false;
+      }
     },
 
     submitForm () {
