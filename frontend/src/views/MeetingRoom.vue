@@ -48,9 +48,8 @@ export default {
 			isAudioActive: undefined,
 			isVideoActive: undefined,
 
-			appointmentId: '',
 			userType: '',
-			mySessionId: 'SessionA',
+			sessionId: '',
 			myUserName: '',
 		}
 	},
@@ -58,9 +57,11 @@ export default {
 		if(this.$route.params.appointmentId !== '' && this.$route.params.appointmentId !==  undefined && this.$route.params.appointmentId !== null){
 			this.setMeetingInfo({appointmentId: this.$route.params.appointmentId, userType:this.$route.params.userType, myUserName: this.$route.params.myUserName});
 		}
-		this.appointmentId = this.getMeetingInfo.appointmentId;
+		this.sessionId = this.getMeetingInfo.appointmentId;
 		this.userType = this.getMeetingInfo.userType;
-		this.myUserName = this.getMeetingInfo.myUserName;
+		this.userName = this.getMeetingInfo.myUserName;
+		console.log(this.sessionId + " "+ this.userType +" "+this.userName);
+		this.joinSession();
 	},
 	computed:{
 		...mapGetters(['getMeetingInfo']),
@@ -94,12 +95,12 @@ export default {
 						let publisher = this.OV.initPublisher(undefined, {
 							audioSource: undefined,
 							videoSource: undefined,
-							publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-							publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-							resolution: '640x480',  // The resolution of your video
-							frameRate: 30,			// The frame rate of your video
+							publishAudio: true,
+							publishVideo: true,
+							resolution: '640x480',
+							frameRate: 30,
 							insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-							mirror: true       	// Whether to mirror your local video or not
+							mirror: true
 						});
 
 						this.mainStreamManager = publisher;
