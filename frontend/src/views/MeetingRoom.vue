@@ -50,7 +50,7 @@ export default {
 
 			userType: '',
 			sessionId: '',
-			myUserName: '',
+			userName: '',
 		}
 	},
 	created(){
@@ -115,6 +115,16 @@ export default {
 					});
 			});
 
+
+			const currentAppointmentId = this.getMeetingInfo.appointmentId;
+			if (this.userType === 'D') {
+				axios
+					.patch(`/meeting/enter/doctor/${currentAppointmentId}`);
+			} else if (this.userType === 'U') {
+				axios
+					.patch(`/meeting/enter/patient${currentAppointmentId}`);
+			}	
+			
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
 
@@ -128,6 +138,15 @@ export default {
 			this.publisher = undefined;
 			this.subscribers = [];
 			this.OV = undefined;
+
+			const currentAppointmentId = this.getMeetingInfo.appointmentId;
+			if (this.userType === 'D') {
+				axios
+					.patch(`/meeting/leave/doctor/${currentAppointmentId}`);
+			} else if (this.userType === 'U') {
+				axios
+					.patch(`/meeting/leave/patient${currentAppointmentId}`);
+			}	
 
 			window.removeEventListener('beforeunload', this.leaveSession);
 			this.$router.push('/');
