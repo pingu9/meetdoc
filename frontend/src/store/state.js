@@ -12,6 +12,9 @@ export const state = {
     currentUser: {
 
     },
+    currentDoctorInfo:{
+
+    },
 
     loginToken: localStorage.getItem('token') || '',
 
