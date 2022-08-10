@@ -28,16 +28,16 @@ export const actions = {
                 console.log('현재유저요청')
                 context.commit('setCurrentUser', res.data);
             }),
-              axios.get('/api/doctor/detail/' + param , {
-            headers: {
-                Authorization: 'Bearer ' + token
-              }
-              })
-              .then((res) => {
-                console.log('현재유저 요청에 의사정보 요청')
-                context.commit('setCurrentDoctorInfo', res.data);
-                console.log(res.data)
-              })
+            axios.get('/api/doctor/detail/' + param, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .then((res) => {
+                    console.log('현재유저 요청에 의사정보 요청')
+                    context.commit('setCurrentDoctorInfo', res.data);
+                    console.log(res.data)
+                })
     },
     signUp(context, payload) {
         console.log(payload)
@@ -51,46 +51,46 @@ export const actions = {
             });
     },
     doctorRegist(context, payload) {
-      console.log(payload)
-      axios.post('/api/doctor/regist', payload)
-      .then(() => {
-          localStorage.setItem('userType', 'D')
-          router.push({ name: 'home' });
-      })
-      .catch(error => {
-          console.log('------------');
-          console.log(error.response.data.message);
-      });
+        console.log(payload)
+        axios.post('/api/doctor/regist', payload)
+            .then(() => {
+                localStorage.setItem('userType', 'D')
+                router.push({ name: 'home' });
+            })
+            .catch(error => {
+                console.log('------------');
+                console.log(error.response.data.message);
+            });
     },
-    
+
     update(context, payload) {
         console.log(payload)
         if (confirm("회원정보를 수정하시겠습니까?")) {
-          axios.patch('/api/user/', payload)
-          .then(() => {
-              router.push({ name: 'home' });
-          })
-          .catch(error => {
-              console.log('------------');
-              console.log(error.response.data.message);
-          });
+            axios.patch('/api/user/', payload)
+                .then(() => {
+                    router.push({ name: 'home' });
+                })
+                .catch(error => {
+                    console.log('------------');
+                    console.log(error.response.data.message);
+                });
         }
     },
     userDelete() {
-      if (confirm("회원탈퇴하시겠습니까?")) {
-        axios.delete('/api/user/')
-        .then(() => {
-            localStorage.setItem('token', '');
-            localStorage.setItem('userId', '');
-            localStorage.setItem('userType', '');
-            router.go()
-        })
-        .catch(error => {
-            console.log('------------');
-            console.log(error.response.data.message);
-        });
-      }
-    },    
+        if (confirm("회원탈퇴하시겠습니까?")) {
+            axios.delete('/api/user/')
+                .then(() => {
+                    localStorage.setItem('token', '');
+                    localStorage.setItem('userId', '');
+                    localStorage.setItem('userType', '');
+                    router.go()
+                })
+                .catch(error => {
+                    console.log('------------');
+                    console.log(error.response.data.message);
+                });
+        }
+    },
     login(context, idpw) {
         console.log(idpw)
         axios.post('/api/user/login', idpw)
@@ -108,9 +108,9 @@ export const actions = {
                 localStorage.setItem('token', res.data.accessToken);
                 localStorage.setItem('userId', res.data.userId);
                 localStorage.setItem('userType', res.data.userType);
-                if (localStorage.getItem('userType') ==='D') {
+                if (localStorage.getItem('userType') === 'D') {
                     console.log('의사는 차트리스트로!')
-                    router.push({ name: 'chartList'})
+                    router.push({ name: 'chartList' })
                     router.go()
                 } else {
                     router.push({ name: 'home' });
@@ -137,10 +137,7 @@ export const actions = {
             });
     },
     getChartList(context, doctorId) {
-        axios.get('/api/appointment/info/list/doctor/' + doctorId).then((res) => {
-            console.log(res.data);
-            context.commit('setChartList', res.data);
-        });
+        return axios.get('/api/appointment/info/list/doctor/' + doctorId);
     },
     getChartDetail(context, appointmentId) {
         return axios.get('/api/appointment/info/detail/' + appointmentId);
@@ -175,16 +172,16 @@ export const actions = {
     //   localStorage.setItem('token', token)
     // },
 
-    upload(context, formData){
+    upload(context, formData) {
         return axios({
             headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origin": "*",
+                "Content-Type": "multipart/form-data",
+                "Access-Control-Allow-Origin": "*",
             },
             url: '/api/s3/upload/images', // 파일 업로드 요청 URL
             method: "POST",
             data: formData,
-          });
+        });
     },
 
     logout({ dispatch }) {
@@ -194,14 +191,14 @@ export const actions = {
             localStorage.setItem('userType', '');
             dispatch('removeToken')
             // localStorage.setItem()
-              alert("로그아웃 되었습니다.");
-              
-              router.push('/');
-            } else {
+            alert("로그아웃 되었습니다.");
+
             router.push('/');
-            }
-        },
+        } else {
+            router.push('/');
+        }
+    },
     removeToken({ commit }) {
-        commit('setToken','')
+        commit('setToken', '')
     }
 };
