@@ -384,4 +384,41 @@ public class AppointmentController {
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @PatchMapping("/meetinglog/enter/doctor/{appointmentId}")
+    @ApiOperation(value = "진료실 입장 로그(의사)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "토큰 없음"),
+            @ApiResponse(code = 403, message = "권한이 없는 요청"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> enterMeetingRoomDoctorLog(@ApiIgnore Authentication authentication,
+                                                       @ApiParam(value = "예약 번호", required = true)
+                                                       @PathVariable int appointmentId) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+        if(user == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
+        if(user.getUserType() != "D") {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
+        appointmentService.enterMeetingRoomDoctorLog(appointmentId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    /*
+    로그 관련 정책 정리
+
+    1. 입장 : 입장 로그는 최초 1회만 찍힘 -> 만약 로그가 이미 찍혀있다면 찍으면 안됨 -> success를 보내도 되고, 코드는 크게 중요하지 않음
+    2. 퇴장 : 퇴장 로그는 가장 마지막에 퇴장한 것 기준으로 로그가 찍힘 -> 확인 없이 바로 업데이트 해도됨
+
+    토큰 확인 필요, 유저 본인 맞는지, 의사 환자 각자 맞는지 확인하기
+
+    각 로그 찍는 부분은 JoinSession 하단에서 Session 입장 이후 api 호출 바로 하시면 됩니다.
+    퇴장은 leaveSession에서 초기화 하는 부분에 호출해주시면 됩니다.
+     */
 }
