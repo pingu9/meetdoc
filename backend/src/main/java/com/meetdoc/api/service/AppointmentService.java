@@ -25,4 +25,8 @@ public interface AppointmentService {
     void deleteAppointment(Appointment appointment);
     void changeStatus(Appointment appointment, String status);
     List<LocalDateTime> getAvailableTimeList(String doctorId, LocalDateTime time, OpeningHours openingHour);
+    void enterMeetingRoomDoctorLog(int appointmentId);
+    void enterMeetingRoomPatientLog(int appointmentId);
+    void leaveMeetingRoomDoctorLog(int appointmentId);
+    void leaveMeetingRoomPatientLog(int appointmentId);
 }
