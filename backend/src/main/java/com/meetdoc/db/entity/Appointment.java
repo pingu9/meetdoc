@@ -40,10 +40,10 @@ public class Appointment {
     String departmentName;
 
     String roomLink;
-    String enterDoctor;
-    String enterPatient;
-    String leaveDoctor;
-    String leavePatient;
+    LocalDateTime enterDoctor;
+    LocalDateTime enterPatient;
+    LocalDateTime leaveDoctor;
+    LocalDateTime leavePatient;
 
     String icd;
     LocalDateTime prescriptionDate;
