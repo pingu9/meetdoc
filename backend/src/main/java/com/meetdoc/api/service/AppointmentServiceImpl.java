@@ -149,7 +149,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         Appointment appointment = appointmentRepository.getOne(appointmentId);
         appointment.setPrescriptionDescription(req.getPrescriptionDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        appointment.setAppointmentTime(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
+        appointment.setPrescriptionDate(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
         appointment.setIcd(req.getIcd());
 
         appointmentRepository.save(appointment);

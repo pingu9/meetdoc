@@ -44,7 +44,16 @@ public class StateScheduler {
         LocalDateTime beforeTimeSlot = DateConverter.findBeforeTimeSlot();
         List<Appointment> appointments = appointmentRepositorySupport.findAppointmentsByTimeAndStatus(beforeTimeSlot, "OPEN");
         for (Appointment appointment: appointments) {
-            appointment.setStatus("PENDING_PRESCRIPTION");
+            if (appointment.getEnterDoctor() == null) {
+                appointment.setStatus("DOCTOR_ABSENT");
+            } else if (appointment.getEnterPatient() == null) {
+                appointment.setStatus("PATIENT_ABSENT");
+            } else if (appointment.getPrescriptionDate() == null) {
+                appointment.setStatus("PENDING_PRESCRIPTION");
+            } else {
+                appointment.setStatus("FINISHED");
+            }
+
         }
         appointmentRepository.saveAll(appointments);
     }
