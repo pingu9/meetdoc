@@ -6,14 +6,14 @@
         <span class="input-group-text" id="basic-addon1">Username</span>
         <input type="text" class="form-control" v-model="userId"  placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
         <button class="btn btn-outline-secondary" type="button" @click="checkId()" id="button-addon2">중복확인</button>
-        <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
       </div>
-      <div class="form-group mb-3">
+      <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
+      <div class="form-group mt-3 mb-3">
         <label class="form-label" for="inputPass">비밀번호</label>
         <input type="password" v-model="password" class="form-control" id="inputPass">
         <div class="valid-feedback"></div>
         <p v-show="valid.password" class="">
-          비밀번호를 정확히 입력해주세요.
+          비밀번호는 숫자, 특수문자 포함 8자~12자로 이용이 가능합니다.  
         </p>
       </div>
      
