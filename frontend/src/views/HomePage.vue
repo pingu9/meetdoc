@@ -1,6 +1,6 @@
 <template>
   <div class="container-body">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" role="alert" v-if="this.userType === 'U'">
     예약하신 진료시간이 다 되었습니다. <a href="#" class="alert-link">진료실 링크여기</a> 진료실에 입장해주세요!
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4" id="container-departments">
@@ -29,14 +29,15 @@ import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
     data() {
     return {
-      
+      userType: '',
+
     }
   },
   components: {
     
   },
   computed: {
-    ...mapState(['name', 'value', 'specialties']),
+    ...mapState(['name', 'value', 'specialties', 'currentUser']),
     // ...mapGetters({
     //   getter : 'getName'
     // }),
@@ -50,9 +51,9 @@ export default {
     }
   },
   created() {
-    let userType = localStorage.getItem('userType')
-    console.log(userType)
-    if (userType !== 'D'){
+    this.userType = localStorage.getItem('userType')
+    console.log(this.userType)
+    if (this.userType !== 'D'){
       this.$store.dispatch('getDepartments');
     } else {
       this.$router.push({name: 'chartList'})
