@@ -33,7 +33,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public void leaveMeetingRoomPatientLog(Appointment appointment) {
-        appointment.setLeaveDoctor(LocalDateTime.now());
+        appointment.setLeavePatient(LocalDateTime.now());
         appointmentRepository.save(appointment);
     }
 
