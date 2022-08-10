@@ -192,13 +192,13 @@ export default {
   },
   created() {
     //파라미터 값들 저장
-    if(this.getDoctorIdKept === ''){
+    if(this.$route.params.doctorId !== '' && this.$route.params.doctorId !== undefined && this.$route.params.doctorId !== null){
       this.setDoctorIdKept(this.$route.params.doctorId);
     }
-    if(this.getDoctorName === ''){
+    if(this.$route.params.doctorName !== '' && this.$route.params.doctorName !== undefined && this.$route.params.doctorName !== null){
       this.setDoctorName(this.$route.params.doctorName);
     }
-    if(this.getDepartmentName === ''){
+    if(this.$route.params.departmentName !== '' && this.$route.params.departmentName !== undefined && this.$route.params.departmentName !== null){
       this.setDepartmentName(this.$route.params.departmentName);
     }
     //의사 상세정보 api
