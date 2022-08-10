@@ -1,13 +1,15 @@
 <template>
   <div class="container-body">
-    <h1>{{userId}} 님의 예약내역</h1>
     <div class="card w-90" id="noDoctorList" v-if="bookExist === false">
       <div class="card-body">
         <h5 class="card-title">예약 내역이 없습니다.</h5>
         </div>
     </div>
-    <div class="container-card" v-for="(list, idx) in bookList" :key="idx">
-      <AppointmentCard :data=list :index=idx @deleteList="deleteList"/>
+    <div v-else>
+      <h1>{{userId}} 님의 예약내역</h1>
+      <div class="container-card" v-for="(list, idx) in bookList" :key="idx">
+        <AppointmentCard :data=list :index=idx @deleteList="deleteList"/>
+      </div>
     </div>
   </div>
 </template>
@@ -33,18 +35,21 @@ export default {
   async created() {
     //로그인한 user가 의사면 안보여줌 => 의사로그인시 403 에러남(참고)
     const { data } = await this.$store.dispatch('getBookList');
-    console.log(data)
-    if (data) {
+    if (data.message !== 'no data') {
       this.bookExist = true;
       const openList = data.filter(({ status }) => status === 'OPEN');
-      const doneList = data.filter(({ status }) => status === 'FINISHED' || status === 'CANCELED');
-      const others = data.filter(({ status }) => status !== 'OPEN' && status !== 'FINISHED' && status !== 'CANCELED');
-      this.bookList = [...openList, ...others, ...doneList];
+      const waitList = data.filter(({ status }) => status === 'WAITING');
+      const pendingPreList = data.filter(({ status }) => status === 'PENDING_PRESCRIPTION');
+      const pendingCancelDocList = data.filter(({ status }) => status === 'PENDING_CANCEL_DOCTOR');
+      const pendingCancelPatList = data.filter(({ status }) => status === 'PENDING_CANCEL_PATIENT');
+      const finishedList = data.filter(({ status }) => status === 'FINISHED');
+      const absentList = data.filter(({ status }) => status === 'DOCTOR_ABSENT' || status === 'PATIENT_ABSENT');
+      const cancelList = data.filter(({ status }) => status === 'CANCELED');
+      this.bookList = [...openList, ...waitList, ...pendingPreList, ...pendingCancelDocList, ...pendingCancelPatList, ...finishedList, ...absentList, ...cancelList];
     }
   },
   methods: {
     deleteList(index){
-      console.log('옴');
       console.log(index);
       // this.bookList.splice(index, 1);
     }
