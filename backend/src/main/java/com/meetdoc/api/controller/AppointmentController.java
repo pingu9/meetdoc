@@ -28,6 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.EntityExistsException;
@@ -383,5 +384,27 @@ public class AppointmentController {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/next")
+    @ApiOperation(value = "예약 취소 확인(환자)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 400, message = "상태에 안맞는 요청"),
+            @ApiResponse(code = 403, message = "권한이 없는 요청"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getNextAppointment(@ApiIgnore Authentication authentication) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+
+        List<Appointment> appointments = (List<Appointment>) user.getAppointments();
+        if(appointments == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+        Appointment next = appointmentService.getNextAppointment(appointments);
+        if(next == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+        return ResponseEntity.status(200).body(NextAppointmentRes.of(200, "Success", next));
     }
 }

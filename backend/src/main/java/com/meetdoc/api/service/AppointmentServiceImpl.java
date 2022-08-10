@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -183,5 +184,27 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
 
         return timeStore.getAvailableTimeList();
+    }
+
+    @Override
+    public Appointment getNextAppointment(List<Appointment> list) {
+        Appointment result = null;
+        for(Appointment ap : list) {
+            LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+            if(ap.getStatus().equals("WAITING")) {
+                LocalDateTime cur = ap.getAppointmentTime();
+//                System.out.println(ap.getAppointmentTime());
+                if(now.plusMinutes(30).isAfter(cur) && now.minusMinutes(5).isBefore(cur)) { //OPEN 상태
+                    ap.setStatus("OPEN");
+                    result = ap;
+                    break;
+                } else if(now.plusMinutes(30).isBefore(cur)) {   //WAITING 상태
+                    if(result == null) result = ap;
+                    else if(result.getAppointmentTime().isAfter(ap.getAppointmentTime())) result = ap;
+                }
+            }
+//            else if(ap.getStatus().equals("OPEN")) result = ap;
+        }
+        return result;
     }
 }
