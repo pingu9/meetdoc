@@ -184,4 +184,13 @@ public class AppointmentServiceImpl implements AppointmentService{
 
         return timeStore.getAvailableTimeList();
     }
+
+    @Override
+    public boolean isOpen(Appointment appointment) {
+        if (appointment.getStatus().equals("OPEN")) {
+            return true;
+        }
+        return false;
+    }
+
 }

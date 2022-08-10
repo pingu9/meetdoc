@@ -104,9 +104,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean isDoctor(User user) {
         if (user == null) {
-            throw new RuntimeException();
+            return false;
+        }
+        if (!user.getUserType().equals("D")) {
+            return false;
         }
         if (user.getDoctor() == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public Boolean isPatient(User user) {
+        if (user == null) {
+            return false;
+        }
+        if (!user.getUserType().equals("U")) {
             return false;
         }
 
