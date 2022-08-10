@@ -27,7 +27,17 @@ export const actions = {
             .then((res) => {
                 console.log('현재유저요청')
                 context.commit('setCurrentUser', res.data);
-            })
+            }),
+              axios.get('/api/doctor/detail/' + param , {
+            headers: {
+                Authorization: 'Bearer ' + token
+              }
+              })
+              .then((res) => {
+                console.log('현재유저 요청에 의사정보 요청')
+                context.commit('setCurrentDoctorInfo', res.data);
+                console.log(res.data)
+              })
     },
     signUp(context, payload) {
         console.log(payload)
