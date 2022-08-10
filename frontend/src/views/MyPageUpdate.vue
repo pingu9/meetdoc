@@ -54,7 +54,6 @@ data() {
     return {
       password: '',
       rrn: '',
-      userName: '',
       phone:'',
       zipcode: '',	    
       address: '',
@@ -108,7 +107,7 @@ methods: {
       console.log('submit')
       console.log(this.userType)
       this.$store.dispatch('update', { password: this.password,
-      rrn: this.rrn, userName: this.userName, phone: this.phone, zipcode: this.zipcode,
+      phone: this.phone, zipcode: this.zipcode,
       address: this.address, email: this.email, birthdate: this.birthdate,
       gender: this.gender, userType: this.userType})
     }
