@@ -119,7 +119,7 @@ INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `do
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-11 17:30', '52.5', 'PENDING_CANCEL_DOCTOR', '증상', 'user2', 'user12', '외과');
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-12 17:30', '52.5', 'FINISHED', '증상', 'user2', 'user12', '외과');
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-15 09:30', '52.5', 'PENDING_CANCEL_PATIENT', '증상', 'user2', 'user11', '외과');
-INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-15 17:30', '52.5', 'WAITING', '증상', 'user2', 'user12', '외과');
+-- INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-15 17:30', '52.5', 'WAITING', '증상', 'user2', 'user12', '외과');
 
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-10 16:00', '50.5', 'PENDING_PRESCRIPTION', '증상', 'user1', 'user14', '내과');
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-12 17:00', '50.5', 'WAITING', '증상', 'user1', 'user14', '내과');
