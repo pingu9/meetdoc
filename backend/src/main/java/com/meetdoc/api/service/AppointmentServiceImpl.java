@@ -187,6 +187,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
+<<<<<<< backend/src/main/java/com/meetdoc/api/service/AppointmentServiceImpl.java
     public Appointment getNextAppointment(List<Appointment> list) {
         Appointment result = null;
         for(Appointment ap : list) {
@@ -194,8 +195,7 @@ public class AppointmentServiceImpl implements AppointmentService{
             if(ap.getStatus().equals("WAITING")) {
                 LocalDateTime cur = ap.getAppointmentTime();
 //                System.out.println(ap.getAppointmentTime());
-                if(now.plusMinutes(30).isAfter(cur) && now.minusMinutes(5).isBefore(cur)) { //OPEN 상태
-                    ap.setStatus("OPEN");
+                if(isOpen(ap)) { //OPEN 상태
                     result = ap;
                     break;
                 } else if(now.plusMinutes(30).isBefore(cur)) {   //WAITING 상태
@@ -203,8 +203,19 @@ public class AppointmentServiceImpl implements AppointmentService{
                     else if(result.getAppointmentTime().isAfter(ap.getAppointmentTime())) result = ap;
                 }
             }
-//            else if(ap.getStatus().equals("OPEN")) result = ap;
+           else if(ap.getStatus().equals("OPEN")) {
+               result = ap;
+               break;
+           }
         }
         return result;
     }
+
+    public boolean isOpen(Appointment appointment) {
+        if (appointment.getStatus().equals("OPEN")) {
+            return true;
+        }
+        return false;
+    }
+
 }

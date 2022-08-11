@@ -57,7 +57,7 @@ data(){
       this.setDoctorList(res.data.result);
     }).catch(error => {
       console.log(error);
-    })
+    });
   },
 }
 </script>
