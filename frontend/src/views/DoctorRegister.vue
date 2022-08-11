@@ -26,6 +26,12 @@
         <span class="input-group-text" id="inputGroup-sizing-default">의사면허 등록번호</span>
         <input type="text" v-model="licenseNumber" class="form-control" placeholder="000000-0000000" aria-label="Server">
       </div>
+      <div>
+        <div v-for="(department, idx) in $store.state.departments" :key="idx" class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" v-model="this.departments" :value="department" >
+          <label class="form-check-label" for="inlineCheckbox1">{{department.departmentName}}</label>
+        </div>
+      </div>
       <button class="btn btn-primary btn-lg btn-block" type="submit">등록 완료</button>
       <div>
 
@@ -60,6 +66,9 @@ export default {
       hospitalPhone: this.hospitalPhone, hospitalZipcode: this.hospitalZipcode, hospitalAddress: this.hospitalAddress,
       hospitalDescription: this.hospitalDescription, departments: this.departments, licenseNumber: this.licenseNumber})
     }
+  },
+  created() {
+    this.$store.dispatch('getDepartments');
   }
 }
 </script>
