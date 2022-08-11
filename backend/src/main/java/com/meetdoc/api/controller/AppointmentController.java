@@ -12,6 +12,7 @@ import com.meetdoc.common.util.AvailableTimeStore;
 import com.meetdoc.common.util.DateConverter;
 import com.meetdoc.common.util.DayOffWeekMapper;
 import com.meetdoc.db.entity.*;
+import com.meetdoc.db.repository.AppointmentRepositorySupport;
 import com.querydsl.core.NonUniqueResultException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.EntityExistsException;
@@ -383,5 +385,28 @@ public class AppointmentController {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/next")
+    @ApiOperation(value = "예약 취소 확인(환자)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 200, message = "존재하지 않는 진료 내역"),
+            @ApiResponse(code = 401, message = "토큰 없음"),
+            @ApiResponse(code = 403, message = "권한이 없는 요청"),
+    })
+    public ResponseEntity<?> getNextAppointment(@ApiIgnore Authentication authentication) {
+        if(authentication == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "토큰 없음."));
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        String getUserId = userDetails.getUsername();
+        User user = userService.getUserByUserId(getUserId);
+        if(user == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "권한이 없는 요청입니다"));
+        }
+        List<Appointment> appointments = (List<Appointment>) user.getAppointments();
+        if(appointments == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+        Appointment next = appointmentService.getNextAppointment(user);
+        if(next == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
+        return ResponseEntity.status(200).body(NextAppointmentRes.of(200, "Success", next));
     }
 }
