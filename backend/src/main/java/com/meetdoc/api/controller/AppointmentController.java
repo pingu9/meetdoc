@@ -195,7 +195,7 @@ public class AppointmentController {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "잘못된 요청"));
         }
 
-        if (!userId.equals(ap.getUser().getUserId())) {
+        if (!userId.equals(ap.getDoctor().getUserId())) {
             return ResponseEntity.status(401).body(BaseResponseBody.of(401, "권한 에러"));
         }
         User user = userService.getUserByUserId(userId);
