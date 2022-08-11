@@ -28,7 +28,10 @@
 				<div id="session-chat">
 					<div>
 						<b-list-group class="border-0" v-for="(msg,idx) in messageData" v-bind:key="idx">
-							<small class="text-muted">{{msg.from}}</small>
+							<div class="d-flex w-100 justify-content-between">
+								<small class="text-muted">{{msg.from}}</small>
+								<small class="text-muted">{{msg.time}}</small>
+							</div>
 							<p class="mb-1">{{msg.message}}</p>
 						</b-list-group>
 						<v-divider inset></v-divider>
@@ -120,7 +123,8 @@ export default {
 			this.getToken(this.sessionId).then(token => {
 				//chat event
 				this.session.on('signal', (event) => {
-					this.messageData.push({"from": event.from.data.substring(15, event.from.data.length - 2), "message" : event.data});
+					let now = new Date();
+					this.messageData.push({"from": event.from.data.substring(15, event.from.data.length - 2), "message" : event.data, "time" : now.toLocaleTimeString()});
 
 					console.log(event.from.data.substring(15, event.from.data.length - 2) + " : " + event.data);
 				});
