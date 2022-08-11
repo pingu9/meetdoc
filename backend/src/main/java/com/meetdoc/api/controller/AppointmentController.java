@@ -12,6 +12,7 @@ import com.meetdoc.common.util.AvailableTimeStore;
 import com.meetdoc.common.util.DateConverter;
 import com.meetdoc.common.util.DayOffWeekMapper;
 import com.meetdoc.db.entity.*;
+import com.meetdoc.db.repository.AppointmentRepositorySupport;
 import com.querydsl.core.NonUniqueResultException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -404,7 +405,7 @@ public class AppointmentController {
         }
         List<Appointment> appointments = (List<Appointment>) user.getAppointments();
         if(appointments == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
-        Appointment next = appointmentService.getNextAppointment(appointments);
+        Appointment next = appointmentService.getNextAppointment(user);
         if(next == null) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "no data"));
         return ResponseEntity.status(200).body(NextAppointmentRes.of(200, "Success", next));
     }

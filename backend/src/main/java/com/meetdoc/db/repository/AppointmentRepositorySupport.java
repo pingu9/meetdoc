@@ -2,6 +2,8 @@ package com.meetdoc.db.repository;
 
 import com.meetdoc.db.entity.Appointment;
 import com.meetdoc.db.entity.QAppointment;
+import com.meetdoc.db.entity.User;
+import com.meetdoc.db.entity.UserInfo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AppointmentRepositorySupport {
@@ -41,5 +44,16 @@ public class AppointmentRepositorySupport {
                 .fetch();
 
         return list == null ? Collections.emptyList() : list;
+    }
+
+    public Appointment findNextAppointment(User patient) {
+        Appointment next = jpaQueryFactory
+                .select(qAppointment)
+                .from(qAppointment)
+                .where((qAppointment.status.eq("WAITING").or(qAppointment.status.eq("OPEN"))).and(qAppointment.user.eq(patient)))
+                .orderBy(qAppointment.appointmentTime.asc())
+                .fetchFirst();
+
+        return next;
     }
 }

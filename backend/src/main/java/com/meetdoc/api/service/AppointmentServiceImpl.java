@@ -187,27 +187,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
-<<<<<<< backend/src/main/java/com/meetdoc/api/service/AppointmentServiceImpl.java
-    public Appointment getNextAppointment(List<Appointment> list) {
-        Appointment result = null;
-        for(Appointment ap : list) {
-            LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-            if(ap.getStatus().equals("WAITING")) {
-                LocalDateTime cur = ap.getAppointmentTime();
-//                System.out.println(ap.getAppointmentTime());
-                if(isOpen(ap)) { //OPEN 상태
-                    result = ap;
-                    break;
-                } else if(now.plusMinutes(30).isBefore(cur)) {   //WAITING 상태
-                    if(result == null) result = ap;
-                    else if(result.getAppointmentTime().isAfter(ap.getAppointmentTime())) result = ap;
-                }
-            }
-           else if(ap.getStatus().equals("OPEN")) {
-               result = ap;
-               break;
-           }
-        }
+    public Appointment getNextAppointment(User patient) {
+        Appointment result = appointmentRepositorySupport.findNextAppointment(patient);
         return result;
     }
 
