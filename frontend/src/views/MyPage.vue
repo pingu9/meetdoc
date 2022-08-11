@@ -1,5 +1,4 @@
 <template>
-  <h4>MyPage</h4>
   <div class="container-body" v-if="userFlag">
     <div>
       <h4 style="text-align:left">{{currentUser.userName }} 환자</h4>
@@ -37,6 +36,12 @@
     <div>
       <h4 style="text-align:left">병원 정보</h4>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원명 : {{currentDoctorInfo.hospitalName}}</div>
+      
+      <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원 진료과 : 
+        <span v-for="(departmentName, idx) in currentDoctorInfo.departmentNames" :key="idx">
+          {{departmentName}}&nbsp;
+        </span> 
+      </div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원 연락처 : {{currentDoctorInfo.hospitalPhone}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원 주소 : {{currentDoctorInfo.hospitalAddress}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원 상세정보 : {{currentDoctorInfo.hospitalDescription}}</div>
