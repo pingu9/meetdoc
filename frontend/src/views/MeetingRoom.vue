@@ -25,12 +25,24 @@
 							:stream-manager="sub" @click="updateMainVideoStreamManager(sub)" />
 					</div>
 				</div>
-				<div id="session-chat" class="input-group mb-3">
-					<input type="text" class="form-control" id="chat-input" placeholder="여기에 메시지를 입력하세요." @keyup.enter="sendMessage()" v-model="inputMessage" />
-					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" id="chat-button" type="button" @click="sendMessage()">전송</button>
+				<div id="session-chat">
+					<div>
+						<b-list-group class="border-0" v-for="(msg,idx) in messageData" v-bind:key="idx">
+							<small class="text-muted">{{msg.from}}</small>
+							<p class="mb-1">{{msg.message}}</p>
+						</b-list-group>
+						<v-divider inset></v-divider>
+					</div>
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" id="chat-input" placeholder="여기에 메시지를 입력하세요."
+							@keyup.enter="sendMessage()" v-model="inputMessage" />
+						<div class="input-group-append">
+							<button class="btn btn-outline-secondary" id="chat-button" type="button"
+								@click="sendMessage()">전송</button>
+						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -64,6 +76,7 @@ export default {
 			isAudioActive: undefined,
 			isVideoActive: undefined,
 			inputMessage: '',
+			messageData: [],
 
 			userType: '',
 			sessionId: '',
@@ -107,6 +120,8 @@ export default {
 			this.getToken(this.sessionId).then(token => {
 				//chat event
 				this.session.on('signal', (event) => {
+					this.messageData.push({"from": event.from.data.substring(15, event.from.data.length - 2), "message" : event.data});
+
 					console.log(event.from.data.substring(15, event.from.data.length - 2) + " : " + event.data);
 				});
 
@@ -152,6 +167,8 @@ export default {
 		leaveSession() {
 			if (this.session) this.session.disconnect();
 
+			this.inputMessage = '',
+			this.messageData = [],
 			this.isAudioActive = undefined;
 			this.isVideoActive = undefined;
 			this.session = undefined;
