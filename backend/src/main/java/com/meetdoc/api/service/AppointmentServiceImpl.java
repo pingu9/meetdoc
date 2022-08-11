@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -186,6 +187,11 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
+    public Appointment getNextAppointment(User patient) {
+        Appointment result = appointmentRepositorySupport.findNextAppointment(patient);
+        return result;
+    }
+
     public boolean isOpen(Appointment appointment) {
         if (appointment.getStatus().equals("OPEN")) {
             return true;
