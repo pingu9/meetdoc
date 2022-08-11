@@ -120,7 +120,12 @@ export const actions = {
             .catch(error => {
                 console.log('------------');
                 console.log(error.response.data.message);
-                context.commit('setLoginErrorMessage', error.response.data.message);
+                if (error.response.data.message === "no data") {
+                    context.commit('setLoginErrorMessage', "해당하는 회원 정보가 없습니다.");
+                } else {
+                    context.commit('setLoginErrorMessage', error.response.data.message);
+                }
+                
             });
     },
     checkId(context, userId) {
