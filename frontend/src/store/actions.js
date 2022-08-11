@@ -200,8 +200,11 @@ export const actions = {
             dispatch('removeToken')
             // localStorage.setItem()
             alert("로그아웃 되었습니다.");
-
-            router.push('/');
+            if (window.location.pathname==='/' ) {
+              router.go()
+            } else {
+              router.push('/');
+            } 
         } else {
             router.push('/');
         }
