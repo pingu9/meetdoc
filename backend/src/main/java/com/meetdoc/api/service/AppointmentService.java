@@ -26,4 +26,5 @@ public interface AppointmentService {
     void changeStatus(Appointment appointment, String status);
     List<LocalDateTime> getAvailableTimeList(String doctorId, LocalDateTime time, OpeningHours openingHour);
     Appointment getNextAppointment(List<Appointment> list);
+    boolean isOpen(Appointment appointment);
 }

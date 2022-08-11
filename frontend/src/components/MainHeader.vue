@@ -108,8 +108,12 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      token: '',
-
+      get token() {
+        return localStorage.getItem('token');
+      },
+      get userType() {
+        return localStorage.getItem('userType')
+      },
     }
   },
 
@@ -133,21 +137,6 @@ export default {
   },
   computed: {
       ...mapGetters(['isLoggedIn']),
-  },
-  created() {
-    let token = localStorage.getItem('token');
-    if (token != '') {
-      console.log('token exists created');
-      this.token = token;
-      console.log(this.token);
-    } else {
-      console.log('no token created')
-    }
-    let userType = localStorage.getItem('userType');
-    if (userType != '') {
-      console.log(userType);
-      this.userType = userType;
-    }
   },
 }
 </script>
