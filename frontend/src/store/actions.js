@@ -170,6 +170,9 @@ export const actions = {
     getDoctorDetail(context, doctorId) {
         return axios.get('/api/doctor/detail/' + doctorId);
     },
+    getNextAppt() {
+        return axios.get('/api/appointment/next');
+    },
 
     // saveLoginToken({ commit }, token) {
 
