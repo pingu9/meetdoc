@@ -21,13 +21,13 @@
               <a class="nav-link" href="/mypage">MyPage</a>
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
-              <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">login</a>
+              <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
             </li>
             <li class="nav-item" v-if="isLoggedIn">
               <a class="nav-link" @click="confirm()">Logout</a>
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
-              <a class="nav-link" href="/signup">회원가입</a>
+              <a class="nav-link" href="/signup">Signup</a>
             </li>
           </ul>
         </div>
