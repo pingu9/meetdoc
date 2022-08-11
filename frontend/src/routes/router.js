@@ -13,6 +13,7 @@ import BookConfirm from '../views/BookConfirm.vue';
 import MyPageUpdate from '../views/MyPageUpdate.vue';
 import MeetingRoom from '../views/MeetingRoom.vue';
 import DoctorRegister from '../views/DoctorRegister.vue';
+import PrescriptionPage from "../views/PrescriptionPage.vue";
 
 const routes = [
     {
@@ -76,6 +77,11 @@ const routes = [
         path: "/meetingroom",
         component: MeetingRoom,
         name: 'meetingRoom'
+    },
+    {
+        path: "/prescription/:appointmentId",
+        component: PrescriptionPage,
+        name: 'prescription',
     },
 ];
 
