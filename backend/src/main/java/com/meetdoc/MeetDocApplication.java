@@ -12,9 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
 @EnableScheduling
-public class GroupCallApplication {
+public class MeetDocApplication {
 	public static void main(String[] args) {
-        SpringApplication.run(GroupCallApplication.class, args);
+        SpringApplication.run(MeetDocApplication.class, args);
     }
 
     @Bean
