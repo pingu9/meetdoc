@@ -10,14 +10,15 @@
       <div class="textForm"  style="display:flex; margin-bottom: 0;">
         <input name="loginPw" type="password" class="pw" placeholder="비밀번호" v-model="password">
       </div>
-      <span v-show="valid.password">
+      <span v-show="!valid.password && password">
           비밀번호는 숫자, 특수문자 포함 8자~12자로 이용이 가능합니다.  
         </span>
       <div class="textForm">
         <input name="name" type="text" class="name" placeholder="이름" v-model="userName">
       </div>
       <div class="textForm">
-        <input name="loginPwConfirm" type="password" class="pw" placeholder="주민번호" v-model="rrn">
+        <input name="loginPwConfirm" type="text" class="rrn" maxlength="6" placeholder="주민번호 앞자리" v-model="rrn1">-
+        <input name="loginPwConfirm" type="password" class="rrn" maxlength="7" placeholder="주민번호 뒷자리" v-model="rrn2">
       </div>
       <div class="textForm">
         <input name="nickname" type="text" class="nickname" placeholder="주소" v-model="address">
@@ -26,12 +27,15 @@
         <input name="nickname" type="text" class="nickname" placeholder="우편번호" v-model="zipcode">
       </div>
       <div class="textForm">
-        <input name="cellphoneNo" type="tel" class="cellphoneNo" placeholder="전화번호" v-model="phone">
+        <input name="cellphoneNo" type="tel" class="cellphoneNo" placeholder="전화번호 예) 010-0000-0000" v-model="phone">
       </div>
+      <span v-show="!valid.phone && phone" class="input-error">
+          전화번호 형식에 맞게 정확히 입력해주세요.
+      </span>
       <div class="textForm" style="display:flex; margin-bottom: 0;">
-        <input name="email" type="text" class="email" placeholder="이메일" v-model="email">
+        <input name="email" type="text" class="email" placeholder="이메일 예) id@domain.com" v-model="email">
       </div>
-      <span v-show="valid.email" class="input-error">
+      <span v-show="!valid.email && email" class="input-error">
           이메일 주소를 정확히 입력해주세요.
       </span>
       <div>
@@ -91,7 +95,8 @@ export default {
     return {
       userId: '',
       password: '',
-      rrn: '',
+      rrn1: '',
+      rrn2: '',
       userName: '',
       phone:'',
       zipcode: '',	    
@@ -104,6 +109,7 @@ export default {
         password: false,
         email: false,
         phone: false,
+        duplicateId : false,
       },
       passwordHasError: false,
       emailHasError: false,
@@ -129,16 +135,18 @@ export default {
     checkId () {
       if (this.userId) {
         console.log(this.userId)
-        this.$store.dispatch('checkId', this.userId)
+        this.$store.dispatch('checkId', this.userId).then(() => {
+          if(this.errorMessages.idCheckMessage == '사용 가능한 아이디입니다.') this.valid.duplicateId = true;
+        })
       }
     },
     checkPass () {
       const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/
       if (!validatePassword.test(this.password)|| !this.password) {
-        this.valid.password = true
+        this.valid.password = false
         this.passwordHasError = true
         return
-      } this.valid.password = false
+      } this.valid.password = true
         this.passwordHasError = false
     },
     checkEmail() {
@@ -146,21 +154,21 @@ export default {
       const validateEmail = /^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\.[A-Za-z0-9\\-]+/
 
       if (!validateEmail.test(this.email) || !this.email) {
-        this.valid.email = true
+        this.valid.email = false
         this.emailHasError = true
         return
-      } this.valid.email = false
+      } this.valid.email = true
         this.emailHasError = false
     },
     checkPhone() {
       const validatePhoneNumber = /^\d{2,3}-\d{3,4}-\d{4}$/;
 
       if (!validatePhoneNumber.test(this.phone) || !this.phone) {
-        this.valid.phone = true;
+        this.valid.phone = false;
         this.phoneHasError = true;
       }
       else {
-        this.valid.phone = false;
+        this.valid.phone = true;
         this.phoneHasError = false;
       }
     },
@@ -168,10 +176,24 @@ export default {
     submitForm () {
       console.log('submit')
       console.log(this.userType)
-      this.$store.dispatch('signUp', {userId : this.userId, password: this.password,
-      rrn: this.rrn, userName: this.userName, phone: this.phone, zipcode: this.zipcode,
-      address: this.address, email: this.email, birthdate: this.birthdate,
-      gender: this.gender,})
+      if(!this.valid.duplicateId) alert("아이디를 확인해주세요!")
+      else if(!this.valid.password) alert("비밀번호 형식을 확인해주세요!")
+      else if(!this.valid.email) alert("이메일 형식을 확인해주세요!")
+      else if(!this.valid.phone) alert("핸드폰 형식을 확인해주세요!")
+      else {
+        this.$store.dispatch('signUp', {
+          userId : this.userId,
+          password: this.password,
+          rrn: this.rrn1 + this.rrn2,
+          userName: this.userName,
+          phone: this.phone,
+          zipcode: this.zipcode,
+          address: this.address,
+          email: this.email,
+          birthdate: this.birthdate,
+          gender: this.gender,
+        })
+        }
     }
   }
 }
@@ -227,6 +249,16 @@ body {
 
 .pw {
   width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.rrn {
+  width: 49%;
   border:none;
   outline:none;
   color: #636e72;

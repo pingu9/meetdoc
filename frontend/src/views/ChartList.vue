@@ -51,57 +51,57 @@ export default {
     this.$store.dispatch('getChartList', doctorId).then((res) => {
       console.log(res.data);
       //리스트 순서정렬, classname, title 지정
-      const { data } = res;
-      const openList = data.filter(({ status }) => status === 'OPEN').map(chart => {
-        chart.classname = 'open';
-        chart.title = '진료중';
-        return chart;
-      });
-      const waitList = data.filter(({ status }) => status === 'WAITING').map(chart => {
-        chart.classname = 'before';
-        chart.title = '진료대기';
-        return chart;
-      });
-      const pendingPreList = data.filter(({ status }) => status === 'PENDING_PRESCRIPTION').map((chart) => {
-        chart.classname = 'pending';
-        chart.title = '처방전 작성대기';
-        return chart;
-      });
-      const pendingCancelPatList = data.filter(({ status }) => status === 'PENDING_CANCEL_PATIENT').map((chart) => {
-        chart.classname = 'pendingPatient';
-        chart.title = '환자 취소대기';
-        return chart;
-      });
-      const pendingCancelDocList = data.filter(({ status }) => status === 'PENDING_CANCEL_DOCTOR').map((chart) => {
-        chart.classname = 'pending';
-        chart.title = '의사 취소대기';
-        return chart;
-      });
-      const finishedList = data.filter(({ status }) => status === 'FINISHED').map((chart) => {
-        chart.classname = 'done';
-        chart.title = '진료완료';
-        return chart;
-      });
-      const absentDocList = data.filter(({ status }) => status === 'DOCTOR_ABSENT').map((chart) => {
-        chart.classname = 'canceled';
-        chart.title = '의사 미접속';
-        return chart;
-      });
-      const absentPatiList = data.filter(({ status }) => status === 'PATIENT_ABSENT').map((chart) => {
-        chart.classname = 'canceled';
-        chart.title = '환자 미접속';
-        return chart;
-      });
-      const cancelList = data.filter(({ status }) => status === 'CANCELED').map((chart) => {
-        chart.classname = 'canceled';
-        chart.title = '취소완료';
-        return chart;
-      });
-      this.chartList = [...openList, ...waitList, ...pendingPreList, ...pendingCancelPatList, ...pendingCancelDocList, ...finishedList, ...absentDocList, ...absentPatiList, ...cancelList];
-      this.setChartList(res.data);
       if (res.data.message === 'no data') {
         this.noData = true;
       } else {
+        const { data } = res;
+        const openList = data.filter(({ status }) => status === 'OPEN').map(chart => {
+          chart.classname = 'open';
+          chart.title = '진료중';
+          return chart;
+        });
+        const waitList = data.filter(({ status }) => status === 'WAITING').map(chart => {
+          chart.classname = 'before';
+          chart.title = '진료대기';
+          return chart;
+        });
+        const pendingPreList = data.filter(({ status }) => status === 'PENDING_PRESCRIPTION').map((chart) => {
+          chart.classname = 'pending';
+          chart.title = '처방전 작성대기';
+          return chart;
+        });
+        const pendingCancelPatList = data.filter(({ status }) => status === 'PENDING_CANCEL_PATIENT').map((chart) => {
+          chart.classname = 'pendingPatient';
+          chart.title = '환자 취소대기';
+          return chart;
+        });
+        const pendingCancelDocList = data.filter(({ status }) => status === 'PENDING_CANCEL_DOCTOR').map((chart) => {
+          chart.classname = 'pending';
+          chart.title = '의사 취소대기';
+          return chart;
+        });
+        const finishedList = data.filter(({ status }) => status === 'FINISHED').map((chart) => {
+          chart.classname = 'done';
+          chart.title = '진료완료';
+          return chart;
+        });
+        const absentDocList = data.filter(({ status }) => status === 'DOCTOR_ABSENT').map((chart) => {
+          chart.classname = 'canceled';
+          chart.title = '의사 미접속';
+          return chart;
+        });
+        const absentPatiList = data.filter(({ status }) => status === 'PATIENT_ABSENT').map((chart) => {
+          chart.classname = 'canceled';
+          chart.title = '환자 미접속';
+          return chart;
+        });
+        const cancelList = data.filter(({ status }) => status === 'CANCELED').map((chart) => {
+          chart.classname = 'canceled';
+          chart.title = '취소완료';
+          return chart;
+        });
+        this.chartList = [...openList, ...waitList, ...pendingPreList, ...pendingCancelPatList, ...pendingCancelDocList, ...finishedList, ...absentDocList, ...absentPatiList, ...cancelList];
+        this.setChartList(res.data);
         this.doctorName = this.chartList[0].doctorName;
       }
     });
