@@ -113,11 +113,11 @@ export const actions = {
                 localStorage.setItem('userType', res.data.userType);
                 if (localStorage.getItem('userType') === 'D') {
                     console.log('의사는 차트리스트로!')
+                    document.getElementById('loginModalCloseBtn').click();
                     router.push({ name: 'chartList' })
-                    router.go()
                 } else {
+                    document.getElementById('loginModalCloseBtn').click();
                     router.push({ name: 'home' });
-                    router.go()
                 }
             })
             .catch(error => {
