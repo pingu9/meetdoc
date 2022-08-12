@@ -126,8 +126,10 @@ export const actions = {
                 console.log('------------');
                 console.log(error.response.data.message);
                 if (error.response.data.message === "no data") {
+                    alert("해당하는 회원 정보가 없습니다.");
                     context.commit('setLoginErrorMessage', "해당하는 회원 정보가 없습니다.");
                 } else {
+                    alert(error.response.data.message);
                     context.commit('setLoginErrorMessage', error.response.data.message);
                 }
                 
