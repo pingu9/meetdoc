@@ -58,7 +58,7 @@ public class UserRepositorySupport {
     }
 
     public boolean isAvailable(String str) {
-        if(str.equals("") || str == null) return false;
+        if(str == null || str.equals("")) return false;
         return true;
     }
 
