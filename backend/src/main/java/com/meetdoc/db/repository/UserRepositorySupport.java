@@ -44,17 +44,22 @@ public class UserRepositorySupport {
         UserInfo info = user.getUserInfo();
         Long affectedRow = jpaQueryFactory.update(qUserInfo)
                 .where(qUserInfo.user.userId.eq(userId))
-                .set(qUserInfo.password, patchUserReq.getPassword() == null ? info.getPassword() : patchUserReq.getPassword())
-                .set(qUserInfo.phone, patchUserReq.getPhone() == null ? info.getPhone() : patchUserReq.getPhone())
-                .set(qUserInfo.zipcode, patchUserReq.getZipcode() == null ? info.getZipcode() : patchUserReq.getZipcode())
-                .set(qUserInfo.address, patchUserReq.getAddress() == null ? info.getAddress() : patchUserReq.getAddress())
-                .set(qUserInfo.email, patchUserReq.getEmail() == null ? info.getEmail() : patchUserReq.getEmail())
+                .set(qUserInfo.password, !isAvailable(patchUserReq.getPassword()) ? info.getPassword() : patchUserReq.getPassword())
+                .set(qUserInfo.phone, !isAvailable(patchUserReq.getPhone()) ? info.getPhone() : patchUserReq.getPhone())
+                .set(qUserInfo.zipcode, !isAvailable(patchUserReq.getZipcode()) ? info.getZipcode() : patchUserReq.getZipcode())
+                .set(qUserInfo.address, !isAvailable(patchUserReq.getAddress()) ? info.getAddress() : patchUserReq.getAddress())
+                .set(qUserInfo.email, !isAvailable(patchUserReq.getEmail()) ? info.getEmail() : patchUserReq.getEmail())
                 .execute();
         Long affectedRow2 = jpaQueryFactory.update(qUser)
                 .where(qUser.userId.eq(userId))
                 .set(qUser.name, patchUserReq.getUserName() == null ? user.getName() : patchUserReq.getUserName())
                 .execute();
         return affectedRow + affectedRow2;
+    }
+
+    public boolean isAvailable(String str) {
+        if(str.equals("") || str == null) return false;
+        return true;
     }
 
     @Transactional
