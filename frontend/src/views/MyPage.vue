@@ -1,7 +1,7 @@
 <template>
-  <div class="container-body" v-if="userFlag">
+  <div class="container-body font-nanum-gothic" v-if="userFlag">
     <div>
-      <h4 style="text-align:left">{{currentUser.userName }} 환자</h4>
+      <h3 style="text-align:left" class="font-do-hyeon">{{currentUser.userName }} 환자</h3>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.userId}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.userName}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">구분 : {{currentUser.userType === 'U' ? '환자' : '의사'}}</div>
@@ -23,7 +23,7 @@
   </div>
   <div class="container-body" v-if="doctorFlag">
     <div>
-      <h4 style="text-align:left">{{currentUser.userName }} 선생님</h4>
+      <h3 style="text-align:left">{{currentUser.userName }} 선생님</h3>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">아이디 : {{currentUser.userId}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">이름 : {{currentUser.userName}}</div>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">구분 : {{currentUser.userType === 'U' ? '환자' : '의사'}}</div>
@@ -34,7 +34,7 @@
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">e-mail : {{currentUser.email}}</div>
     <hr>
     <div>
-      <h4 style="text-align:left">병원 정보</h4>
+      <h3 style="text-align:left">병원 정보</h3>
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원명 : {{currentDoctorInfo.hospitalName}}</div>
       
       <div class="shadow-sm p-3 bg-body rounded p-3" style="margin:15px">병원 진료과 : 
