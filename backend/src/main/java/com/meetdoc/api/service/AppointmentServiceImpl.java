@@ -60,7 +60,11 @@ public class AppointmentServiceImpl implements AppointmentService{
         if(req.getDepartmentName() == null) return null;
         appointment.setDepartmentName(req.getDepartmentName());
 
-        appointment.setStatus("WAITING");
+        if (LocalDateTime.now().plusMinutes(5).plusSeconds(5).isAfter(appointment.getAppointmentTime())) {
+            appointment.setStatus("OPEN");
+        } else {
+            appointment.setStatus("WAITING");
+        }
         return appointmentRepository.save(appointment);
     }
 
