@@ -113,13 +113,18 @@ export const actions = {
                 localStorage.setItem('token', res.data.accessToken);
                 localStorage.setItem('userId', res.data.userId);
                 localStorage.setItem('userType', res.data.userType);
+                localStorage.setItem('userName', res.data.userName);
                 if (localStorage.getItem('userType') === 'D') {
                     console.log('의사는 차트리스트로!')
                     document.getElementById('loginModalCloseBtn').click();
                     router.push({ name: 'chartList' })
                 } else {
                     document.getElementById('loginModalCloseBtn').click();
-                    router.push({ name: 'home' });
+                    if (window.location.pathname==='/' ) {
+                        router.go()
+                    } else {
+                        router.push('/');
+                    } 
                 }
             })
             .catch(error => {

@@ -6,7 +6,7 @@
         </div>
     </div>
     <div v-else>
-      <h1>{{userId}} 님의 예약내역</h1>
+      <h1>{{userName}} 님의 예약내역</h1>
       <div class="container-card" v-for="(list, idx) in bookList" :key="idx">
         <AppointmentCard :data=list :index=idx @deleteList="deleteList"/>
       </div>
@@ -24,6 +24,7 @@ export default {
       bookList: [],
       bookExist: false,
       userId : localStorage.getItem('userId'),
+      userName : localStorage.getItem('userName'),
     };
   },
   components: {
