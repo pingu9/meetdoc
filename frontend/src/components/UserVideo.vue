@@ -1,6 +1,6 @@
 <template>
 <div v-if="streamManager">
-	<ov-video :stream-manager="streamManager"/>
+	<ov-video width="900" height="600" :stream-manager="streamManager" class="video"/>
 	<div><p>{{ clientData }}</p></div>
 </div>
 </template>
@@ -34,3 +34,10 @@ export default {
 	},
 };
 </script>
+
+<style>
+.video{
+	width: 100%;
+	height: 100%;
+}
+</style>

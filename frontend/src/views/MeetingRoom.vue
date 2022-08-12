@@ -14,22 +14,22 @@
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession"
 					value="Leave session">
 					<!-- 처방전 버튼. 작성 완료 눌렀을 시 비활성화-->
-				<input class="btn btn-large btn-info" type="button" id="buttonPrecription" @click=""
+				<input class="btn btn-large btn-info" type="button" id="buttonPrecription" 
 					value="처방전 작성" v-if="this.userType === 'D'">
 			</div>
-			<div id="session-content" class="row">
-				<div id="session-video" class="col-md-9">
-					<div id="main-video" class="col-md-6">
+			<div id="session-content"> <!-- flex -->
+				<div id="session-video" class="col-md-9"> <!-- relative, width 70% -->
+					<div id="main-video" class="" style="display: none;">
 						<user-video :stream-manager="mainStreamManager" />
 					</div>
-					<div id="video-container" class="col-md-6">
-						<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+					<div id="video-container" class="">
+						<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" id="publisher-video"/> <!-- absolute, top 0, right 0, width 200, height 200  -->
 						<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId"
 							:stream-manager="sub" @click="updateMainVideoStreamManager(sub)" />
 					</div>
 				</div>
-				<div id="session-chat" class="col-md-3">
-					<div id="chat-data">
+				<div id="session-chat" class="col-md-3"> <!-- width: 30% -->
+					<div id="chat-data"><!-- width remove height: calc(100% - 38px);-->
 						<b-list-group class="border-0" v-for="(msg,idx) in messageData" v-bind:key="idx">
 							<div class="d-flex w-100 justify-content-between">
 								<small class="text-muted">{{msg.from}}</small>
@@ -220,6 +220,8 @@ export default {
 				type: 'chat'
 			})
 			.then(() => {
+				const chatData = document.getElementById('chat-data');
+				chatData.scrollTop = chatData.scrollHeight;
 				this.inputMessage = '';
 			})
 			.catch(error => {
@@ -281,11 +283,33 @@ export default {
 #main-container {
 	height: 100%;
 }
-/* #chat-data {
-	height: 70%;
-	overflow: auto;
+
+#session-content{
+	display: flex;
 }
-#chat-input {	
+#chat-data {
+	white-space: pre;
+    overflow-y: auto;
+	height: calc(100% - 38px);
+    border:1px solid gray;
+}
+
+#session-video{
+	position: relative;
+	width: 70%;
+}
+
+#publisher-video{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 200px;
+}
+
+#session-chat{
+	width: 30%;
+}
+/* #chat-input {	
 	position: fixed;
     bottom: 20%;
 } */
