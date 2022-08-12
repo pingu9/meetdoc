@@ -13,6 +13,9 @@
 					@click="toggleVideoEnableOption()" value="Start Video" v-if="!isVideoActive">
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession"
 					value="Leave session">
+					<!-- 처방전 버튼. 작성 완료 눌렀을 시 비활성화-->
+				<input class="btn btn-large btn-info" type="button" id="buttonPrecription" @click=""
+					value="처방전 작성" v-if="this.userType === 'D'">
 			</div>
 			<div id="session-content" class="row">
 				<div id="session-video" class="col-md-9">
