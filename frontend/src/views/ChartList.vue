@@ -7,40 +7,24 @@
     </div>
 
     <div v-else>
-    <h1>{{$store.state.chartList[0].doctorName}} 님의 진료내역</h1>
-      <div class="card w-100" v-for="(chart, idx) in $store.state.chartList" :key="idx" id="container-card">
+    <h1>{{doctorName}} 님의 진료내역</h1>
+      <div class="card w-100" v-for="(chart, idx) in chartList" :key="idx" id="container-card">
         <div class="card-body" style="display:flex; height:100px;">
-          <div class="container-status" v-if="chart.status === 'WAITING'">
-            <div class="circle before"></div><div class="status before">진료대기</div>
+          <div class="container-status">
+            <div :class="`circle ${chart.classname}`"></div><div :class="`status ${chart.classname}`">{{chart.title}}</div>
           </div>
-          <div class="container-status" v-if="chart.status === 'OPEN'">
-            <div class="circle open"></div><div class="status open">진료중</div>
-          </div>
-          <div class="container-status" v-if="chart.status === 'FINISHED'">
-            <div class="circle done"></div><div class="status done">진료완료</div>
-          </div>
-          <div class="container-status" v-if="chart.status === 'CANCELED'">
-            <div class="circle done"></div><div class="status done">취소완료</div>
-          </div>
-          <div class="container-status" v-if="chart.status === 'PENDING_CANCEL_PATIENT'">
-            <div class="circle canceled"></div><div class="status canceled">환자 취소대기</div>
-          </div>
-          <div class="container-status" v-if="chart.status === 'PENDING_CANCEL_DOCTOR'">
-            <div class="circle canceled"></div><div class="status canceled">의사 취소대기</div>
-          </div>
-          <div class="container-status" v-if="chart.status === 'PENDING_PRESCRIPTION'">
-            <div class="circle pending"></div><div class="status pending">처방전 작성대기</div>
-          </div>
-          <div style="width:50%; text-align: left;">
-            <h5 class="card-title" >{{chart.patientName}}</h5>
+          <div style="width:45%; text-align: left;">
+            <h5 class="card-title" style="margin-top:5px">{{chart.patientName}}</h5>
             <p class="card-text" >{{chart.appointmentTime}}</p>
           </div>
-          <div style="line-height: 65px; width:15%;">
-            <button class="btn btn-secondary"  v-if="chart.status === 'PENDING_CANCEL_PATIENT'" @click="apprCancel(chart)">취소확인</button>
-            <button class="btn btn-danger" v-if="chart.status === 'WAITING'" @click="cancelAppt(chart)">진료취소</button>
-            <button class="btn btn-success" v-if="chart.status === 'OPEN'" @click="enterRoom(chart)">진료입장</button>
+          <div style="line-height: 65px; width:120px;">
+          <!-- 리팩토링 필요-->
+            <button class="btn btn-secondary" v-if="chart.status === 'PENDING_CANCEL_PATIENT'" @click="apprCancel(chart)">취소확인</button>
+            <button class="btn btn-danger" v-else-if="chart.status === 'WAITING'" @click="cancelAppt(chart)">진료취소</button>
+            <button class="btn btn-success" v-else-if="chart.status === 'OPEN'" @click="enterRoom(chart)">진료입장</button>
+            <button class="btn btn-info" v-else-if="chart.status === 'PENDING_PRESCRIPTION'" @click="prescription(chart)" style="width:110px;">처방전작성</button>
           </div>
-          <div style="line-height: 65px; width:15%;"><a :href="`/chart/detail/${chart.appointmentId}`" class="btn btn-primary">상세보기</a></div>
+          <div style="line-height: 65px; width:120px;"><a :href="`/chart/detail/${chart.appointmentId}`" class="btn btn-primary">상세보기</a></div>
         </div>
       </div>
     </div>
@@ -54,6 +38,7 @@ export default {
     return {
       doctorName: '',
       noData: false,
+      chartList: [],
     }
   },
   components: {
@@ -62,16 +47,63 @@ export default {
     ...mapState(['chartList'])
   },
   created() {
-    console.log(this.$store.state.chartList.length)
     const doctorId = localStorage.getItem('userId');
     this.$store.dispatch('getChartList', doctorId).then((res) => {
       console.log(res.data);
+      //리스트 순서정렬, classname, title 지정
+      const { data } = res;
+      const openList = data.filter(({ status }) => status === 'OPEN').map(chart => {
+        chart.classname = 'open';
+        chart.title = '진료중';
+        return chart;
+      });
+      const waitList = data.filter(({ status }) => status === 'WAITING').map(chart => {
+        chart.classname = 'before';
+        chart.title = '진료대기';
+        return chart;
+      });
+      const pendingPreList = data.filter(({ status }) => status === 'PENDING_PRESCRIPTION').map((chart) => {
+        chart.classname = 'pending';
+        chart.title = '처방전 작성대기';
+        return chart;
+      });
+      const pendingCancelPatList = data.filter(({ status }) => status === 'PENDING_CANCEL_PATIENT').map((chart) => {
+        chart.classname = 'pendingPatient';
+        chart.title = '환자 취소대기';
+        return chart;
+      });
+      const pendingCancelDocList = data.filter(({ status }) => status === 'PENDING_CANCEL_DOCTOR').map((chart) => {
+        chart.classname = 'pending';
+        chart.title = '의사 취소대기';
+        return chart;
+      });
+      const finishedList = data.filter(({ status }) => status === 'FINISHED').map((chart) => {
+        chart.classname = 'done';
+        chart.title = '진료완료';
+        return chart;
+      });
+      const absentDocList = data.filter(({ status }) => status === 'DOCTOR_ABSENT').map((chart) => {
+        chart.classname = 'canceled';
+        chart.title = '의사 미접속';
+        return chart;
+      });
+      const absentPatiList = data.filter(({ status }) => status === 'PATIENT_ABSENT').map((chart) => {
+        chart.classname = 'canceled';
+        chart.title = '환자 미접속';
+        return chart;
+      });
+      const cancelList = data.filter(({ status }) => status === 'CANCELED').map((chart) => {
+        chart.classname = 'canceled';
+        chart.title = '취소완료';
+        return chart;
+      });
+      this.chartList = [...openList, ...waitList, ...pendingPreList, ...pendingCancelPatList, ...pendingCancelDocList, ...finishedList, ...absentDocList, ...absentPatiList, ...cancelList];
       this.setChartList(res.data);
       if (res.data.message === 'no data') {
         this.noData = true;
-      }else {
-      this.doctorName = this.$store.state.chartList[0].doctorName;
-    }
+      } else {
+        this.doctorName = this.chartList[0].doctorName;
+      }
     });
     console.log(this.noData);
   },
@@ -101,7 +133,7 @@ export default {
     },
     enterRoom(appointment) {
       if(appointment.status === 'OPEN') {
-        this.$router.push({name: 'meetingRoom', params:{appointmentId: appointment.appointmentId, userType: 'U', myUserName: this.doctorName}});
+        this.$router.push({name: 'meetingRoom', params:{appointmentId: appointment.appointmentId, userType: localStorage.getItem('userType'), myUserName: this.doctorName}});
       }
     }
   }
@@ -124,7 +156,7 @@ export default {
 }
 
 .container-status{
-  width: 20%;
+  width: 200px;
   display:flex;
   line-height: 100px;
 }
@@ -143,12 +175,17 @@ export default {
   color: gray;
 }
 .canceled{
-  border-color: red;
-  color: red;
+  border-color: black;
+  color: black;
 }
 
 .pending{
   border-color: darkblue;
   color: darkblue;
+}
+
+.pendingPatient{
+  border-color: red;
+  color: red;
 }
 </style>

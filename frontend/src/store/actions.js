@@ -18,26 +18,29 @@ export const actions = {
         return axios.get('/api/appointment/info/list/' + patientId);
     },
     getCurrentUserInfo(context, param) {
-        const token = localStorage.getItem('token')
-        return axios.get('/api/user/info/' + param, {
+      const token = localStorage.getItem('token')
+      let userType = '';
+      return axios.get('/api/user/info/' + param, {
+          headers: {
+              Authorization: 'Bearer ' + token
+          }
+      })
+      .then((res) => {
+        console.log('현재유저요청')
+        context.commit('setCurrentUser', res.data);
+        userType = res.data.userType;
+        if(userType === 'D'){
+          axios.get('/api/doctor/detail/' + param, {
             headers: {
-                Authorization: 'Bearer ' + token
+              Authorization: 'Bearer ' + token
             }
-        })
-            .then((res) => {
-                console.log('현재유저요청')
-                context.commit('setCurrentUser', res.data);
-            }),
-            axios.get('/api/doctor/detail/' + param, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
-                .then((res) => {
-                    console.log('현재유저 요청에 의사정보 요청')
-                    context.commit('setCurrentDoctorInfo', res.data);
-                    console.log(res.data)
-                })
+          }).then((res) => {
+            console.log('현재유저 요청에 의사정보 요청')
+            context.commit('setCurrentDoctorInfo', res.data);
+            console.log(res.data)
+          })
+        }
+      })
     },
     signUp(context, payload) {
         console.log(payload)
@@ -170,6 +173,9 @@ export const actions = {
     getDoctorDetail(context, doctorId) {
         return axios.get('/api/doctor/detail/' + doctorId);
     },
+    getNextAppt() {
+        return axios.get('/api/appointment/next');
+    },
 
     // saveLoginToken({ commit }, token) {
 
@@ -197,8 +203,11 @@ export const actions = {
             dispatch('removeToken')
             // localStorage.setItem()
             alert("로그아웃 되었습니다.");
-
-            router.push('/');
+            if (window.location.pathname==='/' ) {
+              router.go()
+            } else {
+              router.push('/');
+            } 
         } else {
             router.push('/');
         }

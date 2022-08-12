@@ -25,7 +25,7 @@ public class NextAppointmentRes extends BaseResponseBody {
         res.setAppointmentId(ap.getAppointmentId());
         res.setStatus(ap.getStatus());
         res.setAppointmentTime(ap.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        res.setDoctorName(ap.getUser().getName());
+        res.setPatientName(ap.getUser().getName());
         res.setDoctorName(ap.getDoctor().getUser().getName());
         return res;
     }

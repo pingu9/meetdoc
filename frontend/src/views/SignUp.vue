@@ -1,7 +1,44 @@
 <template>
   <div class="container-body">
-    <h4>Signup</h4>
+    <h1>회원가입</h1>
     <form @submit.prevent="submitForm">
+      <div class="textForm" style="display:flex; margin-bottom: 0;">
+        <input name="loginId" type="text" class="id" placeholder="아이디" v-model="userId">
+        <button class="btn btn-outline-secondary" type="button" @click="checkId()" id="button-addon2" style="height:40px; width: 100px;">중복확인</button>
+      </div>
+      <span v-if="errorMessages">{{errorMessages.idCheckMessage}}</span>
+      <div class="textForm"  style="display:flex; margin-bottom: 0;">
+        <input name="loginPw" type="password" class="pw" placeholder="비밀번호" v-model="password">
+      </div>
+      <span v-show="valid.password">
+          비밀번호는 숫자, 특수문자 포함 8자~12자로 이용이 가능합니다.  
+        </span>
+      <div class="textForm">
+        <input name="name" type="text" class="name" placeholder="이름" v-model="userName">
+      </div>
+      <div class="textForm">
+        <input name="loginPwConfirm" type="password" class="pw" placeholder="주민번호" v-model="rrn">
+      </div>
+      <div class="textForm">
+        <input name="nickname" type="text" class="nickname" placeholder="주소" v-model="address">
+      </div>
+      <div class="textForm">
+        <input name="nickname" type="text" class="nickname" placeholder="우편번호" v-model="zipcode">
+      </div>
+      <div class="textForm">
+        <input name="cellphoneNo" type="tel" class="cellphoneNo" placeholder="전화번호" v-model="phone">
+      </div>
+      <div class="textForm" style="display:flex; margin-bottom: 0;">
+        <input name="email" type="text" class="email" placeholder="이메일" v-model="email">
+      </div>
+      <span v-show="valid.email" class="input-error">
+          이메일 주소를 정확히 입력해주세요.
+      </span>
+      <div>
+      <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-top:20px; font-size: 15px;">회원가입</button>
+      </div>
+    </form>
+    <!-- <form @submit.prevent="submitForm">
       <div class="input-group mt-3 mb-3">
         <span class="input-group-text" id="basic-addon1">Username</span>
         <input type="text" class="form-control" v-model="userId"  placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
@@ -43,7 +80,7 @@
           이메일 주소를 정확히 입력해주세요.
         </p>
       <button class="btn btn-primary btn-lg btn-block" type="submit">가입 완료</button>
-    </form>
+    </form> -->
   </div>
 </template>
 
@@ -141,5 +178,122 @@ export default {
 </script>
 
 <style>
+* {
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  font-family:sans-serif;
 
+}
+
+body {
+  background-image:#34495e;
+}
+
+.joinForm {
+  position:absolute;
+  width:400px;
+  height:400px;
+  padding: 30px, 20px;
+  background-color:#FFFFFF;
+  text-align:center;
+  top:40%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius: 15px;
+}
+
+.joinForm h2 {
+  text-align: center;
+  margin: 30px;
+}
+
+.textForm {
+  border-bottom: 2px solid #adadad;
+  margin: 30px;
+  padding: 10px 10px;
+}
+
+
+.id {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.pw {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.name {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.email {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.nickname {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.cellphoneNo {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+/* 
+.btn {
+  position:relative;
+  left:40%;
+  transform: translateX(-50%);
+  margin-bottom: 40px;
+  width:80%;
+  height:40px;
+  background: linear-gradient(125deg,#81ecec,#6c5ce7,#81ecec);
+  background-position: left;
+  background-size: 200%;
+  color:white;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;
+  transition: 0.4s;
+  display:inline;
+} */
+
+.btn:hover {
+  background-position: right;
+}
 </style>
