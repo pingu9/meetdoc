@@ -13,3 +13,32 @@ h1 {
     width: 100%;
     margin: 20px 0px !important;
 }
+
+.text-center {
+    text-align: center;
+}
+
+.font-han-sans {
+    font-family: 'Black Han Sans', sans-serif !important;
+}
+
+.font-do-hyeon {
+    font-family: 'Do Hyeon', sans-serif !important;
+}
+
+.font-nanum-gothic {
+    font-family: 'Nanum Gothic', sans-serif !important;
+}
+
+* {
+    font-family: 'Nanum Gothic', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Do Hyeon', sans-serif !important;
+}
+
+.navbar-brand {
+    margin-left: 10px;
+    font-size: 1.7rem !important;
+}
