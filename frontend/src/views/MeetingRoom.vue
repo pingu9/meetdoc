@@ -1,23 +1,54 @@
 <template>
-	<div id="main-container" class="container">
+	<b-container fluid id="main-container" class="container">
 		<div id="session">
 			<div id="session-header">
-				<h1 id="session-title">{{ sessionId }}</h1>
-				<input class="btn btn-large btn-success" type="button" id="buttonMuteAudio" @click="toggleMuteOption()" value="Mute Audio" v-if="isAudioActive">
-				<input class="btn btn-large btn-warning" type="button" id="buttonUnmuteAudio" @click="toggleMuteOption()" value="Unmute Audio" v-if="!isAudioActive">
-				<input class="btn btn-large btn-success" type="button" id="buttonStopVideo" @click="toggleVideoEnableOption()" value="Stop Video" v-if="isVideoActive">
-				<input class="btn btn-large btn-warning" type="button" id="buttonStartVideo" @click="toggleVideoEnableOption()" value="Start Video" v-if="!isVideoActive">
-				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
+				<h1 id="session-title">{{ sessionId }}번 진료실</h1>
+				<input class="btn btn-large btn-success " type="button" id="buttonMuteAudio" @click="toggleMuteOption()"
+					value="Mute Audio" v-if="isAudioActive">
+				<input class="btn btn-large btn-warning" type="button" id="buttonUnmuteAudio"
+					@click="toggleMuteOption()" value="Unmute Audio" v-if="!isAudioActive">
+				<input class="btn btn-large btn-success" type="button" id="buttonStopVideo"
+					@click="toggleVideoEnableOption()" value="Stop Video" v-if="isVideoActive">
+				<input class="btn btn-large btn-warning" type="button" id="buttonStartVideo"
+					@click="toggleVideoEnableOption()" value="Start Video" v-if="!isVideoActive">
+				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession"
+					value="Leave session">
 			</div>
-			<div id="main-video" class="col-md-6">
-				<user-video :stream-manager="mainStreamManager"/>
-			</div>
-			<div id="video-container" class="col-md-6">
-				<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
-				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
+			<div id="session-content" class="row">
+				<div id="session-video" class="col-md-9">
+					<div id="main-video" class="col-md-6">
+						<user-video :stream-manager="mainStreamManager" />
+					</div>
+					<div id="video-container" class="col-md-6">
+						<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
+						<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId"
+							:stream-manager="sub" @click="updateMainVideoStreamManager(sub)" />
+					</div>
+				</div>
+				<div id="session-chat" class="col-md-3">
+					<div id="chat-data">
+						<b-list-group class="border-0" v-for="(msg,idx) in messageData" v-bind:key="idx">
+							<div class="d-flex w-100 justify-content-between">
+								<small class="text-muted">{{msg.from}}</small>
+								<small class="text-muted">{{msg.time}}</small>
+							</div>
+							<p class="mb-1">{{msg.message}}</p>
+							<v-divider inset></v-divider>
+						</b-list-group>
+					</div>
+					<div id="chat-input" class="input-group mb-3">
+						<input type="text" class="form-control" id="chat-input" placeholder="여기에 메시지를 입력하세요."
+							@keyup.enter="sendMessage()" v-model="inputMessage" />
+						<div class="input-group-append">
+							<button class="btn btn-outline-secondary" id="chat-button" type="button"
+								@click="sendMessage()">전송</button>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
-	</div>
+	</b-container>
 </template>
 
 <script>
@@ -38,15 +69,18 @@ export default {
 		UserVideo,
 	},
 
-	data () {
+	data() {
 		return {
 			OV: undefined,
 			session: undefined,
 			mainStreamManager: undefined,
 			publisher: undefined,
 			subscribers: [],
+			showSubscribers: [],
 			isAudioActive: undefined,
 			isVideoActive: undefined,
+			inputMessage: '',
+			messageData: [],
 
 			userType: '',
 			sessionId: '',
@@ -60,15 +94,14 @@ export default {
 		this.sessionId = this.getMeetingInfo.appointmentId;
 		this.userType = this.getMeetingInfo.userType;
 		this.userName = this.getMeetingInfo.myUserName;
-		console.log(this.sessionId + " "+ this.userType +" "+this.userName);
 		this.joinSession();
 	},
-	computed:{
+	computed: {
 		...mapGetters(['getMeetingInfo']),
 	},
 	methods: {
 		...mapMutations(['setMeetingInfo']),
-		joinSession () {
+		joinSession() {
 			this.OV = new OpenVidu();
 			this.session = this.OV.initSession();
 
@@ -89,7 +122,15 @@ export default {
 			});
 
 			this.getToken(this.sessionId).then(token => {
-				this.session.connect(token, { clientData: this.userName + " ("+ (this.userType == "U" ? "환자" : "의사") +")" })
+				//chat event
+				this.session.on('signal', (event) => {
+					let now = new Date();
+					this.messageData.push({"from": event.from.data.substring(15, event.from.data.length - 2), "message" : event.data, "time" : now.toLocaleTimeString()});
+
+					console.log(event.from.data.substring(15, event.from.data.length - 2) + " : " + event.data);
+				});
+
+				this.session.connect(token, { clientData: this.userName + " (" + (this.userType === 'U' ? "환자" : "의사") + ")" })
 					.then(() => {
 
 						let publisher = this.OV.initPublisher(undefined, {
@@ -123,14 +164,16 @@ export default {
 			} else if (this.userType === 'U') {
 				axios
 					.patch(`api/meeting/enter/patient/${currentAppointmentId}`);
-			}	
-			
+			}
+
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
 
-		leaveSession () {
+		leaveSession() {
 			if (this.session) this.session.disconnect();
-			
+
+			this.inputMessage = '',
+			this.messageData = [],
 			this.isAudioActive = undefined;
 			this.isVideoActive = undefined;
 			this.session = undefined;
@@ -146,32 +189,47 @@ export default {
 			} else if (this.userType === 'U') {
 				axios
 					.patch(`/api/meeting/leave/patient/${currentAppointmentId}`);
-			}	
+			}
 
 			window.removeEventListener('beforeunload', this.leaveSession);
 			this.$router.push('/');
 		},
 
-		updateMainVideoStreamManager (stream) {
+		updateMainVideoStreamManager(stream) {
 			if (this.mainStreamManager === stream) return;
 			this.mainStreamManager = stream;
 		},
 
-		toggleMuteOption () {
+		toggleMuteOption() {
 			this.isAudioActive = !this.isAudioActive;
 			this.publisher.publishAudio(this.isAudioActive);
 		},
 
-		toggleVideoEnableOption () {
+		toggleVideoEnableOption() {
 			this.isVideoActive = !this.isVideoActive;
 			this.publisher.publishVideo(this.isVideoActive);
 		},
 
-		getToken (sessionId) {
+		sendMessage() {
+			this.session.signal({
+				data: this.inputMessage,
+				to: [],
+				type: 'chat'
+			})
+			.then(() => {
+				this.inputMessage = '';
+			})
+			.catch(error => {
+				console.error(error);
+			});
+		},
+
+
+		getToken(sessionId) {
 			return this.createSession(sessionId).then(sessionId => this.createToken(sessionId));
 		},
 
-		createSession (sessionId) {
+		createSession(sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
 					.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
@@ -198,7 +256,7 @@ export default {
 			});
 		},
 
-		createToken (sessionId) {
+		createToken(sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
 					.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
@@ -215,3 +273,17 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+#main-container {
+	height: 100%;
+}
+/* #chat-data {
+	height: 70%;
+	overflow: auto;
+}
+#chat-input {	
+	position: fixed;
+    bottom: 20%;
+} */
+</style>
