@@ -33,6 +33,7 @@
           <div>
             <div class="modal-header">
               <h3>MeetDoc Login</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" id="loginModalCloseBtn"></button>
             </div>
             <div class="modal-body text-center p-5">
               <div class="form-floating mb-3">
