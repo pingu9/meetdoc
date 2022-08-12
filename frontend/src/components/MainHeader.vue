@@ -9,16 +9,21 @@
         <div class="collapse navbar-collapse" id="navbarNav" style="width:calc(100%- 82.43px)">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
+              <router-link to="/" active-class="active" class="nav-link">Home</router-link>
+              <!-- <a class="nav-link router-link-active" aria-current="page" href="/">Home</a> -->
             </li>
             <li class="nav-item" v-if="isLoggedIn && userType ==='D'">
-              <a class="nav-link" href="/chart/list">진료 내역</a>
+              <router-link to="/chart/list" active-class="active" class="nav-link">진료 내역</router-link>
+              <!-- <a class="nav-link" active-class="router-link-active" href="/chart/list">진료 내역</a> -->
             </li>
             <li class="nav-item" v-if="isLoggedIn && userType ==='U'">
-              <a class="nav-link" href="/book/list">예약 내역</a>
+              <router-link to="/book/list" active-class="active" class="nav-link">예약 내역</router-link> 
+              <!-- <a class="nav-link" href="/book/list">예약 내역</a> -->
             </li>
             <li class="nav-item" v-if="isLoggedIn">
-              <a class="nav-link" href="/mypage">MyPage</a>
+
+              <router-link to="/mypage" active-class="active" class="nav-link">MyPage</router-link>
+              <!-- <a class="nav-link" href="/mypage">MyPage</a> -->
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
               <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
@@ -27,7 +32,8 @@
               <a class="nav-link" @click="confirm()">Logout</a>
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
-              <a class="nav-link" href="/signup">Signup</a>
+              <router-link to="/signup" active-class="active" class="nav-link">Signup</router-link>
+              <!-- <a class="nav-link" href="/signup">Signup</a> -->
             </li>
           </ul>
         </div>
@@ -42,13 +48,16 @@
         <div class="collapse navbar-collapse" id="navbarNav" style="width:calc(100%- 82.43px)">
           <ul class="navbar-nav">
             <li class="nav-item" v-if="isLoggedIn && userType ==='D'">
-              <a class="nav-link" href="/chart/list">진료 내역</a>
+              <router-link to="/chart/list" active-class="active" class="nav-link">진료 내역</router-link>
+              <!-- <a class="nav-link" href="/chart/list">진료 내역</a> -->
             </li>
-            <li class="nav-item" v-if="isLoggedIn && userType ==='U'">
-              <a class="nav-link" href="/book/list">예약 내역</a>
+            <li class="nav-item" v-if="isLoggedIn &&userType ==='U'">
+              <router-link to="/book/list" active-class="active" class="nav-link">예약 내역</router-link>
+              <!-- <a class="nav-link" href="/book/list">예약 내역</a> -->
             </li>
             <li class="nav-item" v-if="isLoggedIn">
-              <a class="nav-link" href="/mypage">MyPage</a>
+              <router-link to="/mypage" active-class="active" class="nav-link">MyPage</router-link>
+              <!-- <a class="nav-link" href="/mypage">MyPage</a> -->
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
               <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">login</a>
@@ -57,7 +66,8 @@
               <a class="nav-link" @click="confirm()">Logout</a>
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
-              <a class="nav-link" href="/signup">회원가입</a>
+              <router-link to="/signup" active-class="active" class="nav-link">회원가입</router-link>
+              <!-- <a class="nav-link" href="/signup">회원가입</a> -->
             </li>
           </ul>
         </div>
