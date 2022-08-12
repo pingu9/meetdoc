@@ -290,7 +290,7 @@ export default {
 #chat-data {
 	white-space: pre;
     overflow-y: auto;
-	height: calc(100% - 38px);
+	height: 700px;
     border:1px solid gray;
 }
 
