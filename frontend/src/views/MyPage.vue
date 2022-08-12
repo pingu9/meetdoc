@@ -1,10 +1,10 @@
 <template>
-  <div class="container-body" v-if="userFlag">
+  <div class="container-body font-nanum-gothic" v-if="userFlag">
     <div class="row">
         <div class="col-md border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">{{currentUser.userName}} Profile</h4>
+                    <h3 class="text-align:left font-do-hyeon">{{currentUser.userName}} Profile</h3>
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-6"><label class="labels">ID</label><div class="form-control">{{currentUser.userId}}</div></div>
@@ -33,9 +33,11 @@
         </div>
     </div>
   </div>
-  <div class="container-body" v-if="doctorFlag">
+  <div class="container-body font-nanum-gothic" v-if="doctorFlag">
     <div>
-      <h4 style="text-align:left">{{currentUser.userName }} 선생님</h4>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="text-align:left font-do-hyeon">{{currentUser.userName}} Doctor</h3>
+      </div>
       <div class="row mt-2">
           <div class="col-md-6"><label class="labels">ID</label><div class="form-control">{{currentUser.userId}}</div></div>
       </div>
@@ -51,7 +53,7 @@
       </div>
       <hr>
       <div>
-        <h4 style="text-align:left">병원 정보</h4>
+        <h3 style="text-align:left">병원 정보</h3>
         <div class="row mt-3">
           <div class="col-md-6"><label class="labels">병원명</label><div class="form-control"> {{currentDoctorInfo.hospitalName}} </div></div>
           <div class="col-md-6"><label class="labels">진료과</label><div class="form-control"> <span v-for="(departmentName, idx) in currentDoctorInfo.departmentNames" :key="idx">
