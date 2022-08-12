@@ -55,7 +55,7 @@ export default {
 	},
 	created(){
 		if(this.$route.params.appointmentId !== '' && this.$route.params.appointmentId !==  undefined && this.$route.params.appointmentId !== null){
-			this.setMeetingInfo({appointmentId: this.$route.params.appointmentId, userType:this.$route.params.userType, myUserName: this.$route.params.myUserName});
+			this.setMeetingInfo({appointmentId: this.$route.params.appointmentId, userType:localStorage.getItem('userType'), myUserName: this.$route.params.myUserName});
 		}
 		this.sessionId = this.getMeetingInfo.appointmentId;
 		this.userType = this.getMeetingInfo.userType;
