@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 /**
@@ -41,12 +42,19 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         UserInfo userInfo = new UserInfo();
 
+        String rrn = userReqInfo.getRrn();
+        String birth = "19"+rrn.substring(0,2)+"-"+rrn.substring(2,4)+"-"+rrn.substring(4,6);
+        String gender = Integer.parseInt(rrn.substring(6,7))%2 != 0 ? "male" : "female";
+        LocalDate birthDate = LocalDate.parse(birth);
+        System.out.println(birthDate);
+        System.out.println(gender);
+
         user.setUserId(userReqInfo.getUserId());
         user.setName(userReqInfo.getUserName());
         user.setStatus("active");
         user.setUserType(userReqInfo.getUserType());
-        user.setBirthdate(userReqInfo.getBirthdate());
-        user.setGender(userReqInfo.getGender());
+        user.setBirthdate(birthDate);
+        user.setGender(gender);
 
         userInfo.setPassword((passwordEncoder.encode(userReqInfo.getPassword())));
         userInfo.setAddress(userReqInfo.getAddress());
@@ -54,7 +62,6 @@ public class UserServiceImpl implements UserService {
         userInfo.setPhone(userReqInfo.getPhone());
         userInfo.setRrn(userReqInfo.getRrn());
         userInfo.setZipcode(userReqInfo.getZipcode());
-
 
         userInfo.setUser(user);
         user.setUserInfo(userInfo);
