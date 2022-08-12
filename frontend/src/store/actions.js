@@ -46,9 +46,11 @@ export const actions = {
         console.log(payload)
         axios.post('/api/user/', payload)
             .then(() => {
+                alert("회원가입이 성공적으로 완료되었습니다.")
                 router.push({ name: 'home' });
             })
             .catch(error => {
+                alert("회원가입에 실패했습니다. 다시 시도해주세요.")
                 console.log('------------');
                 console.log(error.response.data.message);
             });
@@ -96,7 +98,7 @@ export const actions = {
     },
     login(context, idpw) {
         console.log(idpw)
-        axios.post('/api/user/login', idpw)
+        return axios.post('/api/user/login', idpw)
             .then((res) => {
                 if (res.data.message !== "Success") {
                     const error = {};
@@ -132,7 +134,7 @@ export const actions = {
             });
     },
     checkId(context, userId) {
-        axios.get('/api/user/' + userId)
+        return axios.get('/api/user/' + userId)
             .then((res) => {
                 console.log(userId);
                 console.log(res.data);
