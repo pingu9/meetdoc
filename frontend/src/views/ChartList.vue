@@ -116,6 +116,7 @@ export default {
           console.log(res.data);
           alert("진료가 취소되었습니다.");
           appointment.status = 'CANCELED';
+          this.$router.go();
         }).catch(e => console.log(e))
       }
     },
@@ -127,6 +128,7 @@ export default {
             console.log(res.data);
             alert('진료 취소 요청을 성공적으로 실행했습니다..');
             appointment.status = 'PENDING_CANCEL_DOCTOR';
+            this.$router.go();
           }).catch(e => console.log(e))
         }
       }
