@@ -1,9 +1,9 @@
 <template>
-	<div id="main-container" class="container">
+	<b-container fluid id="main-container" class="container">
 		<div id="session">
 			<div id="session-header">
-				<h1 id="session-title">{{ sessionId }}</h1>
-				<input class="btn btn-large btn-success" type="button" id="buttonMuteAudio" @click="toggleMuteOption()"
+				<h1 id="session-title">{{ sessionId }}번 진료실</h1>
+				<input class="btn btn-large btn-success " type="button" id="buttonMuteAudio" @click="toggleMuteOption()"
 					value="Mute Audio" v-if="isAudioActive">
 				<input class="btn btn-large btn-warning" type="button" id="buttonUnmuteAudio"
 					@click="toggleMuteOption()" value="Unmute Audio" v-if="!isAudioActive">
@@ -14,8 +14,8 @@
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession"
 					value="Leave session">
 			</div>
-			<div id="session-content">
-				<div id="session-video">
+			<div id="session-content" class="row">
+				<div id="session-video" class="col-md-9">
 					<div id="main-video" class="col-md-6">
 						<user-video :stream-manager="mainStreamManager" />
 					</div>
@@ -25,18 +25,18 @@
 							:stream-manager="sub" @click="updateMainVideoStreamManager(sub)" />
 					</div>
 				</div>
-				<div id="session-chat">
-					<div>
+				<div id="session-chat" class="col-md-3">
+					<div id="chat-data">
 						<b-list-group class="border-0" v-for="(msg,idx) in messageData" v-bind:key="idx">
 							<div class="d-flex w-100 justify-content-between">
 								<small class="text-muted">{{msg.from}}</small>
 								<small class="text-muted">{{msg.time}}</small>
 							</div>
 							<p class="mb-1">{{msg.message}}</p>
+							<v-divider inset></v-divider>
 						</b-list-group>
-						<v-divider inset></v-divider>
 					</div>
-					<div class="input-group mb-3">
+					<div id="chat-input" class="input-group mb-3">
 						<input type="text" class="form-control" id="chat-input" placeholder="여기에 메시지를 입력하세요."
 							@keyup.enter="sendMessage()" v-model="inputMessage" />
 						<div class="input-group-append">
@@ -48,7 +48,7 @@
 
 			</div>
 		</div>
-	</div>
+	</b-container>
 </template>
 
 <script>
@@ -76,6 +76,7 @@ export default {
 			mainStreamManager: undefined,
 			publisher: undefined,
 			subscribers: [],
+			showSubscribers: [],
 			isAudioActive: undefined,
 			isVideoActive: undefined,
 			inputMessage: '',
@@ -274,13 +275,15 @@ export default {
 </script>
 
 <style scoped>
-.session-video {
-	background: red;
-	float: left;
+#main-container {
+	height: 100%;
 }
-
-.session-chat {
-	background: blue;
-	float: right;
+/* #chat-data {
+	height: 70%;
+	overflow: auto;
 }
+#chat-input {	
+	position: fixed;
+    bottom: 20%;
+} */
 </style>
