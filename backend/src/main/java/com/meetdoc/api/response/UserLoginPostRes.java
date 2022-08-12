@@ -18,6 +18,7 @@ public class UserLoginPostRes extends BaseResponseBody {
     String accessToken;
     String userId;
     String userType;
+    String userName;
 
     public static UserLoginPostRes of(Integer statusCode, String message, String accessToken, User user) {
         UserLoginPostRes res = new UserLoginPostRes();
@@ -26,6 +27,7 @@ public class UserLoginPostRes extends BaseResponseBody {
         res.setAccessToken(accessToken);
         if (user != null) {
             res.setUserId(user.getUserId());
+            res.setUserName(user.getName());
             res.setUserType(user.getUserType());
         }
 
