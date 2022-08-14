@@ -74,7 +74,7 @@
                       이메일 주소를 정확히 입력해주세요.
                     </p>
                 </div>
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Changes</button></div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">회원정보수정</button></div>
             </div>
         </div>
     </div>

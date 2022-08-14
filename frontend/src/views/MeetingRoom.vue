@@ -22,7 +22,7 @@
 					<div id="main-video" class="" style="display: none;">
 						<user-video :stream-manager="mainStreamManager" />
 					</div>
-					<div id="video-container" class="">
+					<div id="video-container">
 						<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" id="publisher-video"/> <!-- absolute, top 0, right 0, width 200, height 200  -->
 						<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId"
 							:stream-manager="sub" @click="updateMainVideoStreamManager(sub)" />
@@ -41,10 +41,10 @@
 					</div>
 					<div id="chat-input" class="input-group mb-3">
 						<input type="text" class="form-control" id="chat-input" placeholder="여기에 메시지를 입력하세요."
-							@keyup.enter="sendMessage()" v-model="inputMessage" />
+							@keyup.enter="sendMessage();" v-model="inputMessage" />
 						<div class="input-group-append">
 							<button class="btn btn-outline-secondary" id="chat-button" type="button"
-								@click="sendMessage()">전송</button>
+								@click="sendMessage();">전송</button>
 						</div>
 					</div>
 				</div>
@@ -71,7 +71,7 @@ export default {
 	components: {
 		UserVideo,
 	},
-
+	
 	data() {
 		return {
 			OV: undefined,
@@ -128,9 +128,13 @@ export default {
 				//chat event
 				this.session.on('signal', (event) => {
 					let now = new Date();
-					this.messageData.push({"from": event.from.data.substring(15, event.from.data.length - 2), "message" : event.data, "time" : now.toLocaleTimeString()});
-
+					this.messageData.push({ "from": event.from.data.substring(15, event.from.data.length - 2), "message": event.data, "time": now.toLocaleTimeString() });
+					
 					console.log(event.from.data.substring(15, event.from.data.length - 2) + " : " + event.data);
+					console.log(this.messageData);
+					this.$nextTick(() => {
+						this.autoScroll();
+					});
 				});
 
 				this.session.connect(token, { clientData: this.userName + " (" + (this.userType === 'U' ? "환자" : "의사") + ")" })
@@ -218,15 +222,18 @@ export default {
 				data: this.inputMessage,
 				to: [],
 				type: 'chat'
-			})
-			.then(() => {
-				const chatData = document.getElementById('chat-data');
-				chatData.scrollTop = chatData.scrollHeight;
+			}).then(() => {
+				// this.autoScroll();
 				this.inputMessage = '';
 			})
 			.catch(error => {
 				console.error(error);
 			});
+		},
+
+		autoScroll() {
+			const chatData = document.getElementById('chat-data');
+			chatData.scrollTop = chatData.scrollHeight;
 		},
 
 

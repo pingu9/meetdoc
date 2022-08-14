@@ -21,11 +21,11 @@
                 </div>
                 <div>
                   <router-link :to="{ name: 'mypageUpdate' }">
-                    <button type="button" class="btn btn-outline-primary m-5">회원정보 수정</button>
+                    <button type="button" class="btn btn-primary m-5">회원정보 수정</button>
                   </router-link>
-                  <button type="button" @click="userDelete()" class="btn btn-outline-warning">회원탈퇴</button>
+                  <button type="button" @click="userDelete()" class="btn btn-warning">회원탈퇴</button>
                   <router-link v-if="currentUser.userType !== 'D'" :to="{ name: 'doctorRegist'}">
-                    <button type="button" class="btn btn-outline-primary m-5">의사 등록</button>
+                    <button type="button" class="btn btn-success m-5">의사 등록</button>
                   </router-link>
                 </div>
                 <!-- <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div> -->
@@ -69,9 +69,9 @@
       </div>
       <div>
         <router-link :to="{ name: 'mypageUpdate' }">
-          <button type="button" class="btn btn-outline-primary m-5">정보 수정</button>
+          <button type="button" class="btn btn-primary m-5">정보 수정</button>
         </router-link>
-        <button type="button" @click="userDelete()" class="btn btn-outline-warning">회원탈퇴</button>
+        <button type="button" @click="userDelete()" class="btn btn-warning">회원탈퇴</button>
         <router-link v-if="currentUser.userType !== 'D'" :to="{ name: 'doctorRegist'}">
           <button type="button" class="btn btn-outline-primary m-5">의사 등록</button>
         </router-link>
