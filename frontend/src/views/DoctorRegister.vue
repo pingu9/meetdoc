@@ -32,7 +32,7 @@
           <label class="form-check-label" for="inlineCheckbox1">{{department.departmentName}}</label>
         </div>
       </div>
-      <button class="btn btn-primary btn-lg btn-block" type="submit">등록 완료</button>
+      <button class="btn btn-primary registerDoctor" type="submit">등록 완료</button>
       <div>
 
       </div>
@@ -74,5 +74,7 @@ export default {
 </script>
 
 <style>
-
+.registerDoctor{
+  margin-top: 20px;
+}
 </style>

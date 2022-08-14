@@ -1,6 +1,11 @@
 <template>
   <div class="container-body">
-    <div class="card w-90" id="noDoctorList" v-if="noData === true">
+
+    <div class="spinner-border text-primary" role="status" v-if="loading === true">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <div class="card w-90" id="noDoctorList" v-else-if="noData === true && loading === false">
       <div class="card-body">
         <h5 class="card-title">진료 내역이 없습니다.</h5>
       </div>
@@ -39,6 +44,7 @@ export default {
       doctorName: '',
       noData: false,
       chartList: [],
+      loading: true,
     }
   },
   components: {
@@ -104,7 +110,7 @@ export default {
         this.setChartList(res.data);
         this.doctorName = this.chartList[0].doctorName;
       }
-    });
+    }).then(() => this.loading = false)
     console.log(this.noData);
   },
   methods:{
