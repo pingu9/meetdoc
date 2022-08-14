@@ -1,6 +1,11 @@
 <template>
   <div class="container-body">
-    <div class="card w-90" id="noDoctorList" v-if="bookExist === false">
+
+    <div class="spinner-border text-primary" role="status" v-if="loading === true">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <div class="card w-90" id="noDoctorList" v-else-if="bookExist === false && loading === false">
       <div class="card-body">
         <h5 class="card-title">예약 내역이 없습니다.</h5>
         </div>
@@ -24,7 +29,8 @@ export default {
       bookList: [],
       bookExist: false,
       userId : localStorage.getItem('userId'),
-      userName : localStorage.getItem('userName'),
+      userName: localStorage.getItem('userName'),
+      loading: true,
     };
   },
   components: {
@@ -48,6 +54,7 @@ export default {
       const cancelList = data.filter(({ status }) => status === 'CANCELED');
       this.bookList = [...openList, ...waitList, ...pendingPreList, ...pendingCancelDocList, ...pendingCancelPatList, ...finishedList, ...absentList, ...cancelList];
     }
+    this.loading = false;
   },
   methods: {
     deleteList(index){
