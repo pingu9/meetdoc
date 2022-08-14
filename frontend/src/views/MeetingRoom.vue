@@ -232,15 +232,8 @@ export default {
 		},
 
 		autoScroll() {
-			console.log('***************');
 			const chatData = document.getElementById('chat-data');
-			console.log(chatData.scrollTop);
-			console.log(chatData.scrollHeight);
-			console.log('-------------------');
 			chatData.scrollTop = chatData.scrollHeight;
-			console.log(chatData.scrollTop);
-			console.log(chatData.scrollHeight);
-			console.log('-------------------');
 		},
 
 
