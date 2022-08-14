@@ -133,7 +133,8 @@ export default {
 					console.log(event.from.data.substring(15, event.from.data.length - 2) + " : " + event.data);
 					console.log(this.messageData);
 					this.$nextTick(() => {
-						this.autoScroll();
+						const chatData = document.getElementById('chat-data');
+						chatData.scrollTop = chatData.scrollHeight;
 					});
 				});
 
@@ -223,19 +224,12 @@ export default {
 				to: [],
 				type: 'chat'
 			}).then(() => {
-				// this.autoScroll();
 				this.inputMessage = '';
 			})
 			.catch(error => {
 				console.error(error);
 			});
 		},
-
-		autoScroll() {
-			const chatData = document.getElementById('chat-data');
-			chatData.scrollTop = chatData.scrollHeight;
-		},
-
 
 		getToken(sessionId) {
 			return this.createSession(sessionId).then(sessionId => this.createToken(sessionId));
