@@ -22,13 +22,6 @@
         </div>
       </div>
     </div>
-    <!-- <p>{{$store.state.name}}</p>
-  <button @click="changeName()">한/영변환</button>
-  <hr>
-  <span>getName : {{getName}}</span>
-  <hr>
-  <button @click="getData()">데이터가져오기</button>
-  <p>{{value}}</p> -->
   </div>
 </template>
 
