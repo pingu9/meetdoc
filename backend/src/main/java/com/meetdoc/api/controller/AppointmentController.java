@@ -203,7 +203,12 @@ public class AppointmentController {
             return ResponseEntity.status(403).body(BaseResponseBody.of(401, "의사가 아닌 회원입니다"));
         }
 
-        if(ap.getPrescriptionDescription() != null)
+        if(ap.getPrescriptionDate() != null && !req.getIsTemp()) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409,"처방 내역이 이미 있습니다."));
+        }
+
+
+        if (ap.getStatus().equals("FINISHED"))
             return ResponseEntity.status(409).body(BaseResponseBody.of(409,"처방 내역이 이미 있습니다."));
 
         appointmentService.writePrescription(appointmentId, req);
