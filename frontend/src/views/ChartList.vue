@@ -143,7 +143,10 @@ export default {
       if(appointment.status === 'OPEN') {
         this.$router.push({name: 'meetingRoom', params:{appointmentId: appointment.appointmentId, userType: localStorage.getItem('userType'), myUserName: this.doctorName}});
       }
-    }
+    },
+    prescription(chart) {
+      this.$router.push(`/prescription/${chart.appointmentId}`);
+    },
   }
 }
 </script>
