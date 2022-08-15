@@ -153,9 +153,15 @@ public class AppointmentServiceImpl implements AppointmentService{
     public void writePrescription(int appointmentId, PrescriptionPatchReq req) {
         Appointment appointment = appointmentRepository.getOne(appointmentId);
         appointment.setPrescriptionDescription(req.getPrescriptionDescription());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        appointment.setPrescriptionDate(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
+        if (req.getPrescriptionDate() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            appointment.setPrescriptionDate(LocalDateTime.parse(req.getPrescriptionDate(),formatter));
+        }
         appointment.setIcd(req.getIcd());
+
+        if (appointment.getStatus().equals("PENDING_PRESCRIPTION")) {
+            appointment.setStatus("FINISHED");
+        }
 
         appointmentRepository.save(appointment);
     }
