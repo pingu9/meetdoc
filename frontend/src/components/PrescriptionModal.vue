@@ -72,7 +72,7 @@ export default {
                 }).catch((error) => {
                     if (error.response.data.message === "처방 내역이 이미 있습니다.") {
                     alert("처방 내역이 이미 존재합니다.");
-                    document.getElementById('loginModalCloseBtn').click();
+                    document.getElementById('prescriptionModalCloseBtn').click();
                 } else {
                     alert("잘못된 입력입니다");
                 }
