@@ -1,16 +1,12 @@
 <template>
-  <div class="container-body">
-  <h2>처방 입력</h2>
-  <div class="container-card">
-      <div class="card">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+        <h3>처방 입력</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" id="prescriptionModalCloseBtn"></button>
+      </div>
+      <div>
         <div class="card-body">
-          <div class="row container-info">
-            <div class="col-md-auto">처방자: </div>
-            <div class="col-md-auto">
-              <p>{{doctorName}}</p>
-            </div>
-          </div>
-          
           <div class="form-group row">
               <label class="col-md-auto col-form-label" for="date-input">처방일자:</label>
               <div class="col-md-auto">
@@ -30,8 +26,9 @@
               <textarea placeholder="처방 내용을 입력해주세요." id="prescription-textarea" v-model="prescription"></textarea>
             </div>
           </div>
-          <div class="d-grid gap-2 btn-container">
-            <a href="#" class="btn btn-primary" @click="sendPrescription()">처방 내용 입력</a>
+          <div class="d-grid gap-2 btn-container row">
+            <a href="#" class="btn btn-secondary" @click="tempSave()">임시저장</a>
+            <a href="#" class="btn btn-primary" @click="sendPrescription(false)">작성완료</a>
           </div>
         </div>
       </div>
@@ -42,51 +39,52 @@
 <script>
 import axios from 'axios';
 export default {
+    props: ['appointmentId'],
     data() {
         return {
             date: '',
             prescription: '',
             doctorName: '',
-            appointmentId: '',
             icd: '',
+            separatePage: false,
         }
     },
     methods: {
-        sendPrescription() {
-            axios.patch(`/api/appointment/prescription/${this.appointmentId}`, {
-                prescriptionDate: this.date + " 00:00",
-                prescriptionDescription: this.prescription,
-                icd: this.icd,
-                isTemp: false,
-            }).then((res) => {
-                alert("처방 입력이 완료되었습니다.");
-                this.$router.push("/"); 
-            }).catch((error) => {
-                if (error.response.data.message === "처방 내역이 이미 있습니다.") {
-                    alert("처방 내역이 이미 존재합니다.")
-                    this.$router.push("/");
+        sendPrescription(isTemp) {
+            console.log(this.appointmentId);
+            let result = true;
+            if (!isTemp) {
+                result = confirm("최종 작성 이후에는 수정하지 못합니다. 정말로 작성 완료하시겠습니까?");
+            }
+            if (result) {
+                axios.patch(`/api/appointment/prescription/${this.appointmentId}`, {
+                    prescriptionDate: isTemp? null : (this.date + " 00:00"),
+                    prescriptionDescription: this.prescription,
+                    icd: this.icd,
+                    isTemp,
+                }).then((res) => {
+                    if (!isTemp) {
+                        alert("처방 입력이 완료되었습니다.");
+                    } else {
+                        alert("임시 저장되었습니다.");
+                    }
+                    document.getElementById('prescriptionModalCloseBtn').click();
+                }).catch((error) => {
+                    if (error.response.data.message === "처방 내역이 이미 있습니다.") {
+                    alert("처방 내역이 이미 존재합니다.");
+                    document.getElementById('prescriptionModalCloseBtn').click();
                 } else {
                     alert("잘못된 입력입니다");
                 }
             })
+            }
+            
         },
+        tempSave() {
+            this.sendPrescription(true);
+        }
     },
     created() {
-        if(this.$route.params.appointmentId !== '' && this.$route.params.appointmentId !==  undefined && this.$route.params.appointmentId !== null) {
-            this.appointmentId = this.$route.params.appointmentId;           
-        } else {
-            alert("올바르지 않은 접근입니다.");
-            this.$router.push("/");
-        }
-        let userId = localStorage.getItem('userId');
-        axios.get(`/api/user/info/${userId}`)
-            .then((res) => {
-                this.doctorName = res.data.userName; 
-            })
-            .catch((error) => {
-               alert("올바르지 않은 접근입니다.");
-               this.$router.push("/"); 
-            })
 
         //오늘 날짜 설정
         let todayDate = new Date();
@@ -108,20 +106,10 @@ export default {
 
 .btn-container {
     margin-top: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
-/* #date-select{
-    display: flex;
-    justify-content: space-between;
-} */
-@media screen and (max-width:1200px) {
-    .container-info {
-        display: none;
-    }
-    .container-card {
-        font-size: small;
-    }
-}
 
 .prescription-container{
     margin-top: 20px;

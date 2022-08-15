@@ -14,8 +14,15 @@
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession"
 					value="Leave session">
 					<!-- 처방전 버튼. 작성 완료 눌렀을 시 비활성화-->
+				<!-- <input class="btn btn-large btn-info" type="button" id="buttonPrecription" 
+					value="처방전 작성" data-bs-toggle="modal" data-bs-target="#prescriptionModal" v-if="this.userType==='D'"> -->
 				<input class="btn btn-large btn-info" type="button" id="buttonPrecription" 
-					value="처방전 작성" v-if="this.userType === 'D'">
+					value="처방전 작성" data-bs-toggle="modal" data-bs-target="#prescriptionModal">
+				<div class="modal" id="prescriptionModal">
+					<prescription-modal v-bind:appointmentId="getMeetingInfo.appointmentId"></prescription-modal>
+				</div>
+				
+				
 			</div>
 			<div id="session-content"> <!-- flex -->
 				<div id="session-video" class="col-md-9"> <!-- relative, width 70% -->
@@ -58,6 +65,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '../components/UserVideo';
+import PrescriptionModal from '../components/PrescriptionModal';
 import { mapGetters, mapMutations } from 'vuex';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -70,6 +78,7 @@ export default {
 
 	components: {
 		UserVideo,
+		PrescriptionModal,
 	},
 	
 	data() {

@@ -13,4 +13,6 @@ public class PrescriptionPatchReq {
     String prescriptionDescription;
     @ApiModelProperty(name = "질병 코드")
     String icd;
+    @ApiModelProperty(name = "최종 작성 여부")
+    Boolean isTemp;
 }
