@@ -168,7 +168,7 @@ export default {
         "appointmentTime": this.apptDateTime,
         "symptom": this.symptom,
         "departmentName": this.getDepartmentName,
-        "charge": 0,
+        "charge": this.doctorDetail.charge,
         "symptomImages": this.photoUrl,
       };
       console.log(bookReqInfo);
