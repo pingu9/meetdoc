@@ -191,10 +191,11 @@ export default {
     submitForm () {
       console.log('submit')
       console.log(this.userType)
-      if(!this.valid.duplicateId) alert("아이디를 확인해주세요!")
-      else if(!this.valid.password) alert("비밀번호 형식을 확인해주세요!")
-      else if(!this.valid.email) alert("이메일 형식을 확인해주세요!")
-      else if(!this.valid.phone) alert("핸드폰 형식을 확인해주세요!")
+      if (!this.valid.duplicateId) alert("아이디를 확인해주세요!");
+      else if (!this.valid.password) alert("비밀번호 형식을 확인해주세요!");
+      else if (!this.valid.email) alert("이메일 형식을 확인해주세요!");
+      else if (!this.valid.phone) alert("핸드폰 형식을 확인해주세요!");
+      else if (!this.valid.rrn) alert("주민번호를 확인해주세요!");
       else {
         this.$store.dispatch('signUp', {
           userId : this.userId,
