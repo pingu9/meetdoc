@@ -59,10 +59,12 @@ export const actions = {
         console.log(payload)
         axios.post('/api/doctor/regist', payload)
             .then(() => {
+                alert("의사 등록에 성공했습니다!")
                 localStorage.setItem('userType', 'D')
-                router.push({ name: 'home' });
+                router.push({ name: 'home' }).then(() => router.go())
             })
             .catch(error => {
+                alert("의사 등록에 실패했습니다. 다시 시도해주세요.")
                 console.log('------------');
                 console.log(error.response.data.message);
             });
