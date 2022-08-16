@@ -51,7 +51,7 @@
           <b-form-select id="selected-end-time" class="mb-2 mr-sm-2 mb-sm-0" :options="timeOption"></b-form-select>
            <label for="selected-lunch-time" class="mr-sm-2">점심 시간</label>
           <b-form-select id="selected-lunch-time" class="mb-2 mr-sm-2 mb-sm-0" :options="timeOption"></b-form-select>
-          <button class="btn btn-primary">추가</button>
+          <button class="btn btn-primary" @click="selectOpeningHours();">추가</button>
         </div>
         <div id="selected-data">
           <b-list-group class="border-0" v-for="(item, idx) in openingHours" v-bind:key="idx">            
