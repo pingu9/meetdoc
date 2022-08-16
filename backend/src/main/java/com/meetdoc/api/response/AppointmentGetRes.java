@@ -43,7 +43,7 @@ public class AppointmentGetRes extends BaseResponseBody {
         res.setDoctorName(appointment.getDoctor().getUser().getName());
         res.setStatus(appointment.getStatus());
         res.setAppointmentTime(appointment.getAppointmentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        res.setCharge(appointment.getCharge());
+        res.setCharge(appointment.getDoctor().getCharge());
 
         res.setRoomLink(appointment.getRoomLink());
         res.setPhotoUrl(appointment.getDoctor().getPhotoUrl());
