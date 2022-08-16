@@ -17,7 +17,7 @@
         <div class="card" @click="$router.push({name: 'doctorList', params: {departmentCode: department.departmentCode, departmentName: department.departmentName}})">
           <img :src="getIconPath(department.photoUrl)" class="card-img-top" :alt="`${department.departmentName}`" id="deptImg">
           <div class="card-body">
-            <h5 class="card-title">{{department.departmentName}}</h5>
+            <h4 class="card-title">{{department.departmentName}}</h4>
           </div>
         </div>
       </div>
@@ -102,5 +102,15 @@ a:hover{
 
 .col{
   width: 30%;
+}
+
+.card {
+  border: none;
+  box-shadow: 0.3vmin 0.3vmin 0.3vmin 0.3vmin rgb(226, 226, 226);
+  padding: 1vmin;
+}
+
+.card-title {
+  margin-top: 2vmin;
 }
 </style>
