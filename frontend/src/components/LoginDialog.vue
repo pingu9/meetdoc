@@ -37,11 +37,11 @@
             </div>
             <div class="modal-body text-center p-5">
               <div class="form-floating mb-3">
-                <input @keyup.enter="loginForm()" type="username" v-model="username" class="form-control" id="floatingInput" placeholder="Username">
+                <input type="username" v-model="username" class="form-control" id="floatingInput" placeholder="Username">
                 <label for="floatingInput">MeetDoc ID</label>
               </div>
               <div class="form-floating mb-5">
-                <input @keyup.enter="loginForm()" type="password" v-model="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="password" v-model="password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
               </div>
               <!-- <div class="form-check d-flex justify-content-start mb-4">
