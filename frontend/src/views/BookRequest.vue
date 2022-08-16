@@ -50,14 +50,12 @@
 <script>
 
 import { mapGetters, mapMutations, mapState } from 'vuex';
+import axios from 'axios';
 export default {
   data() {
     return {
       date: '',
-      allTime: ['9:00', '9:30', '10:00', '10:30',
-        '11:00', '11:30', '13:00', '13:30',
-        '14:00', '14:30', '15:00', '15:30',
-        '16:00', '16:30', '17:00', '17:30'],
+      allTime: [],
       timeList: [],
       timeCheckList:[],
       symptom: '',
@@ -105,7 +103,10 @@ export default {
       }
     },
     ...mapMutations(['setBookInfo', 'setDoctorDetail', 'setDoctorIdKept', 'setDoctorName', 'setDepartmentName', 'setphotoUrl']),
-    datePicked() {
+    async datePicked() {
+      const response = await axios.get(`/api/doctor/opening-hours/${this.getDoctorIdKept}/${this.date}`);
+      this.allTime = response.data.result;
+
       this.timeList = [];
       this.timeCheckList = [];
       //날짜 선택하면 기능
@@ -118,14 +119,17 @@ export default {
         console.log(res.data.result);
         //받아온 timeList 시간 추출
         let hour = '';
-        let minuates = '';
+        let minutes = '';
         res.data.result.forEach(element => {
           hour = new Date(element).getHours();
-          minuates = new Date(element).getMinutes();
-          if (minuates === 0) {
-            minuates = '00';
+          minutes = new Date(element).getMinutes();
+          if (hour < 10) {
+            hour = '0' + hour;
           }
-          element = hour + ':' + minuates;
+          if (minutes === 0) {
+            minutes = '00';
+          }
+          element = hour + ':' + minutes;
           this.timeList.push(element);
         });
         console.log(this.timeList);
