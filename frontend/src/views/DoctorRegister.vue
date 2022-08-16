@@ -231,7 +231,6 @@ export default {
       }
       this.openingHours.push({ "dayOfTheWeek" : this.dayOfWeekConvert(this.selectedDay), "open" : this.selectedStartTime, "close" : this.selectedEndTime, "lunchHour" : this.selectedLunchTime });
       this.isDayOfWeeksSelected[this.selectedDay] = true;
-      console.log(this.isDayOfWeeksSelected);
 		},
     dayOfWeekConvert(str) {
       if(str == '월요일') return 'Mon'
@@ -250,7 +249,7 @@ export default {
       else if(str == 'Sun') return '일'
     },    
 		changeTimeToInt(target) {      
-      return parseInt(target.replace(":"));
+      return parseInt(target.replace(':',''));
 		}
   },
   created() {
