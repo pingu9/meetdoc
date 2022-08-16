@@ -1,10 +1,9 @@
 <template>
   <div class="container-body">
-
+    <!-- 로딩-->
     <div class="spinner-border text-primary" role="status" v-if="loading === true">
-      <span class="visually-hidden">Loading...</span>
     </div>
-
+    <!--내역 없음-->
     <div class="card w-90" id="noDoctorList" v-else-if="bookExist === false && loading === false">
       <div class="card-body">
         <h5 class="card-title">예약 내역이 없습니다.</h5>
