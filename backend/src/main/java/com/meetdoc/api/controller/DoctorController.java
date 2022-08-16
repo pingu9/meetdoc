@@ -2,16 +2,22 @@ package com.meetdoc.api.controller;
 
 import com.meetdoc.api.request.DoctorPostReq;
 import com.meetdoc.api.request.OpeningHourPostReq;
+import com.meetdoc.api.response.AvailableTimeGetRes;
 import com.meetdoc.api.response.DoctorDetailGetRes;
 import com.meetdoc.api.response.DoctorListGetRes;
+import com.meetdoc.api.response.OpeningTimeGetRes;
 import com.meetdoc.api.service.AppointmentService;
 import com.meetdoc.api.service.DoctorService;
 import com.meetdoc.api.service.S3Service;
 import com.meetdoc.api.service.UserService;
 import com.meetdoc.common.auth.UserDetails;
 import com.meetdoc.common.model.response.BaseResponseBody;
+import com.meetdoc.common.util.DateConverter;
+import com.meetdoc.common.util.DayOffWeekMapper;
 import com.meetdoc.db.entity.Doctor;
+import com.meetdoc.db.entity.OpeningHours;
 import com.meetdoc.db.entity.User;
+import com.querydsl.core.NonUniqueResultException;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Api(value = "의사 API", tags = {"Doctor"})
 @RestController
@@ -50,6 +59,49 @@ public class DoctorController {
         doctorService.createDoctor(registerInfo);
 
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, "Success"));
+    }
+
+    @GetMapping("/opening-hours/{doctorId}/{selectedDate}")
+    @ApiOperation(value = "의사 진료 시간 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 문제로 인한 에러"),
+    })
+    public ResponseEntity<? extends  BaseResponseBody> getOpeningHours(@PathVariable String doctorId,
+                                                                       @PathVariable String selectedDate) {
+        User user;
+        String userId;
+        OpeningHours openingHour;
+        LocalDateTime time = DateConverter.dateStringToLocalDateTime(selectedDate);
+        String dayOfWeek = DayOffWeekMapper.DayOfWeekToString(time.getDayOfWeek());
+
+        try {
+            user = userService.getUserByUserId(doctorId);
+            userId = user.getUserId();
+            if (!userService.isDoctor(user)) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"no data"));
+        }
+
+        if (userService.isDayOff(userId, time.toLocalDate())) {
+            return ResponseEntity.status(200).body(OpeningTimeGetRes.of(200, "no data", new ArrayList<>()));
+        }
+
+        try {
+            openingHour = userService.getOpeningHoursByIdAndWeekDay(doctorId, dayOfWeek);
+        } catch (NoSuchElementException e) {
+            // 해당일에 근무하지 않을 경우
+            return ResponseEntity.status(200).body(OpeningTimeGetRes.of(200, "no data", new ArrayList<>()));
+        } catch (NonUniqueResultException e) {
+            // 해당일 근무 정보가 여러개 들어있을 경우(서버 에러)
+            return ResponseEntity.status(500).body(OpeningTimeGetRes.of(500, "서버 에러 발생"));
+        }
+
+        List<LocalDateTime> timeList = doctorService.getOpeningTimeList(doctorId, time, openingHour);
+
+        return ResponseEntity.status(200).body(OpeningTimeGetRes.of(200, "Success", timeList));
     }
 
     @PostMapping("/opening-hours")
