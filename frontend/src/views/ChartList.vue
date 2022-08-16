@@ -2,7 +2,6 @@
   <div class="container-body">
 
     <div class="spinner-border text-primary" role="status" v-if="loading === true">
-      <span class="visually-hidden">Loading...</span>
     </div>
 
     <div class="card w-90" id="noDoctorList" v-else-if="noData === true && loading === false">
