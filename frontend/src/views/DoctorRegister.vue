@@ -75,6 +75,7 @@
               <div class="item">{{dayOfWeekConvert(item.dayOfTheWeek)}}</div>
               <div class="item">영업시간 : {{ item.open }} ~ {{ item.close }}</div>
               <div class="item">점심시간 : {{ item.lunchHour }}</div>
+              <button type="button" class="btn-close" id="closeBtn" @click="deleteOpeningHours(item.dayOfTheWeek);"></button>
             </li>
           </ul>
         </div>
@@ -250,7 +251,16 @@ export default {
     },    
 		changeTimeToInt(target) {      
       return parseInt(target.replace(':',''));
-		}
+		},
+    deleteOpeningHours(target) {
+      for(let i = 0; i < this.openingHours.length; i++){
+        if(this.openingHours[i].dayOfTheWeek === target) {
+          this.openingHours.splice(i,1);
+          this.isDayOfWeeksSelected[this.dayOfWeekConvert(target)+"요일"] = false;
+          return;
+        }
+      }
+    }
   },
   created() {
     let userId = localStorage.getItem('userId');
