@@ -107,12 +107,12 @@ export default {
 		this.userName = this.getMeetingInfo.myUserName;
 		this.joinSession();
 	},
-	beforeRouteLeave(to, from, next) {
-		if (!this.isFinished) {
-			this.isFinished = true;
-			this.leaveSession();
-		}
-	},
+	// beforeRouteLeave(to, from, next) {
+	// 	if (!this.isFinished) {
+	// 		this.isFinished = true;
+	// 		this.leaveSession();
+	// 	}
+	// },
 	computed: {
 		...mapGetters(['getMeetingInfo']),
 	},
@@ -192,10 +192,6 @@ export default {
 		},
 
 		leaveSession() {
-			if (this.isFinished) {
-				return;
-			}
-			this.isFinished = true;
 			if (this.session) this.session.disconnect();
 
 			this.inputMessage = '',
