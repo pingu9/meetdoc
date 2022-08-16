@@ -14,10 +14,8 @@
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession"
 					value="Leave session">
 					<!-- 처방전 버튼. 작성 완료 눌렀을 시 비활성화-->
-				<!-- <input class="btn btn-large btn-info" type="button" id="buttonPrecription" 
-					value="처방전 작성" data-bs-toggle="modal" data-bs-target="#prescriptionModal" v-if="this.userType==='D'"> -->
 				<input class="btn btn-large btn-info" type="button" id="buttonPrecription" 
-					value="처방전 작성" data-bs-toggle="modal" data-bs-target="#prescriptionModal">
+					value="처방전 작성" data-bs-toggle="modal" data-bs-target="#prescriptionModal" v-if="this.userType==='D'">
 				<div class="modal" id="prescriptionModal">
 					<prescription-modal v-bind:appointmentId="getMeetingInfo.appointmentId"></prescription-modal>
 				</div>
@@ -93,6 +91,7 @@ export default {
 			isVideoActive: undefined,
 			inputMessage: '',
 			messageData: [],
+			isFinished: false,
 
 			userType: '',
 			sessionId: '',
@@ -107,6 +106,12 @@ export default {
 		this.userType = this.getMeetingInfo.userType;
 		this.userName = this.getMeetingInfo.myUserName;
 		this.joinSession();
+	},
+	beforeRouteLeave(to, from, next) {
+		if (!this.isFinished) {
+			this.isFinished = true;
+			this.leaveSession();
+		}
 	},
 	computed: {
 		...mapGetters(['getMeetingInfo']),
@@ -187,6 +192,10 @@ export default {
 		},
 
 		leaveSession() {
+			if (this.isFinished) {
+				return;
+			}
+			this.isFinished = true;
 			if (this.session) this.session.disconnect();
 
 			this.inputMessage = '',

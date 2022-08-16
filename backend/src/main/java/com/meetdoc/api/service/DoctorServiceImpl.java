@@ -1,16 +1,16 @@
 package com.meetdoc.api.service;
 
 import com.meetdoc.api.request.DoctorPostReq;
-import com.meetdoc.db.entity.Doctor;
-import com.meetdoc.db.entity.DoctorMedicDepartment;
-import com.meetdoc.db.entity.MedicDepartment;
-import com.meetdoc.db.entity.OpeningHours;
+import com.meetdoc.common.util.AvailableTimeStore;
+import com.meetdoc.common.util.ReadOnlyTimeStore;
+import com.meetdoc.db.entity.*;
 import com.meetdoc.db.repository.DoctorRepository;
 import com.meetdoc.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +61,13 @@ public class DoctorServiceImpl implements DoctorService{
             list.add(op);
         }
         return doctorRepository.save(doctor);
+    }
+
+    @Override
+    public List<LocalDateTime> getOpeningTimeList(String doctorId, LocalDateTime time, OpeningHours openingHour) {
+        ReadOnlyTimeStore timeStore = new ReadOnlyTimeStore(openingHour, time.toLocalDate());
+
+        return timeStore.getAvailableTimeList();
     }
 
     public Date calTime(Date time) {
