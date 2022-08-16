@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-public class AvailableTimeStore implements TimeStore{
+public class ReadOnlyTimeStore implements TimeStore{
     private Map<LocalDateTime, Boolean> timeStore = new LinkedHashMap<>();
     private OpeningHours openingHour;
     private LocalDate today;
@@ -16,7 +16,7 @@ public class AvailableTimeStore implements TimeStore{
     private LocalTime lunchStart;
     private LocalTime lunchEnd;
 
-    public AvailableTimeStore(OpeningHours openingHour, LocalDate date) {
+    public ReadOnlyTimeStore(OpeningHours openingHour, LocalDate date) {
         this.openingHour = openingHour;
         this.today = date;
         setHourInfo();
@@ -41,11 +41,6 @@ public class AvailableTimeStore implements TimeStore{
     }
 
     private Boolean isAvailable(LocalDateTime time) {
-        LocalDateTime now = LocalDateTime.now().plusSeconds(1);
-        if (time.isBefore(now)) {
-            return false;
-        }
-
         LocalTime localTime = time.toLocalTime();
         if (localTime.isBefore(open)) {
             return false;
@@ -58,10 +53,6 @@ public class AvailableTimeStore implements TimeStore{
         }
 
         return true;
-    }
-
-    public void book(LocalDateTime time) {
-        timeStore.put(time, false);
     }
 
     @Override
