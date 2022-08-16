@@ -66,8 +66,7 @@
               <option selected>점심 시간</option>
               <option v-for="(hour,idx) in hours" :value="hour" :key="idx">{{hour}}</option>
             </select>
-          </div>
-          
+          </div>          
           <button class="btn btn-primary" @click="selectOpeningHours();">추가</button>
         </div>
         <div id="selected-data">
@@ -78,18 +77,6 @@
               <div class="item">점심시간 : {{ item.lunchHour }}</div>
             </li>
           </ul>
-          <!-- <b-list-group class="border-0" v-for="(item, idx) in openingHours" v-bind:key="idx">            
-          
-            <b-row no-gutters>
-            <b-col md="2">
-              <p>{{ item.day }}</p>
-            </b-col>            
-            <b-col md="10">
-              <p>영업시간 : {{ item.startTime }} ~ {{ item.endTime }}</p>
-              <p>점심시간 : {{ item.lunchTime }}</p>
-            </b-col>               
-            </b-row>
-          </b-list-group> -->
         </div>
       </div>
       <hr />
@@ -120,8 +107,6 @@ export default {
       selectedStartTime: '여는 시간',
       selectedEndTime: '닫는 시간',
       selectedLunchTime: '점심 시간',
-      // timeOption: [{ text: '선택', value: null }, { text: '월', value: '월' }, { text: '화', value: '화' }, { text: '수', value: '수' }, { text: '목', value: '목' }, { text: '금', value: '금' }, { text: '토', value: '토' }, { text: '일', value: '일' }],
-      // dayOption: [{ text: '선택', value: null }, '월', '화', '수', '목', '금', '토', '일'],
       phoneValid: false,
       phoneHasError: false,
       dayOfWeeks: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
@@ -286,7 +271,6 @@ export default {
   margin-top: 20px;
 }
 
-
 * {
   margin: 0px;
   padding: 0px;
@@ -357,6 +341,6 @@ body {
   white-space: pre;
   overflow-y: auto;
   height: 300px;
-  border: 1px solid gray;
+  border: 0.5px solid rgb(223, 223, 223);
 }
 </style>
