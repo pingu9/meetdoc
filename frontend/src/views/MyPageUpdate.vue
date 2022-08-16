@@ -100,8 +100,8 @@ data() {
       userType: '',
       valid: {
         // password: false,
-        email: false,
-        phone: false,
+        email: true,
+        phone: true,
       },
       // passwordHasError: false,
       emailHasError: false,
