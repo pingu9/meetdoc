@@ -1,40 +1,45 @@
 <template>
   <div class="container-body">
-    <h1>진료 신청서</h1>
-  <div class="container-card">
-      <div class="card">
-        <div class="card-body">
-          <!-- <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/> -->
-          <!-- <p class="card-title">{{this.getDoctorName}}</p> -->
-          <div id="date-select">
-            <div class="container-doctorName">
-              <p class="card-title">{{this.getDoctorName}}</p>
+    <!--loading-->
+    <div class="spinner-border text-primary" role="status" v-if="loading === true">
+    </div>
+    <div v-else>
+      <h1>진료 신청서</h1>
+    <div class="container-card">
+        <div class="card">
+          <div class="card-body">
+            <!-- <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" id="doctorImg"/> -->
+            <!-- <p class="card-title">{{this.getDoctorName}}</p> -->
+            <div id="date-select">
+              <div class="container-doctorName">
+                <p class="card-title">{{this.getDoctorName}}</p>
+              </div>
+              <div class="container-date-picker">
+                <label class="date-picker-label">예약 날짜</label>
+                <input type='date' class="form-control" @change="datePicked()" v-model="date"/>
+              </div>
             </div>
-            <div class="container-date-picker">
-              <label class="date-picker-label">예약 날짜</label>
-              <input type='date' class="form-control" @change="datePicked()" v-model="date"/>
+            <div class="time-container" v-if="timeList.length !== 0">
+              <div v-for="(time, idx) in allTime" :key="idx">
+                <input type="radio" :id="`avail-time-${idx}`" name="avail-time"/>
+                <label :class="`btn btn-outline-primary avail-time-label ${timeCheckList[idx] ? '' : 'time-disabled'}`" :for="`avail-time-${idx}`" @click="appointmentTime = time;">{{time}}</label>
+              </div>
             </div>
-          </div>
-          <div class="time-container" v-if="timeList.length !== 0">
-            <div v-for="(time, idx) in allTime" :key="idx">
-              <input type="radio" :id="`avail-time-${idx}`" name="avail-time"/>
-              <label :class="`btn btn-outline-primary avail-time-label ${timeCheckList[idx] ? '' : 'time-disabled'}`" :for="`avail-time-${idx}`" @click="appointmentTime = time;">{{time}}</label>
+            <div class="no-time-avail" v-else>
+            휴무일이거나 예약 가능한 시간이 없습니다.
             </div>
-          </div>
-          <div class="no-time-avail" v-else>
-           휴무일이거나 예약 가능한 시간이 없습니다.
-          </div>
-          <div class="symptom-container">
-            <div class="container-upload">
-              <p style="text-align: left; font-weight: bold; font-size: 20px;">증상 사진 첨부</p>
-              <input @change="upload" multiple type="file" accept="image/*">
+            <div class="symptom-container">
+              <div class="container-upload">
+                <p style="text-align: left; font-weight: bold; font-size: 20px;">증상 사진 첨부</p>
+                <input @change="upload" multiple type="file" accept="image/*">
+              </div>
+              <div class="form-floating">
+                <textarea placeholder="증상에 대해 자세히 입력해주세요." id="symptom-textarea" v-model="symptom"></textarea>
+              </div>
             </div>
-            <div class="form-floating">
-              <textarea placeholder="증상에 대해 자세히 입력해주세요." id="symptom-textarea" v-model="symptom"></textarea>
+            <div class="d-grid gap-2 btn-container">
+              <a href="#" class="btn btn-primary" @click="bookRequest()">진료 예약하기</a>
             </div>
-          </div>
-          <div class="d-grid gap-2 btn-container">
-            <a href="#" class="btn btn-primary" @click="bookRequest()">진료 예약하기</a>
           </div>
         </div>
       </div>
@@ -61,6 +66,7 @@ export default {
       departmentName: '',
       appointmentTime: undefined,
       apptDateTime: '',
+      loading : true,
     }
   },
   computed: {
@@ -205,6 +211,7 @@ export default {
     this.$store.dispatch('getDoctorDetail', this.getDoctorIdKept).then((res) => {
       console.log(res.data);
       this.setDoctorDetail(res.data);
+      this.loading = false;
     });
     //오늘 날짜 설정
     let todayDate = new Date();
