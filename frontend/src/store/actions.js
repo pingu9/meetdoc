@@ -114,6 +114,7 @@ export const actions = {
                 localStorage.setItem('userId', res.data.userId);
                 localStorage.setItem('userType', res.data.userType);
                 localStorage.setItem('userName', res.data.userName);
+                alert("로그인 되었습니다.");
                 if (localStorage.getItem('userType') === 'D') {
                     console.log('의사는 차트리스트로!')
                     document.getElementById('loginModalCloseBtn').click();
