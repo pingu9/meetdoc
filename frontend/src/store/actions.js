@@ -57,11 +57,11 @@ export const actions = {
     },
     doctorRegist(context, payload) {
         console.log(payload)
-        axios.post('/api/doctor/regist', payload)
+        return axios.post('/api/doctor/regist', payload)
             .then(() => {
-                alert("의사 등록에 성공했습니다!")
-                localStorage.setItem('userType', 'D')
-                router.push({ name: 'home' }).then(() => router.go())
+                // alert("의사 등록에 성공했습니다!")
+                // localStorage.setItem('userType', 'D')
+                // router.push({ name: 'home' }).then(() => router.go())
             })
             .catch(error => {
                 alert("의사 등록에 실패했습니다. 다시 시도해주세요.")
@@ -69,7 +69,17 @@ export const actions = {
                 console.log(error.response.data.message);
             });
     },
-
+    setOpeningHour(context, payload) {
+        console.log(payload)
+        axios.post('/api/doctor/opening-hours', payload)
+            .then((res) => {
+                console.log(res);
+                alert("의사 등록에 성공했습니다!")
+                localStorage.setItem('userType', 'D')
+                router.push({ name: 'home' }).then(() => router.go())
+            })
+            .catch(e => console.log(e))
+    },
     update(context, payload) {
         console.log(payload)
         if (confirm("회원정보를 수정하시겠습니까?")) {

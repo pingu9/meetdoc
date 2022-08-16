@@ -1,7 +1,7 @@
 <template>
   <div class="container-body">
     <h1>의사 등록</h1>
-    <form @submit.prevent="submitForm">
+    <div>
       <div class="textForm">
         <input name="hospital-name" type="text" class="input-field" placeholder="병원명" v-model="hospitalName">
       </div>
@@ -43,18 +43,42 @@
       <small>30분 단위로 선택 가능합니다.<br/>점심시간은 1시간 입니다.</small><br /><br />
       <div id="opening-hours-select" class="col-md-3">
         <div id="selected-input" class="mb-3">
-          <label for="selected-day" class="mr-sm-2">요일</label>
-          <b-form-select id="selected-day" class="mb-2 mr-sm-2 mb-sm-0" :options="dayOption"></b-form-select>
-          <label for="selected-start-time" class="mr-sm-2">시작 시간</label>
-          <b-form-select id="selected-start-time" class="mb-2 mr-sm-2 mb-sm-0" :options="timeOption"></b-form-select>
-           <label for="selected-end-time" class="mr-sm-2">종료 시간</label>
-          <b-form-select id="selected-end-time" class="mb-2 mr-sm-2 mb-sm-0" :options="timeOption"></b-form-select>
-           <label for="selected-lunch-time" class="mr-sm-2">점심 시간</label>
-          <b-form-select id="selected-lunch-time" class="mb-2 mr-sm-2 mb-sm-0" :options="timeOption"></b-form-select>
+          <div class="select">
+            <select class="form-select" aria-label="Default select example" v-model="selectedDay">
+              <option selected>요일 선택</option>
+              <option v-for="(day,idx) in dayOfWeeks" :value="day" :key="idx">{{day}}</option>
+            </select>
+          </div>
+          <div class="select">
+            <select class="form-select" aria-label="Default select example" v-model="selectedStartTime">
+              <option selected>여는 시간</option>
+              <option v-for="(hour,idx) in hours" :value="hour" :key="idx">{{hour}}</option>
+            </select>
+          </div>
+          <div class="select">
+            <select class="form-select" aria-label="Default select example" v-model="selectedEndTime">
+              <option selected>닫는 시간</option>
+              <option v-for="(hour,idx) in hours" :value="hour" :key="idx">{{hour}}</option>
+            </select>
+          </div>
+          <div class="select">
+            <select class="form-select" aria-label="Default select example" v-model="selectedLunchTime">
+              <option selected>점심 시간</option>
+              <option v-for="(hour,idx) in hours" :value="hour" :key="idx">{{hour}}</option>
+            </select>
+          </div>
+          
           <button class="btn btn-primary" @click="selectOpeningHours();">추가</button>
         </div>
         <div id="selected-data">
-          <b-list-group class="border-0" v-for="(item, idx) in openingHours" v-bind:key="idx">            
+          <ul class="list-group">
+            <li class="list-group-item hour-item" v-for="(item, idx) in openingHours" :key="idx">
+              <div class="item">{{dayOfWeekConvert(item.dayOfTheWeek)}}</div>
+              <div class="item">영업시간 : {{ item.open }} ~ {{ item.close }}</div>
+              <div class="item">점심시간 : {{ item.lunchHour }}</div>
+            </li>
+          </ul>
+          <!-- <b-list-group class="border-0" v-for="(item, idx) in openingHours" v-bind:key="idx">            
           
             <b-row no-gutters>
             <b-col md="2">
@@ -65,16 +89,16 @@
               <p>점심시간 : {{ item.lunchTime }}</p>
             </b-col>               
             </b-row>
-          </b-list-group>
+          </b-list-group> -->
         </div>
       </div>
       <hr />
 
-      <button class="btn btn-primary registerDoctor" type="submit">등록 완료</button>
+      <button class="btn btn-primary registerDoctor" type="submit" @click="submitForm()">등록 완료</button>
       <div>
 
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -91,15 +115,24 @@ export default {
       hospitalDescription: '',
       departments: [],
       licenseNumber: '',
-      openingHours: [{ day: '월', startTime: '5:00', endTime: '19:00', lunchTime: '12:00' }], //샘플 데이터
-      selectedDay : '',
-      selectedStartTime: '',
-      selectedEndTime: '',
-      selectedLunchTime: '',
-      timeOption: [{ text: '선택', value: null }, { text: '월', value: '월' }, { text: '화', value: '화' }, { text: '수', value: '수' }, { text: '목', value: '목' }, { text: '금', value: '금' }, { text: '토', value: '토' }, { text: '일', value: '일' }],
-      dayOption: [{ text: '선택', value: null }, '월', '화', '수', '목', '금', '토', '일'],
+      openingHours: [{ dayOfTheWeek: 'Mon', open: '5:00', close: '19:00', lunchHour: '12:00'}], //샘플 데이터
+      selectedDay : '요일 선택',
+      selectedStartTime: '여는 시간',
+      selectedEndTime: '닫는 시간',
+      selectedLunchTime: '점심 시간',
+      // timeOption: [{ text: '선택', value: null }, { text: '월', value: '월' }, { text: '화', value: '화' }, { text: '수', value: '수' }, { text: '목', value: '목' }, { text: '금', value: '금' }, { text: '토', value: '토' }, { text: '일', value: '일' }],
+      // dayOption: [{ text: '선택', value: null }, '월', '화', '수', '목', '금', '토', '일'],
       phoneValid: false,
       phoneHasError: false,
+      dayOfWeeks: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+      hours: [
+        '0:00','0:30','1:00','1:30','2:00','2:30','3:00','3:30','4:00','4:30',
+        '5:00','5:30','6:00','6:30','7:00','7:30','8:00','8:30','9:00','9:30',
+        '10:00','10:30', '11:00', '11:30', '12:00','12:30','13:00', '13:30',
+        '14:00','14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
+        '18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00',
+        '22:30','23:00','23:30','24:00',
+      ],
     }
   },
   computed: {
@@ -121,6 +154,11 @@ export default {
           hospitalDescription: this.hospitalDescription,
           departments: this.departments,
           licenseNumber: this.licenseNumber
+        }).then(() => {
+          this.$store.dispatch('setOpeningHour', {
+            doctorId: this.currentUser.userId,
+            openingHours: this.openingHours,
+          })
         })
       }
     },
@@ -182,8 +220,30 @@ export default {
       }
     },    
 		selectOpeningHours() {
-      this.openingHours.push({ "day" : this.selectedDay, "startTime" : this.selectedStartTime, "endTime" : this.selectedEndTime, "lunchTime" : this.selectedLunchTime });
+      if((!this.selectedDay || this.selectedDay != '요일 선택') && (!this.selectedStartTime || this.selectedStartTime != '여는 시간')
+      && (!this.selectedEndTime || this.selectedEndTime  != '닫는 시간') && (!this.selectedLunchTime || this.selectedLunchTime != '점심 시간')) {
+        this.openingHours.push({ "dayOfTheWeek" : this.dayOfWeekConvert(this.selectedDay), "open" : this.selectedStartTime, "close" : this.selectedEndTime, "lunchHour" : this.selectedLunchTime });
+      } else {
+        alert("시간을 모두 입력해주세요.")
+      }
+      console.log(this.selectedDay)
 		},
+    dayOfWeekConvert(str) {
+      if(str == '월요일') return 'Mon'
+      else if(str == '화요일') return 'Tue'
+      else if(str == '수요일') return 'Wed'
+      else if(str == '목요일') return 'Thu'
+      else if(str == '금요일') return 'Fri'
+      else if(str == '토요일') return 'Sat'
+      else if(str == '일요일') return 'Sun'
+      else if(str == 'Mon') return '월'
+      else if(str == 'Tue') return '화'
+      else if(str == 'Wed') return '수'
+      else if(str == 'Thu') return '목'
+      else if(str == 'Fri') return '금'
+      else if(str == 'Sat') return '토'
+      else if(str == 'Sun') return '일'
+    }
   },
   created() {
     let userId = localStorage.getItem('userId');
@@ -251,6 +311,23 @@ body {
 
 #opening-hours-select {
   width: 100%;
+}
+
+#selected-input {
+  display: flex;
+}
+
+.select {
+  margin: auto auto auto 0;
+}
+
+.hour-item {
+  display: flex;
+  width: 100%;
+}
+
+.item {
+  margin: auto;
 }
 
 #selected-data {
