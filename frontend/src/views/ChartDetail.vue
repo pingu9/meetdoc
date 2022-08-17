@@ -33,7 +33,7 @@
                 <div class="symptom">
                     <p class="chartDetailData">{{$store.state.chartDetail.symptom}}</p>
                     <div v-if="$store.state.chartDetail.symptomPhoto.length > 0">
-                        <p style="display: flex">
+                        <p>
                             <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                 증상 사진 보기
                             </button>
