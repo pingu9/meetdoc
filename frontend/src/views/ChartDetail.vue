@@ -32,6 +32,17 @@
                 <p class="card-title">환자증상</p>
                 <div class="symptom">
                     <p class="chartDetailData">{{$store.state.chartDetail.symptom}}</p>
+                    <div v-if="$store.state.chartDetail.symptomPhoto.length > 0">
+                        <p style="display: flex">
+                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                증상 사진 보기
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapseExample">
+                            <img v-for="(link, idx) in $store.state.chartDetail.symptomPhoto" :key="idx" class="img-thumbnail"
+                            :src="'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/'+link" style="width: 150px; height: 150px">
+                        </div>
+                    </div>
                 </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
   <div class="container-body">
     <div class="alert alert-primary" role="alert" v-if="this.userType === 'U'">
       <div v-if="this.appt.status === 'OPEN'">
-        예약하신 진료시간이 다 되었습니다. <a @click="enterMeetingRoom()" class="alert-link">진료실 링크여기</a> 진료실에 입장해주세요!
+        예약하신 진료시간이 다 되었습니다. <a @click="enterMeetingRoom()" class="alert-link">진료실 링크</a> 진료실에 입장해주세요!
       </div>
       <div v-if="this.appt.status === 'WAITING'">
         {{this.appt.appointmentTime}}에 {{this.appt.doctorName}}님과 진료 예약이 있습니다.
