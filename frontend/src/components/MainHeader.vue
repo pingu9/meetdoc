@@ -162,4 +162,8 @@ export default {
 #navbarNav li{
   margin: 0 20px;
 }
+
+.nav-link {
+  font-weight: 500;
+}
 </style>
