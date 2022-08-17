@@ -10,8 +10,8 @@
                     <div class="col-md-6"><label class="labels">ID</label><div class="form-control">{{currentUser.userId}}</div></div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-6"><label class="labels">성별</label><div class="form-control"> {{currentUser.userType === 'U' ? '환자' : '의사'}} </div></div>
-                    <div class="col-md-6"><label class="labels">구분</label><div class="form-control"> {{currentUser.gender === 'male' ? '남자' : '여자'}} </div></div>
+                    <div class="col-md-6"><label class="labels">구분</label><div class="form-control"> {{currentUser.userType === 'U' ? '환자' : '의사'}} </div></div>
+                    <div class="col-md-6"><label class="labels">성별</label><div class="form-control"> {{currentUser.gender === 'male' ? '남자' : '여자'}} </div></div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-12 mt-4"><label class="labels">생년월일</label><div class="form-control">{{currentUser.birthdate}}</div></div>

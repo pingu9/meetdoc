@@ -3,7 +3,7 @@
     <h1>진료 내역 상세</h1>
     <div class="container-card">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body outsideCardBody">
            <div class="card">
             <div class="card-body">
                 <p class="card-title">환자 및 의사 정보</p>
@@ -97,6 +97,10 @@ h3{
 
 .chartDetailData{
     text-align: left;
+}
+
+.outsideCardBody {
+    padding: 0.8rem !important;
 }
 
 </style>
