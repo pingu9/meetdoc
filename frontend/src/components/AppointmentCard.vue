@@ -6,7 +6,7 @@
             <p class="card-title">{{ title }}</p>
             <div class="info-box">
             <div class="half-box">
-                <img src="../assets/images/doctor.jpg" alt="doctorImg" class="doctorImg"/>
+                <img :src="data.photoUrl" alt="doctorImg" class="doctorImg"/>
                 <p style="margin-top:10px;font-weight: bold; font-size: 20px;">{{data.doctorName}}</p>
                 <p style="margin-top:-10px; margin-bottom: -5px;">{{data.departmentName}}</p>
             </div>
