@@ -41,8 +41,8 @@ insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `stat
 insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user19', 'U', '홍환자', 'male', '1964-09-10', 'active');
 insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('user20', 'U', '서환자', 'male', '1965-12-01', 'active');
 
-insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('meetdocPatient', 'U', '권환자', 'male', '1997-12-01', 'active');
-insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('meetdocDoctor', 'D', '황의사', 'male', '1962-12-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('meetdocPatient', 'U', '최이조', 'male', '1997-12-01', 'active');
+insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('meetdocDoctor', 'D', '강싸피', 'male', '1962-12-01', 'active');
 insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('usrDoctor', 'D', '테스트의사', 'male', '2000-12-01', 'active');
 insert into `user` (`user_id`, `user_type`, `name`, `gender`, `birthdate`, `status`) values ('usrPatient', 'U', '테스트환자', 'male', '2000-12-01', 'active');
 
@@ -77,8 +77,8 @@ insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phon
 insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('user29', '$2a$10$3CKr/PF9Ng2jE2qcQeK0jOIJHP28cECPL298pBDWjyYGdJYfkQx2u', '111111-2111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
 insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('user30', '$2a$10$3CKr/PF9Ng2jE2qcQeK0jOIJHP28cECPL298pBDWjyYGdJYfkQx2u', '111111-1111111', '111-111', 'address', '010-0000-0000', 'aaa@aaa.com');
 
-insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('meetdocDoctor', '$2a$10$MINzJ1hR0yboT879.wcAxuCHu1LrRgJ2sTVaGRu.hxC88WKlN86XO', '111111-1111111', '111-111', 'address', '010-0000-0000', 'ssafyDoctor@meetdoc.com');
-insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('meetdocPatient', '$2a$10$MINzJ1hR0yboT879.wcAxuCHu1LrRgJ2sTVaGRu.hxC88WKlN86XO', '111111-1111111', '111-111', 'address', '010-0000-0000', 'ssafyPatient@meetdoc.com');
+insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('meetdocDoctor', '$2a$10$MINzJ1hR0yboT879.wcAxuCHu1LrRgJ2sTVaGRu.hxC88WKlN86XO', '111111-1111111', '111-111', '서울시 강남구 역삼동', '010-0000-0000', 'ssafyDoctor@meetdoc.com');
+insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('meetdocPatient', '$2a$10$MINzJ1hR0yboT879.wcAxuCHu1LrRgJ2sTVaGRu.hxC88WKlN86XO', '111111-1111111', '111-111', '서울시 강남구 역삼동', '010-0000-0000', 'ssafyPatient@meetdoc.com');
 insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('usrDoctor', '$2a$10$MINzJ1hR0yboT879.wcAxuCHu1LrRgJ2sTVaGRu.hxC88WKlN86XO', '111111-1111111', '111-111', 'address', '010-0000-0000',  'usrDoctor@meetdoc.com');
 insert into user_info (`user_id`, `password`, `rrn`, `zipcode`, `address`, `phone`, `email`) values ('usrPatient', '$2a$10$MINzJ1hR0yboT879.wcAxuCHu1LrRgJ2sTVaGRu.hxC88WKlN86XO', '111111-1111111', '111-111', 'address', '010-0000-0000', 'usrPatient@meetdoc.com');
 
@@ -104,8 +104,8 @@ insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phon
 insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`, `photo_url`) values ('user29', '2299', '양평병원', '010-0001-0019', '213-456', 'address', 'description', 0, 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/414.jpg');
 insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`, `photo_url`) values ('user30', '3027', '구로병원', '010-0001-0020', '203-456', 'address', 'description', 0, 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/young-medical-intern-filling-out-report-papers.jpg');
 
-insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`, `photo_url`) values ('meetdocDoctor', '3027', '싸피병원', '010-0001-0025', '203-416', 'address', 'description', 0, 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/confident-doctor-looking-at-camera-holding-the-tablet-pc.jpg');
-insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`, `photo_url`) values ('usrDoctor', '3027', '싸피병원', '010-0001-0026', '203-461', 'address', 'description', 0, 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/confident-doctor-looking-at-camera-holding-the-tablet-pc.jpg');
+insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`, `photo_url`) values ('meetdocDoctor', '3027', '싸피병원', '010-0001-0025', '123-456', '서울 강남구 역삼동 싸피병원', '역삼동에 위치한 종합병원', 0, 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/confident-doctor-looking-at-camera-holding-the-tablet-pc.jpg');
+insert into doctor (`user_id`, `license_number`, `hospital_name`, `hospital_phone`, `hospital_zipcode`, `hospital_address`, `hospital_description`, `charge`, `photo_url`) values ('usrDoctor', '3027', '싸피병원', '010-0001-0026', '203-461', '서울 강남구 역삼동 싸피병원', 'description', 0, 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/confident-doctor-looking-at-camera-holding-the-tablet-pc.jpg');
 
 INSERT INTO appointment (`appointment_time`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-07 11:00', '0', '45', '2022-08-07', '처방 설명', 'FINISHED', '증상', 'user2', 'user11', '외과');
 INSERT INTO appointment (`appointment_time`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-07-29 09:00', '0', '45', '2022-08-07', '처방 설명', 'FINISHED', '증상', 'user2', 'user11', '외과');
@@ -166,11 +166,15 @@ INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `do
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-10 09:30', '0', 'DOCTOR_ABSENT', '증상', 'user5', 'user20', '피부과');
 INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-10 10:30', '0', 'PATIENT_ABSENT', '증상', 'user5', 'user20', '피부과');
 
-INSERT INTO appointment (`appointment_time`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-07 11:00', '0', '45', '2022-08-07', '처방 설명', 'FINISHED', '증상', 'meetdocDoctor', 'meetdocPatient', '내과');
-INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-18 09:30', '0', 'OPEN', '증상', 'meetdocDoctor', 'meetdocPatient', '내과');
-INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-19 09:30', '0', 'WAITING', '증상', 'meetdocDoctor', 'meetdocPatient', '내과');
-INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-17 09:30', '0', 'PENDING_CANCEL_PATIENT', '증상', 'meetdocDoctor', 'meetdocPatient', '내과');
-INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-16 09:30', '0', 'CANCELED', '증상', 'meetdocDoctor', 'meetdocPatient', '내과');
+INSERT INTO appointment (`appointment_time`, `charge`, `icd`, `prescription_date`, `prescription_description`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-07 11:00', '0', '45', '2022-08-07', '일주일동안 식후 3회 내복약 복용', 'FINISHED', '속이 쓰리고 소화가 잘 되지 않습니다.', 'meetdocDoctor', 'meetdocPatient', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-18 09:30', '0', 'OPEN', '속이 쓰리고 소화가 잘 되지 않습니다.', 'meetdocDoctor', 'meetdocPatient', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-19 09:30', '0', 'WAITING', '속이 쓰리고 소화가 잘 되지 않습니다.', 'meetdocDoctor', 'meetdocPatient', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-17 09:30', '0', 'PENDING_CANCEL_PATIENT', '속이 쓰리고 소화가 잘 되지 않습니다.', 'meetdocDoctor', 'meetdocPatient', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-16 09:30', '0', 'CANCELED', '속이 쓰리고 소화가 잘 되지 않습니다.', 'meetdocDoctor', 'meetdocPatient', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-22 14:00', '0', 'WAITING', '원인 불명 복통으로 진료 신청', 'meetdocDoctor', 'user15', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-22 15:00', '0', 'WAITING', '원인 불명 복통으로 진료 신청', 'meetdocDoctor', 'user15', '내과');
+INSERT INTO appointment ( `appointment_time`, `charge`, `status`, `symptom`, `doctor_user_id`, `patient_user_id`, `department_name`) VALUES ('2022-08-17 09:30', '0', 'FINISHED', '만성 당뇨 증상으로 진료 신청', 'usrDoctor', 'usrPatient', '내과');
+
 
 
 
