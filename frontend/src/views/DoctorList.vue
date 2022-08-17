@@ -14,7 +14,7 @@
       <div class="card w-90" v-for="(list, idx) in $store.state.doctors" :key="idx" id="container-card">
           <div class="card-body" style="display: flex;">
           <div style="width:170px;">
-            <img src="../assets/images/doctor.jpg" class="img-thumbnail" alt="doctorImg" style="width:150px; height:150px"/>
+            <img :src="list.photoUrl" class="img-thumbnail" alt="doctorImg" style="width:150px; height:150px"/>
           </div>
           <div style="width: 50%; display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px;">
             <h5 class="card-title">{{list.doctorName}}</h5>
