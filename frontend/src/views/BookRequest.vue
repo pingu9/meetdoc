@@ -82,7 +82,7 @@ export default {
       for (let i = 0; i < files.length; i++) {
         type = files[i].type.toLowerCase();
         fileSize += files[i].size;
-        if(type === 'image/png' || type === 'imgage/jpg' || type === 'image/jpeg' || type === 'image/gif'){
+        if(type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg' || type === 'image/gif'){
           formData.append("images", files[i]);
         }else{
           alert('이미지 첨부는 jpg, jpeg, png, gif 파일만 가능합니다!');
