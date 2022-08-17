@@ -110,6 +110,10 @@ a:hover{
   padding: 1vmin;
 }
 
+.card:hover{
+  cursor: pointer;
+}
+
 .card-title {
   margin-top: 2vmin;
 }
