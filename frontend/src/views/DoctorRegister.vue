@@ -66,8 +66,7 @@
               <option selected>점심 시간</option>
               <option v-for="(hour,idx) in hours" :value="hour" :key="idx">{{hour}}</option>
             </select>
-          </div>
-          
+          </div>          
           <button class="btn btn-primary" @click="selectOpeningHours();">추가</button>
         </div>
         <div id="selected-data">
@@ -76,20 +75,9 @@
               <div class="item">{{dayOfWeekConvert(item.dayOfTheWeek)}}</div>
               <div class="item">영업시간 : {{ item.open }} ~ {{ item.close }}</div>
               <div class="item">점심시간 : {{ item.lunchHour }}</div>
+              <button type="button" class="btn-close" id="closeBtn" @click="deleteOpeningHours(item.dayOfTheWeek);"></button>
             </li>
           </ul>
-          <!-- <b-list-group class="border-0" v-for="(item, idx) in openingHours" v-bind:key="idx">            
-          
-            <b-row no-gutters>
-            <b-col md="2">
-              <p>{{ item.day }}</p>
-            </b-col>            
-            <b-col md="10">
-              <p>영업시간 : {{ item.startTime }} ~ {{ item.endTime }}</p>
-              <p>점심시간 : {{ item.lunchTime }}</p>
-            </b-col>               
-            </b-row>
-          </b-list-group> -->
         </div>
       </div>
       <hr />
@@ -115,16 +103,15 @@ export default {
       hospitalDescription: '',
       departments: [],
       licenseNumber: '',
-      openingHours: [{ dayOfTheWeek: 'Mon', open: '5:00', close: '19:00', lunchHour: '12:00'}], //샘플 데이터
+      openingHours: [], //샘플 데이터 { dayOfTheWeek: 'Mon', open: '5:00', close: '19:00', lunchHour: '12:00'}
       selectedDay : '요일 선택',
       selectedStartTime: '여는 시간',
       selectedEndTime: '닫는 시간',
       selectedLunchTime: '점심 시간',
-      // timeOption: [{ text: '선택', value: null }, { text: '월', value: '월' }, { text: '화', value: '화' }, { text: '수', value: '수' }, { text: '목', value: '목' }, { text: '금', value: '금' }, { text: '토', value: '토' }, { text: '일', value: '일' }],
-      // dayOption: [{ text: '선택', value: null }, '월', '화', '수', '목', '금', '토', '일'],
       phoneValid: false,
       phoneHasError: false,
       dayOfWeeks: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+      isDayOfWeeksSelected: {'월요일' : false, '화요일' : false, '수요일' : false, '목요일' : false, '금요일' : false, '토요일' : false, '일요일' : false},
       hours: [
         '0:00','0:30','1:00','1:30','2:00','2:30','3:00','3:30','4:00','4:30',
         '5:00','5:30','6:00','6:30','7:00','7:30','8:00','8:30','9:00','9:30',
@@ -220,13 +207,31 @@ export default {
       }
     },    
 		selectOpeningHours() {
+      //빈칸 체크
       if((!this.selectedDay || this.selectedDay != '요일 선택') && (!this.selectedStartTime || this.selectedStartTime != '여는 시간')
       && (!this.selectedEndTime || this.selectedEndTime  != '닫는 시간') && (!this.selectedLunchTime || this.selectedLunchTime != '점심 시간')) {
-        this.openingHours.push({ "dayOfTheWeek" : this.dayOfWeekConvert(this.selectedDay), "open" : this.selectedStartTime, "close" : this.selectedEndTime, "lunchHour" : this.selectedLunchTime });
+        //pass
       } else {
         alert("시간을 모두 입력해주세요.")
+        return
       }
-      console.log(this.selectedDay)
+      //요일 중복 확인
+      if(this.isDayOfWeeksSelected[this.selectedDay]) {
+        alert("이미 선택된 요일입니다.")
+        return
+      }
+      //open close 시간 유효성 검사
+      if(this.changeTimeToInt(this.selectedStartTime) >= this.changeTimeToInt(this.selectedEndTime)) {
+        alert("여는 시간이 닫는 시간보다 빠르거나 같습니다.")
+        return
+      }
+      //점심시간 유효성 검사
+      if(this.changeTimeToInt(this.selectedStartTime) > this.changeTimeToInt(this.selectedLunchTime) || this.changeTimeToInt(this.selectedEndTime) <= this.changeTimeToInt(this.selectedLunchTime)) {
+        alert("점심시간이 영업시간 중이 아닙니다.")
+        return
+      }
+      this.openingHours.push({ "dayOfTheWeek" : this.dayOfWeekConvert(this.selectedDay), "open" : this.selectedStartTime, "close" : this.selectedEndTime, "lunchHour" : this.selectedLunchTime });
+      this.isDayOfWeeksSelected[this.selectedDay] = true;
 		},
     dayOfWeekConvert(str) {
       if(str == '월요일') return 'Mon'
@@ -243,6 +248,18 @@ export default {
       else if(str == 'Fri') return '금'
       else if(str == 'Sat') return '토'
       else if(str == 'Sun') return '일'
+    },    
+		changeTimeToInt(target) {      
+      return parseInt(target.replace(':',''));
+		},
+    deleteOpeningHours(target) {
+      for(let i = 0; i < this.openingHours.length; i++){
+        if(this.openingHours[i].dayOfTheWeek === target) {
+          this.openingHours.splice(i,1);
+          this.isDayOfWeeksSelected[this.dayOfWeekConvert(target)+"요일"] = false;
+          return;
+        }
+      }
     }
   },
   created() {
@@ -262,7 +279,6 @@ export default {
 .registerDoctor {
   margin-top: 20px;
 }
-
 
 * {
   margin: 0px;
@@ -334,6 +350,6 @@ body {
   white-space: pre;
   overflow-y: auto;
   height: 300px;
-  border: 1px solid gray;
+  border: 0.5px solid rgb(223, 223, 223);
 }
 </style>
