@@ -22,6 +22,8 @@ public class DoctorServiceImpl implements DoctorService{
     @Autowired
     DoctorRepository doctorRepository;
 
+    private static final String DEFAULT_PHOTO_URL = "https://meet-doctor.s3.ap-northeast-2.amazonaws.com/414.jpg";
+
     @Override
     public Doctor createDoctor(DoctorPostReq doctorInfo) {
         Doctor doctor = new Doctor();
@@ -33,7 +35,11 @@ public class DoctorServiceImpl implements DoctorService{
         doctor.setHospitalAddress(doctorInfo.getHospitalAddress());
         doctor.setHospitalDescription(doctorInfo.getHospitalDescription());
         doctor.setCharge(doctorInfo.getCharge());
-        doctor.setPhotoUrl(doctorInfo.getPhotoUrl());
+        if (doctorInfo.getPhotoUrl() == null || doctorInfo.getPhotoUrl().equals("")) {
+            doctor.setPhotoUrl(DEFAULT_PHOTO_URL);
+        } else {
+            doctor.setPhotoUrl(doctorInfo.getPhotoUrl());
+        }
 
         List<DoctorMedicDepartment> list = (List<DoctorMedicDepartment>) doctor.getDoctorMedicDepartments();
         for(MedicDepartment md : doctorInfo.getDepartments()){
