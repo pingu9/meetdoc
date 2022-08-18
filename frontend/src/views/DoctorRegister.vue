@@ -27,6 +27,12 @@
         <input name="license-number" type="text" class="input-field" placeholder="의사 면허 등록번호" v-model="licenseNumber">
       </div>
 
+      <hr/>
+      <div class="container-upload">
+        <h3 class="text-center">의사 사진 첨부</h3>
+        <input @change="upload" multiple type="file" accept="image/*">
+      </div>
+
       <hr />
       <h3 class="text-center">진료과 선택</h3>
       <small>최소 1개 이상 선택해 주세요.</small><br /><br />
@@ -103,6 +109,7 @@ export default {
       hospitalDescription: '',
       departments: [],
       licenseNumber: '',
+      photoUrl: '',
       openingHours: [], //샘플 데이터 { dayOfTheWeek: 'Mon', open: '5:00', close: '19:00', lunchHour: '12:00'}
       selectedDay : '요일 선택',
       selectedStartTime: '여는 시간',
@@ -140,7 +147,8 @@ export default {
           hospitalAddress: this.hospitalAddress,
           hospitalDescription: this.hospitalDescription,
           departments: this.departments,
-          licenseNumber: this.licenseNumber
+          licenseNumber: this.licenseNumber,
+          photoUrl: 'https://meet-doctor.s3.ap-northeast-2.amazonaws.com/'+this.photoUrl[0]
         }).then(() => {
           this.$store.dispatch('setOpeningHour', {
             doctorId: this.currentUser.userId,
@@ -259,6 +267,37 @@ export default {
           this.isDayOfWeeksSelected[this.dayOfWeekConvert(target)+"요일"] = false;
           return;
         }
+      }
+    },
+    upload(e){
+      const formData = new FormData();
+      var files = e.target.files;
+      const maxSize = 10* 1024* 1024;//최대 용량 10MB
+      var fileSize = 0;
+      var type = '';
+      //파일 타입체크 및 용량 계산
+      for (let i = 0; i < files.length; i++) {
+        type = files[i].type.toLowerCase();
+        fileSize += files[i].size;
+        if(type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg' || type === 'image/gif'){
+          formData.append("images", files[i]);
+        }else{
+          alert('이미지 첨부는 jpg, jpeg, png, gif 파일만 가능합니다!');
+          e.target.value = '';//첨부파일이 없습니다 세팅
+          return;   
+        }
+      }
+      //용량 체크
+      if(fileSize > maxSize){
+        alert('파일 첨부는 10MB 까지만 가능합니다!');
+        return;
+      }
+      if(e.target.value !== ''){
+        this.$store.dispatch('upload', formData).then((res) => {
+          console.log(res.data);
+          this.photoUrl = res.data;
+          // this.setphooUrl(res.data);
+        });
       }
     }
   },
