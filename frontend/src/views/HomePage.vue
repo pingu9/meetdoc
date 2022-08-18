@@ -14,7 +14,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4" id="container-departments">
       <div class="col" v-for="(department, idx) in $store.state.departments" :key="idx">
         <!-- <div class="card h-100" @click="$router.push({`/doctors/${department.departmentCode}`})"> -->
-        <div class="card" @click="$router.push({name: 'doctorList', params: {departmentCode: department.departmentCode, departmentName: department.departmentName}})">
+        <div class="card" @click="doctorList(department)">
           <img :src="getIconPath(department.photoUrl)" class="card-img-top" :alt="`${department.departmentName}`" id="deptImg">
           <div class="card-body">
             <h4 class="card-title">{{department.departmentName}}</h4>
@@ -46,6 +46,14 @@ export default {
   },
   methods: {
     ...mapMutations(['changeName',]),
+    doctorList(department) {
+      if (localStorage.token !== '' && localStorage.token !== null && localStorage.token !== undefined) {
+        this.$router.push({ name: 'doctorList', params: { departmentCode: department.departmentCode, departmentName: department.departmentName } });
+      } else {
+        alert('로그인 후 사용 가능합니다.');
+      }
+      
+    },
     getIconPath(iconName) {
       const icons = require.context('../assets/images', false, /\.png$/);
       return iconName ? icons(`./${iconName}.png`) : ''
