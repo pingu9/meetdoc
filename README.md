@@ -1,19 +1,19 @@
-# 서비스 이름
+# MeetDoc
 
-## 카테고리
-
-| Application | Domain | Language | Framework |
-| ---- | ---- | ---- | ---- |
-| :white_check_mark: Desktop Web | :black_square_button: AI | :white_check_mark: JavaScript | :white_check_mark: Vue.js |
-| :white_check_mark: Mobile Web | :black_square_button: Big Data | :black_square_button: TypeScript | :black_square_button: React |
-| :white_check_mark: Responsive Web | :black_square_button: Blockchain | :black_square_button: C/C++ | :black_square_button: Angular |
-| :black_square_button: Android App | :black_square_button: IoT | :black_square_button: C# | :black_square_button: Node.js |
-| :black_square_button: iOS App | :black_square_button: AR/VR/Metaverse | :white_check_mark: Python | :white_check_mark: Flask/Django |
-| :black_square_button: Desktop App | :black_square_button: Game | :white_check_mark: Java | :white_check_mark: Spring/Springboot |
-| | | :black_square_button: Kotlin | |
+![logo](frontend/public/favicon.png)
 
 ## 프로젝트 소개
+의료 사각 지대, 만성 질환자, 응급 환자를 위한 비대면 진료 서비스 MeetDoc (믿닥) 입니다.
 
 ## 팀 소개
+- 우시은 : BE, 팀장
+- 권덕주 : BE
+- 안현모 : FE
+- 이나현 : FE
+- 황준원 : BE
 
 ## 프로젝트 상세 설명
+
+[시연 시나리오](exec/%EC%8B%9C%EC%97%B0%20%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.md)
+
+[배포 가이드](exec/%EB%B0%B0%ED%8F%AC%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
